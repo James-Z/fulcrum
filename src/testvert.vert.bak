@@ -1,0 +1,25 @@
+#version 330
+
+in vec4 vertex;
+in vec3 normal;
+in vec2 texturecoord0;
+
+
+uniform mat4 tranMa;
+uniform mat4 perspectiveMa;
+
+void main()
+{
+	vec4 temVertex;
+	temVertex.xyz= vertex.xyz;
+	temVertex.w= 1.0;
+	temVertex.xyz= temVertex.xyz* temVertex.w;
+	vec4 temp= tranMa* temVertex;
+
+	vec3 modelVertex= temp.xyz/ temp.w;
+
+	mat4 perspectiveMatrix= perspectiveMa;
+	temp= perspectiveMatrix* temp;
+
+	gl_Position= temp;
+}

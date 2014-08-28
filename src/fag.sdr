@@ -1,0 +1,52 @@
+#version 330
+
+layout(location = 4) smooth in vec3 vVaryingNormal;
+layout(location = 5) smooth in vec3 vVaryingLightDir[10];
+
+in int lighting[10];
+uniform int lights_count;
+
+/* smooth in vec3 vVaryingNormal; */
+/* smooth in vec3 vVaryingLightDir; */
+/* smooth in vec3 vVaryingCameraDir; */
+
+
+uniform vec4 diffuse_color[10];
+uniform vec4 ambient_color;
+uniform vec4 specular_color[10];
+uniform vec4 light_color;
+
+layout(location = 0) out vec4 outputColor;
+
+//out vec4 oStraightColor;
+//out vec4 oGreyscale;
+//out vec4 oLumAdjColor;
+
+void main () {
+	vec4 theColor;
+	for(int i = 0; i < lights_count; ++i) {
+		if( lighting[i] == 1 ) {
+			float tempDot= dot( normalize(vVaryingNormal), normalize(vVaryingLightDir[i]) );
+			if( tempDot < 0.0 ) {
+				tempDot = -tempDot;
+			}
+			float diff= max( 0.0, tempDot );
+			theColor.rgb = theColor.rgb + (diff * diffuse_color[i].rgb);
+			theColor.a= theColor.a + diffuse_color[i].a;
+		}
+	}
+	theColor+= ambient_color;
+	//vec3 vRecflection= normalize(reflect(-normalize(vVaryingLightDir), normalize(vVaryingNormal)));
+	vec4 sp_co = specular_color[0];
+	
+	outputColor = theColor;
+
+	//oStraightColor = theColor;
+
+	//float grey = dot(theColor.rgb, vec3(0.3, 0.59, 0.11));
+	//oGreyscale = vec4(grey, grey, grey, 1.0f);
+
+	//oLumAdjColor= vec4(theColor - 0.4f);
+	//oLumAdjColor.a= 1.0f;
+}
+

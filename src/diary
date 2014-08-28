@@ -1,0 +1,11 @@
+@2014.07.14
+1. embeded the light class into scene
+2. create lightS array
+3. complete the controller class and embed it into scene
+@2014.07.10
+1. the (*_cameras_in_scene_iter)->update(); need a new place to call it
+2. rewrite the object::update and object::update_object_camera_matrix functions
+3. maybe need to rewrite the class carema
+4. let _object_local_matrix be smooth in logic
+5. translate( const glm::vec3& direction_and_speed ) need to rewrite the agrument
+6. let the name be more exactly

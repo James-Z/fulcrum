@@ -1,0 +1,12 @@
+#version 330
+
+out vec4 oStraightColor;
+
+void main()
+{
+	vec4 theColor;
+	theColor = vec4(0.0, 1.0, 0.0, 1.0);
+	
+	//outputColor = theColor;
+	oStraightColor = theColor;
+}
