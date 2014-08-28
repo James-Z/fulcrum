@@ -2981,7 +2981,7 @@ _model_manager	_model_manager.hpp	/^class _model_manager {$/;"	c	language:C++
 _node_collision	src/BulletCollision/Gimpact/btGImpactBvh.cpp	/^SIMD_FORCE_INLINE bool _node_collision($/;"	f	language:C++
 _node_type	src/BulletCollision/Gimpact/gim_hash_table.h	/^    typedef GIM_HASH_TABLE_NODE<T> _node_type;$/;"	t	language:C++	class:gim_hash_table
 _normalMatrix	MatrixStack.hpp	/^	M3DMatrix33f _normalMatrix;$/;"	m	language:C++	class:MatrixStack
-_object_base	_object_base.cpp	/^_object_base::_object_base (void) : _state( 0 ), _is_destoried( false ), _is_be_controlled( false ), _is_catch_camera( false ), _model(), _rigid_body( nullptr ) {}$/;"	f	language:C++	class:_object_base
+_object_base	_object_base.cpp	/^_object_base::_object_base (void) :	_force( 0, 0, 0 ),$/;"	f	language:C++	class:_object_base
 _object_base	_object_base.hpp	/^class _object_base {$/;"	c	language:C++
 _object_controller_matrix	_controller_base.hpp	/^	glm::mat4 _object_controller_matrix;$/;"	m	language:C++	class:_controller_base
 _object_motion_state	_controller_base.hpp	/^	int _object_motion_state;$/;"	m	language:C++	class:_controller_base
@@ -3301,7 +3301,6 @@ at	src/BulletCollision/Gimpact/gim_array.h	/^	inline const T & at(GUINT i) const
 at	src/LinearMath/btAlignedObjectArray.h	/^		SIMD_FORCE_INLINE T& at(int n)$/;"	f	language:C++	class:btAlignedObjectArray
 at	src/LinearMath/btAlignedObjectArray.h	/^		SIMD_FORCE_INLINE const T& at(int n) const$/;"	f	language:C++	class:btAlignedObjectArray
 att	fulcrum.cpp	/^GLint                   att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };$/;"	v	language:C++
-att	ogltest.cpp	/^GLint                   att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };$/;"	v	language:C++
 attribute	testshadermanage.cpp	/^vector<GLuint> attribute;$/;"	v	language:C++
 attributeIndex	ShaderManage.hpp	/^	std::map<GLuint, std::string> attributeIndex;$/;"	m	language:C++	class:ShaderManage
 attributeInfo	fulcrum.hpp	/^std::vector<GLuint> attributeInfo;$/;"	v	language:C++
@@ -4827,7 +4826,6 @@ clusterVAImpulse	src/BulletSoftBody/btSoftBody.cpp	/^void			btSoftBody::clusterV
 clusterVImpulse	src/BulletSoftBody/btSoftBody.cpp	/^void			btSoftBody::clusterVImpulse(Cluster* cluster,const btVector3& rpos,const btVector3& impulse)$/;"	f	language:C++	class:btSoftBody
 clusterVelocity	src/BulletSoftBody/btSoftBody.cpp	/^btVector3		btSoftBody::clusterVelocity(const Cluster* cluster,const btVector3& rpos)$/;"	f	language:C++	class:btSoftBody
 cmap	fulcrum.cpp	/^Colormap                cmap;$/;"	v	language:C++
-cmap	ogltest.cpp	/^Colormap                cmap;$/;"	v	language:C++
 collide	src/BulletCollision/BroadphaseCollision/btDbvtBroadphase.cpp	/^void							btDbvtBroadphase::collide(btDispatcher* dispatcher)$/;"	f	language:C++	class:btDbvtBroadphase
 collide	src/BulletCollision/CollisionDispatch/SphereTriangleDetector.cpp	/^bool SphereTriangleDetector::collide(const btVector3& sphereCenter,btVector3 &point, btVector3& resultNormal, btScalar& depth, btScalar &timeOfImpact, btScalar contactBreakingThreshold)$/;"	f	language:C++	class:SphereTriangleDetector
 collideKDOP	src/BulletCollision/BroadphaseCollision/btDbvt.h	/^inline void		btDbvt::collideKDOP(const btDbvtNode* root,$/;"	f	language:C++	class:btDbvt
@@ -5162,7 +5160,6 @@ dot	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const floatInVec dot(
 dot	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const floatInVec dot( const Vector4 &vec0, const Vector4 &vec1 )$/;"	f	language:C++	namespace:Vectormath::Aos
 downHeap	src/LinearMath/btAlignedObjectArray.h	/^		void downHeap(T *pArr, int k, int n, const L& CompareFunc)$/;"	f	language:C++	class:btAlignedObjectArray
 dpy	fulcrum.cpp	/^Display                 *dpy;$/;"	v	language:C++
-dpy	ogltest.cpp	/^Display                 *dpy;$/;"	v	language:C++
 draw	_model_manager.cpp	/^void _model_manager::draw (void) {$/;"	f	language:C++	class:_model_manager
 draw	_object_base.cpp	/^void _object_base::draw (void) {$/;"	f	language:C++	class:_object_base
 drawAabb	src/LinearMath/btIDebugDraw.h	/^	virtual void drawAabb(const btVector3& from,const btVector3& to,const btVector3& color)$/;"	f	language:C++	class:btIDebugDraw
@@ -6483,14 +6480,12 @@ gimpactshape0	src/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.cpp	/^	con
 gimpacttrimeshpart_vs_plane_collision	src/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.cpp	/^void btGImpactCollisionAlgorithm::gimpacttrimeshpart_vs_plane_collision($/;"	f	language:C++	class:btGImpactCollisionAlgorithm
 gjkepa2_impl	src/BulletCollision/NarrowPhaseCollision/btGjkEpa2.cpp	/^namespace gjkepa2_impl$/;"	n	language:C++	file:
 glc	fulcrum.cpp	/^GLXContext              glc;$/;"	v	language:C++
-glc	ogltest.cpp	/^GLXContext              glc;$/;"	v	language:C++
 goToSleep	src/BulletDynamics/Featherstone/btMultiBody.cpp	/^void btMultiBody::goToSleep()$/;"	f	language:C++	class:btMultiBody
 growTables	src/BulletCollision/BroadphaseCollision/btOverlappingPairCache.cpp	/^void	btHashedOverlappingPairCache::growTables()$/;"	f	language:C++	class:btHashedOverlappingPairCache
 growTables	src/BulletCollision/CollisionDispatch/btHashedSimplePairCache.cpp	/^void	btHashedSimplePairCache::growTables()$/;"	f	language:C++	class:btHashedSimplePairCache
 growTables	src/LinearMath/btHashMap.h	/^	void	growTables(const Key& \/*key*\/)$/;"	f	language:C++	class:btHashMap
 growingCheck	src/BulletCollision/Gimpact/gim_array.h	/^	inline bool growingCheck()$/;"	f	language:C++	class:gim_array
 gwa	fulcrum.cpp	/^XWindowAttributes       gwa;$/;"	v	language:C++
-gwa	ogltest.cpp	/^XWindowAttributes       gwa;$/;"	v	language:C++
 halfHeight	src/BulletMultiThreaded/GpuSoftBodySolvers/DX11/btSoftBodySolver_DX11.h	/^		float halfHeight;$/;"	m	language:C++	struct:btDX11SoftBodySolver::CollisionShapeDescription
 halfHeight	src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/MiniCL/MiniCLTaskWrap.cpp	/^	float halfHeight;$/;"	m	language:C++	struct:__anon21	file:
 halfHeight	src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCL.h	/^	float halfHeight;$/;"	m	language:C++	struct:CollisionShapeDescription
@@ -6783,7 +6778,6 @@ kernelLauncher8	src/MiniCL/MiniCLTaskScheduler.cpp	/^static void kernelLauncher8
 kernelLauncher9	src/MiniCL/MiniCLTaskScheduler.cpp	/^static void kernelLauncher9(MiniCLTaskDesc* taskDesc, int guid)$/;"	f	language:C++	file:
 kernelLauncherCB	src/MiniCL/MiniCLTaskScheduler.h	/^typedef void (*kernelLauncherCB)(MiniCLTaskDesc* taskDesc, int guid);$/;"	t	language:C++
 key	fulcrum.cpp	/^KeySym key;             \/* a dealie-bob to handle KeyPress Events *\/$/;"	v	language:C++
-key	ogltest.cpp	/^KeySym key;             \/* a dealie-bob to handle KeyPress Events *\/$/;"	v	language:C++
 kst	src/BulletMultiThreaded/GpuSoftBodySolvers/DX11/btSoftBodySolver_DX11.h	/^		float kst;$/;"	m	language:C++	struct:btDX11SoftBodySolver::SolvePositionsFromLinksKernelCB
 kst	src/BulletMultiThreaded/GpuSoftBodySolvers/DX11/btSoftBodySolver_DX11.h	/^		float kst;$/;"	m	language:C++	struct:btDX11SoftBodySolver::VSolveLinksCB
 kst	src/BulletMultiThreaded/GpuSoftBodySolvers/DX11/btSoftBodySolver_DX11SIMDAware.h	/^		float kst;$/;"	m	language:C++	struct:btDX11SIMDAwareSoftBodySolver::SolvePositionsFromLinksKernelCB
@@ -9473,7 +9467,6 @@ m_xSplit2	src/BulletDynamics/MLCPSolvers/btMLCPSolver.h	/^	btVectorXu m_xSplit2;
 m_zeroAreaThreshold	src/BulletCollision/CollisionShapes/btTriangleInfoMap.h	/^	btScalar	m_zeroAreaThreshold; \/\/\/used to determine if a triangle is degenerate (length squared of cross product of 2 triangle edges < threshold)$/;"	m	language:C++	struct:btTriangleInfoMap
 m_zeroAreaThreshold	src/BulletCollision/CollisionShapes/btTriangleInfoMap.h	/^	float	m_zeroAreaThreshold;$/;"	m	language:C++	struct:btTriangleInfoMapData
 main	fulcrum.cpp	/^int main ( int argc, char *argv[] ) {$/;"	f	language:C++
-main	ogltest.cpp	/^int main (int argc, char *argv[]) {$/;"	f	language:C++
 main	src/BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h	/^int main(unsigned long long speid, addr64 argp, addr64 envp)$/;"	f	language:C++
 main	src/BulletMultiThreaded/SpuSampleTaskProcess.h	/^int main(unsigned long long speid, addr64 argp, addr64 envp)$/;"	f	language:C++
 main	src/MiniCL/MiniCLTaskScheduler.h	/^int main(unsigned long long speid, addr64 argp, addr64 envp)$/;"	f	language:C++
@@ -10931,7 +10924,6 @@ reverse	src/LinearMath/btConvexHullComputer.cpp	/^				Edge* reverse;$/;"	m	langu
 reverse	src/LinearMath/btConvexHullComputer.h	/^				int reverse;$/;"	m	language:C++	class:btConvexHullComputer::Edge
 rise	src/LinearMath/btConvexHull.cpp	/^	btScalar rise;$/;"	m	language:C++	class:btHullTriangle	file:
 root	fulcrum.cpp	/^Window                  root;$/;"	v	language:C++
-root	ogltest.cpp	/^Window                  root;$/;"	v	language:C++
 root	src/BulletCollision/NarrowPhaseCollision/btGjkEpa2.cpp	/^			sFace*		root;$/;"	m	language:C++	struct:gjkepa2_impl::EPA::sList	file:
 rotate	_camera_base.cpp	/^void _camera_base::rotate ( const float& angle, const glm::vec3& rotate_axis ) {$/;"	f	language:C++	class:_camera_base
 rotate	_object_base.cpp	/^void _object_base::rotate ( const float& angle, const glm::vec3& rotate_axis ) {$/;"	f	language:C++	class:_object_base
@@ -11892,7 +11884,6 @@ sum	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const floatInVec sum(
 sum	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const floatInVec sum( const Vector4 &vec )$/;"	f	language:C++	namespace:Vectormath::Aos
 supportsDispatchPairOnSpu	src/BulletMultiThreaded/SpuGatheringCollisionDispatcher.cpp	/^bool	SpuGatheringCollisionDispatcher::supportsDispatchPairOnSpu(int proxyType0,int proxyType1)$/;"	f	language:C++	class:SpuGatheringCollisionDispatcher
 swa	fulcrum.cpp	/^XSetWindowAttributes    swa;$/;"	v	language:C++
-swa	ogltest.cpp	/^XSetWindowAttributes    swa;$/;"	v	language:C++
 swap	src/BulletCollision/Gimpact/gim_array.h	/^	inline void swap(GUINT i, GUINT j)$/;"	f	language:C++	class:gim_array
 swap	src/LinearMath/btAlignedObjectArray.h	/^		void	swap(int index0,int index1)$/;"	f	language:C++	class:btAlignedObjectArray
 swapBuffers	src/BulletMultiThreaded/SpuDoubleBuffer.h	/^DoubleBuffer<T,size>::swapBuffers()$/;"	f	language:C++	class:DoubleBuffer
@@ -12259,7 +12250,6 @@ vertices	src/LinearMath/btConvexHull.h	/^	btAlignedObjectArray<btVector3> vertic
 vertices	src/LinearMath/btConvexHullComputer.h	/^		btAlignedObjectArray<btVector3> vertices;$/;"	m	language:C++	class:btConvexHullComputer
 vf	src/vectormath/sse/vectormath_aos.h	/^	__m128 vf;$/;"	m	language:C++	union:SSEFloat
 vi	fulcrum.cpp	/^XVisualInfo             *vi;$/;"	v	language:C++
-vi	ogltest.cpp	/^XVisualInfo             *vi;$/;"	v	language:C++
 vi	src/vectormath/sse/vectormath_aos.h	/^	__m128i vi;$/;"	m	language:C++	union:SSEFloat
 viterations	src/BulletSoftBody/btSoftBody.h	/^		int						viterations;	\/\/ Velocities solver iterations$/;"	m	language:C++	struct:btSoftBody::Config
 vld1q_f32_aligned_postincrement	src/LinearMath/btVector3.cpp	887;"	d	language:C++	file:
@@ -12304,7 +12294,6 @@ water_density	src/BulletSoftBody/btSoftBody.h	/^	btScalar				water_density;$/;"	
 water_normal	src/BulletSoftBody/btSoftBody.h	/^	btVector3				water_normal;$/;"	m	language:C++	struct:btSoftBodyWorldInfo
 water_offset	src/BulletSoftBody/btSoftBody.h	/^	btScalar				water_offset;$/;"	m	language:C++	struct:btSoftBodyWorldInfo
 win	fulcrum.cpp	/^Window                  win;$/;"	v	language:C++
-win	ogltest.cpp	/^Window                  win;$/;"	v	language:C++
 witnesses	src/BulletCollision/NarrowPhaseCollision/btGjkEpa2.h	/^	btVector3	witnesses[2];$/;"	m	language:C++	struct:btGjkEpaSolver2::sResults
 workGroupSize	src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCLSIMDAware.cpp	/^static const size_t workGroupSize = GROUP_SIZE;$/;"	v	language:C++	file:
 worldDirToLocal	src/BulletDynamics/Featherstone/btMultiBody.cpp	/^btVector3 btMultiBody::worldDirToLocal(int i, const btVector3 &world_dir) const$/;"	f	language:C++	class:btMultiBody
@@ -12341,7 +12330,6 @@ xAxis	src/vectormath/scalar/vec_aos.h	/^inline const Vector4 Vector4::xAxis( )$/
 xAxis	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const Vector3 Vector3::xAxis( )$/;"	f	language:C++	class:Vectormath::Aos::Vector3
 xAxis	src/vectormath/sse/vec_aos.h	/^VECTORMATH_FORCE_INLINE const Vector4 Vector4::xAxis( )$/;"	f	language:C++	class:Vectormath::Aos::Vector4
 xev	fulcrum.cpp	/^XEvent                  xev;$/;"	v	language:C++
-xev	ogltest.cpp	/^XEvent                  xev;$/;"	v	language:C++
 xform	src/BulletSoftBody/btSoftBody.h	/^		const btTransform&			xform() const$/;"	f	language:C++	struct:btSoftBody::Body
 xvalue	src/LinearMath/btConvexHullComputer.cpp	/^				btScalar xvalue() const$/;"	f	language:C++	class:btConvexHullInternal::PointR128
 xvalue	src/LinearMath/btConvexHullComputer.cpp	/^				btScalar xvalue() const$/;"	f	language:C++	class:btConvexHullInternal::Vertex
