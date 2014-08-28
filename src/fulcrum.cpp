@@ -71,7 +71,7 @@ void game_scene::edit_scene (void) {
 	light_one->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_one->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_one->translate( vec3(0.0F, 0.0F, -400.0F) );
+	light_one->translate( vec3(0.0F, 0.0F, -4.0F) );
 	add_light( light_one );
 
 	_light_base* light_two = new _light_base();
@@ -79,7 +79,7 @@ void game_scene::edit_scene (void) {
 	light_two->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_two->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_two->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_two->translate( vec3(0.0F, 6.0F, 400.0F) );
+	light_two->translate( vec3(0.0F, 6.0F, -4.0F) );
 	add_light( light_two );
 	/* std::cout<<"dot: "<<glm::dot( glm::vec3(0.0F, 0.0F, -4.0), glm::vec3(0.0F, 0.0F, -1.0) )<<std::endl; */
 	//
