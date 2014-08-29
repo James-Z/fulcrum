@@ -71,15 +71,15 @@ void game_scene::edit_scene (void) {
 	light_one->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_one->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_one->translate( vec3(0.0F, 0.0F, -4.0F) );
+	light_one->translate( vec3(0.0F, 0.0F, -400.0F) );
 	add_light( light_one );
 
 	_light_base* light_two = new _light_base();
-	light_two->set_diffuse_color( glm::vec3(1.F, 0.F, 0.F) );
+	light_two->set_diffuse_color( glm::vec3(0.F, 0.F, 1.F) );
 	light_two->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_two->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_two->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_two->translate( vec3(0.0F, 6.0F, -4.0F) );
+	light_two->translate( vec3(0.0F, 6.0F, 400.0F) );
 	add_light( light_two );
 	/* std::cout<<"dot: "<<glm::dot( glm::vec3(0.0F, 0.0F, -4.0), glm::vec3(0.0F, 0.0F, -1.0) )<<std::endl; */
 	//
@@ -358,7 +358,7 @@ int main ( int argc, char *argv[] ) {
 				}
 				case KeyPress:
 				{
-					std::cout<<"key press\n";
+					/* std::cout<<"key press\n"; */
 					XKeyEvent *ke;
 					int ks(0);
 
@@ -380,7 +380,6 @@ int main ( int argc, char *argv[] ) {
 							break;
 						case XK_w:
 							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::FORWORD );
-							std::cout<<"w\n";
 							break;
 						case XK_s:
 							scene_out_test->_controller_in_scene->move_object( BACKWARD );
@@ -392,7 +391,7 @@ int main ( int argc, char *argv[] ) {
 				}
 				case KeyRelease:
 				{
-					std::cout<<"key release\n";
+					/* std::cout<<"key release\n"; */
 					XKeyEvent *ke;
 
 					ke=&xev.xkey;
@@ -432,113 +431,5 @@ int main ( int argc, char *argv[] ) {
 			scene_out_test->render_scene();
 			glXSwapBuffers(dpy, win);
 		}
-
-		/* if( XPending( dpy ) ) { */
-		/* 	XNextEvent ( dpy, &xev ); */
-		/* 	if( xev.type == Expose ) { */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* draw(); *1/ */
-		/* 		scene_out_test->update_scene(); */
-		/* 		scene_out_test->render_scene(); */
-		/* 		glXSwapBuffers ( dpy, win ); */
-		/* 	} */
-		/* 	else if( (XLookupString ((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_Escape) ) { */
-		/* 		glXMakeCurrent (dpy, None, NULL); */
-		/* 		glXDestroyContext (dpy, glc); */
-		/* 		XDestroyWindow (dpy, win); */
-		/* 		XCloseDisplay (dpy); */
-
-		/* 		if(triangle != nullptr) { */
-		/* 			delete [] triangle; */
-		/* 			triangle = nullptr; */
-		/* 		} */
-
-		/* 		exit (0); */
-		/* 	} */
-		/* 	//keyboard */ 
-		/* 	else if( (XLookupString ((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_a) ) { */
-
-		/* 		/1* scene_out_test->_controller_in_scene->turn_camera( 2.0F, vec3(0.0F, 1.0F, 0.0F) ); *1/ */
-		/* 		scene_out_test->_controller_in_scene->move_object( CLOCK_WISE_ROTATION ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.LeftRotation (2.0f); *1/ */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* glXSwapBuffers (dpy, win); *1/ */
-		/* 	} */
-		/* 	else if( (XLookupString ((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_f) ) { */
-
-		/* 		scene_out_test->_controller_in_scene->move_camera( vec3(0.0F, -0.2F, 0.0F) ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.LeftRotation (2.0f); *1/ */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* glXSwapBuffers (dpy, win); *1/ */
-		/* 	} else if( (XLookupString ((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_r) ) { */
-
-		/* 		scene_out_test->_controller_in_scene->move_camera( vec3(0.0F, 0.2F, 0.0F) ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.LeftRotation (2.0f); *1/ */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* glXSwapBuffers (dpy, win); *1/ */
-		/* 	} */
-		/* 	else if( (XLookupString( (XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_d) ) { */
-		/* 		/1* scene_out_test->_controller_in_scene->turn_camera( -2.0F, vec3(0.0F, 1.0F, 0.0F) ); *1/ */
-		/* 		scene_out_test->_controller_in_scene->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.RightRotation (2.0f); *1/ */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* glXSwapBuffers (dpy, win); *1/ */
-		/* 	} */
-		/* 	else if( (XLookupString ((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_w) ) { */
-		/* 		/1* scene_out_test->_controller_in_scene->move_camera( vec3(0.0F, 0.0F, -0.2F) ); *1/ */
-		/* 		scene_out_test->_controller_in_scene->move_object( MOTION_STATE::FORWORD ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.ForWard (0.1f); *1/ */
-		/* 		/1* DrawAQuad (); *1/ */
-		/* 		/1* glXSwapBuffers (dpy, win); *1/ */
-		/* 	} */
-		/* 	else if( (XLookupString((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_s) ) { */
-		/* 		/1* scene_out_test->_controller_in_scene->move_camera( vec3(0.0F, 0.0F, 0.2F) ); *1/ */
-		/* 		scene_out_test->_controller_in_scene->move_object( BACKWARD ); */
-		/* 		/1* scene_out_test->update_scene(); *1/ */
-		/* 		/1* scene_out_test->render_scene(); *1/ */
-		/* 		/1* trantest.BackWard(0.1f); *1/ */
-		/* 		/1* DrawAQuad(); *1/ */
-		/* 		/1* glXSwapBuffers(dpy, win); *1/ */
-		/* 	} */
-		/* 	else if( (XLookupString((XKeyEvent *)&xev,text,255,&key,NULL) == 1) */
-		/* 			&& (key == (KeySym)XK_y) ) { */
-		/* 		scene_out_test->_controller_in_scene->move_object( STOP ); */
-		/* 		/1* glXSwapBuffers(dpy, win); *1/ */
-		/* 	} */
-		/* 	else if(xev.type == ButtonPress) { */
-		/* 		/1* tell where the mouse Button was Pressed *1/ */
-		/* 		printf("You pressed a button at (%i,%i)\n", */
-		/* 				xev.xbutton.x, xev.xbutton.y); */
-		/* 		glXMakeCurrent(dpy, None, NULL); */
-		/* 		glXDestroyContext(dpy, glc); */
-		/* 		XDestroyWindow(dpy, win); */
-		/* 		XCloseDisplay(dpy); */
-		/* 		exit(0); */
-		/* 	} */
-		/* 	scene_out_test->update_scene(); */
-		/* 	scene_out_test->render_scene(); */
-		/* 	glXSwapBuffers(dpy, win); */
-		/* } else { */
-		/* 	scene_out_test->update_scene(); */
-		/* 	scene_out_test->render_scene(); */
-		/* 	glXSwapBuffers(dpy, win); */
-		/* } */
 	} /* this closes while(1) { */
 } /* this is the } which closes int main(int argc, char *argv[]) { */

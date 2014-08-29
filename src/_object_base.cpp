@@ -57,15 +57,6 @@ void _object_base::apply_physics (void) {
 	/* _rigid_body->applyCentralImpulse( _force ); */
 	_rigid_body->setLinearVelocity( _force );
 	_rigid_body->setAngularVelocity( _angular );
-	/* _rigid_body->applyTorqueImpulse( _angular ); */
-	/* if( _state == MOTION_STATE::FORWORD || _state == MOTION_STATE::BACKWARD ) { */
-	/* 	_state = 10; */
-	/* 	std::cout<<"_force: "<<_state<<std::endl; */
-	/* } else if( _state == MOTION_STATE::CLOCK_WISE_ROTATION || _state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) { */
-	/* 	_rigid_body->applyTorque( _angular ); */
-		/* _rigid_body->applyCentralImpulse( btVector3(0.0F, 0.0F, 0.0F) ); */
-	/* 	std::cout<<"_angular: "<<std::endl; */
-	/* } */
 }
 
 void _object_base::move_and_turn ( const int state ) {
@@ -73,25 +64,13 @@ void _object_base::move_and_turn ( const int state ) {
 	if( state == MOTION_STATE::FORWORD ) {
 		_force = btVector3( 0.0F, 0.0F, -6.0F );
 		_force = _rigid_body->getWorldTransform().getBasis() * _force;
-		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
-		/* _rigid_body->setLinearVelocity( _force ); */
 	} else if( state == BACKWARD ) {
 		_force = btVector3( 0.0F, 0.0F, 6.0F );
 		_force = _rigid_body->getWorldTransform().getBasis() * _force;
-		/* _rigid_body->setLinearVelocity( _force ); */
-		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
-		/* _rigid_body->setLinearVelocity( _force ); */
-		std::cout<<"_force: "<<_force.getZ()<<std::endl;
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, 1.F, 0.0F );
-		/* _angular = _rigid_body->getWorldTransform().getBasis() * _angular; */
-		/* _rigid_body->setAngularVelocity( _angular ); */
-		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, -1.F, 0.0F );
-		/* _angular = _rigid_body->getWorldTransform().getBasis() * _angular; */
-		/* _rigid_body->setAngularVelocity( _angular ); */
-		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
 	} else if( state == MOTION_STATE::STOP ) {
 		_angular = btVector3( 0.0F, 0.0F, 0.0F );
 		_force = btVector3( 0.0F, 0.0F, 0.0F );

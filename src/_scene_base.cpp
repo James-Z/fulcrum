@@ -110,8 +110,8 @@ void _scene_base::update_scene (void) {
 
 	//physics world update
 	btScalar co = (btScalar)_clock.getTimeMicroseconds();
-	/* _physic_world->stepSimulation( btScalar(co / 1000000.0F)); */
-	std::cout<<_physic_world->stepSimulation( 1.0/420.0 )<<"\n";
+	_physic_world->stepSimulation( btScalar(co / 1000000.0F));
+	/* _physic_world->stepSimulation( 1.0/420.0 ); */
 
 	//update lights in scene
 	_light_base_set_in_scene->update_lights();
@@ -137,11 +137,10 @@ void _scene_base::update_scene (void) {
 					/* tem_bt_transform.getOpenGLMatrix( glm::value_ptr(tem) ); */
 					(*_objects_in_scene_iter)->set_matrix_in_world( tem );
 					_controller_in_scene->reset_object_motion_state();
-					std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl;
+					/* std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl; */
 					btVector3 force_t = (*_objects_in_scene_iter)->get_rigidbody()->getLinearVelocity();
-					std::cout<<"x force: "<<force_t.getX()<<"y force:"<<force_t.getY()<<"z force: "<<force_t.getZ()<<std::endl;
 					if( (*_objects_in_scene_iter)->get_rigidbody()->isActive() ) {
-						std::cout<<"active"<<std::endl;
+						/* std::cout<<"active"<<std::endl; */
 					} else {
 						std::cout<<"unactive"<<std::endl;
 						(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
