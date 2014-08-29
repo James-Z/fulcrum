@@ -310,7 +310,7 @@ int main ( int argc, char *argv[] ) {
 		exit (0);
 	}
 	else {
-	printf ("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
+		printf ("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
 	}
 	
 	cmap = XCreateColormap (dpy, root, vi->visual, AllocNone);

@@ -55,25 +55,28 @@ void _object_base::update (void) {
 
 void _object_base::apply_physics (void) {
 	/* _rigid_body->applyCentralImpulse( _force ); */
-	_rigid_body->setLinearVelocity( _force );
-	_rigid_body->setAngularVelocity( _angular );
+	_rigid_body->applyForce( _force, _angular );
+	/* _rigid_body->setLinearVelocity( _force ); */
+	/* _rigid_body->setAngularVelocity( _angular ); */
 }
 
 void _object_base::move_and_turn ( const int state ) {
 	_state = state;
 	if( state == MOTION_STATE::FORWORD ) {
-		_force = btVector3( 0.0F, 0.0F, -6.0F );
+		_force = btVector3( 0.0F, 0.0F, -100.0F );
 		_force = _rigid_body->getWorldTransform().getBasis() * _force;
 	} else if( state == BACKWARD ) {
-		_force = btVector3( 0.0F, 0.0F, 6.0F );
+		_force = btVector3( 0.0F, 0.0F, 100.0F );
 		_force = _rigid_body->getWorldTransform().getBasis() * _force;
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
-		_angular = btVector3( 0.0F, 1.F, 0.0F );
+		_angular = btVector3( 0.0F, 500.0F, -0.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
-		_angular = btVector3( 0.0F, -1.F, 0.0F );
+		_angular = btVector3( 0.0F, -500.0F, 0.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::STOP ) {
-		_angular = btVector3( 0.0F, 0.0F, 0.0F );
 		_force = btVector3( 0.0F, 0.0F, 0.0F );
+		_angular = btVector3( 0.0F, 0.0F, 0.0F );
 	} else {
 		/* _angular = btVector3( 0.0F, 0.0F, 0.0F ); */
 		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
@@ -109,10 +112,11 @@ void _object_base::set_rigid_body ( void ) {
 	trasform.setFromOpenGLMatrix( glm::value_ptr(_matrix_in_world) );
 	btDefaultMotionState* motion_state = new btDefaultMotionState( trasform );
 	btCollisionShape* sphere = new btBoxShape( btVector3( 1, 1, 1 ) );
-	btVector3 localInertia = btVector3( 0.0F, 0.0F, 0.0F );
+	btVector3 localInertia = btVector3( 0.1F, 0.1F, 0.1F );
 	sphere->calculateLocalInertia( btScalar(5.F), localInertia );
 	btRigidBody::btRigidBodyConstructionInfo rbInfo = btRigidBody::btRigidBodyConstructionInfo( btScalar(5.F), motion_state, sphere, localInertia );
 	btRigidBody* rigid_body = new btRigidBody( rbInfo );
+	rigid_body->setDamping( 0.618F, 0.618F );
 	/* rigid_body->applyGravity(); */
 	/* rigid_body->setGravity( btVector3(0, -10, 0) ); */
 	/* rigid_body->applyCentralImpulse( btVector3(0, -10, 0) ); */
