@@ -20,7 +20,7 @@
 /***********************************************************************
 			scene test class
 ************************************************************************/
-const unsigned int shader_one = 1;
+const unsigned int shader_one = 4;
 class game_object : public _object_base {
 public:
 	game_object (void);

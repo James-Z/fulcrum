@@ -57,7 +57,7 @@ void _object_base::apply_physics (void) {
 	/* _rigid_body->applyCentralImpulse( _force ); */
 	_rigid_body->applyForce( _force, _angular );
 	/* _rigid_body->setLinearVelocity( _force ); */
-	/* _rigid_body->setAngularVelocity( _angular ); */
+	_rigid_body->setAngularVelocity( _angular );
 }
 
 void _object_base::move_and_turn ( const int state ) {
