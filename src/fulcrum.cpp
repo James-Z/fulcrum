@@ -122,7 +122,7 @@ void game_scene::edit_scene (void) {
 	object_two->set_rigid_body();
 	/* object_two->get_rigidbody()->applyCentralImpulse( btVector3(0.0, 0.0, 1.0) ); */
 	/* object_two->get_rigidbody()->clearForces(); */
-	object_two->get_rigidbody()->setMassProps( 5, btVector3(0.0, 0.0, 0.0) );
+	object_two->get_rigidbody()->setMassProps( 5, btVector3(1.0, 1.0, 1.0) );
 	add_object ( object_two, game_shader );
 
 }

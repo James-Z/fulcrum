@@ -137,7 +137,7 @@ void _scene_base::update_scene (void) {
 					/* tem_bt_transform.getOpenGLMatrix( glm::value_ptr(tem) ); */
 					(*_objects_in_scene_iter)->set_matrix_in_world( tem );
 					_controller_in_scene->reset_object_motion_state();
-					/* std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl; */
+					std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl;
 					btVector3 force_t = (*_objects_in_scene_iter)->get_rigidbody()->getLinearVelocity();
 					if( (*_objects_in_scene_iter)->get_rigidbody()->isActive() ) {
 						/* std::cout<<"active"<<std::endl; */
