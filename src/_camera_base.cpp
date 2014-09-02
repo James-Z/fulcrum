@@ -4,8 +4,8 @@ _camera_base::_camera_base (void) : _object_base(), _perspective_matrix(1) {}
 
 _camera_base::~_camera_base (void) {}
 
-void _camera_base::perspective (float fovy, float aspect, float zNear, float zFar) {
-	_perspective_matrix = glm::perspective( fovy, aspect, zNear, zFar);
+void _camera_base::perspective ( float fovy, float aspect, float zNear, float zFar ) {
+	_perspective_matrix = glm::perspective( fovy, aspect, zNear, zFar );
 }
 
 void _camera_base::update_camera_matrix_from_object ( const glm::mat4& object_matrix ) {
@@ -34,7 +34,7 @@ void _camera_base::update_camera_perspective_matrix_gl_uniform ( const _shader_m
 
 void _camera_base::translate ( const glm::vec3& direction) {
 	_matrix_follow_in_world = glm::translate( _matrix_follow_in_world, direction );
-	_matrix_in_world = glm::translate( _matrix_in_world, direction );
+	/* _matrix_in_world = glm::translate( _matrix_in_world, direction ); */
 }
 
 void _camera_base::rotate ( const float& angle, const glm::vec3& rotate_axis ) {

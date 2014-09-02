@@ -6386,7 +6386,7 @@ get_local_position_in_world	_object_base.hpp	/^	inline glm::vec4 get_local_posit
 get_local_size	src/MiniCL/cl_MiniCL_Defs.h	28;"	d	language:C++
 get_matrix_follow_in_world	_object_base.hpp	/^	inline glm::mat4 get_matrix_follow_in_world (void) const { return _matrix_follow_in_world; }$/;"	f	language:C++	class:_object_base
 get_matrix_in_camera_world	_object_base.hpp	/^	inline glm::mat4 get_matrix_in_camera_world (void) const { return _matrix_in_camera_world; }$/;"	f	language:C++	class:_object_base
-get_matrix_in_world	_object_base.hpp	/^	inline glm::mat4 get_matrix_in_world (void) const { return _matrix_in_world; }$/;"	f	language:C++	class:_object_base
+get_matrix_in_world	_object_base.hpp	/^	inline glm::mat4 get_matrix_in_world (void) const { return _matrix_in_world * _matrix_follow_in_world; }$/;"	f	language:C++	class:_object_base
 get_max_element_count	src/BulletCollision/Gimpact/btGenericPoolAllocator.h	/^	inline size_t get_max_element_count()$/;"	f	language:C++	class:btGenericMemoryPool
 get_node_pointer	src/BulletCollision/Gimpact/btGImpactBvh.h	/^	SIMD_FORCE_INLINE const GIM_BVH_TREE_NODE * get_node_pointer(int index = 0) const$/;"	f	language:C++	class:btBvhTree
 get_node_pointer	src/BulletCollision/Gimpact/btGImpactBvh.h	/^	SIMD_FORCE_INLINE const GIM_BVH_TREE_NODE * get_node_pointer(int index = 0) const$/;"	f	language:C++	class:btGImpactBvh
@@ -10418,7 +10418,7 @@ performDiscreteCollisionDetection	src/BulletCollision/CollisionDispatch/btCollis
 performRaycast	src/BulletCollision/CollisionShapes/btBvhTriangleMeshShape.cpp	/^void	btBvhTriangleMeshShape::performRaycast (btTriangleCallback* callback, const btVector3& raySource, const btVector3& rayTarget)$/;"	f	language:C++	class:btBvhTriangleMeshShape
 perpindicularComponent	src/BulletDynamics/Character/btKinematicCharacterController.cpp	/^btVector3 btKinematicCharacterController::perpindicularComponent (const btVector3& direction, const btVector3& normal)$/;"	f	language:C++	class:btKinematicCharacterController
 persUnif	fulcrum.hpp	/^	persUnif,$/;"	v	language:C++
-perspective	_camera_base.cpp	/^void _camera_base::perspective (float fovy, float aspect, float zNear, float zFar) {$/;"	f	language:C++	class:_camera_base
+perspective	_camera_base.cpp	/^void _camera_base::perspective ( float fovy, float aspect, float zNear, float zFar ) {$/;"	f	language:C++	class:_camera_base
 perspective	src/vectormath/neon/mat_aos.h	/^inline const Matrix4 Matrix4::perspective( float fovyRadians, float aspect, float zNear, float zFar )$/;"	f	language:C++	class:Vectormath::Aos::Matrix4
 perspective	src/vectormath/scalar/mat_aos.h	/^inline const Matrix4 Matrix4::perspective( float fovyRadians, float aspect, float zNear, float zFar )$/;"	f	language:C++	class:Vectormath::Aos::Matrix4
 perspective	src/vectormath/sse/mat_aos.h	/^VECTORMATH_FORCE_INLINE const Matrix4 Matrix4::perspective( float fovyRadians, float aspect, float zNear, float zFar )$/;"	f	language:C++	class:Vectormath::Aos::Matrix4

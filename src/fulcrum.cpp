@@ -88,7 +88,9 @@ void game_scene::edit_scene (void) {
 	camera_one->perspective( 45.0F,1.0F, 1.0F, 1000.0F );
 	camera_one->set_position_in_world( vec3( 0.0F, 0.0F, 0.0F ) );
 	camera_one->rotate( 0.0F, vec3( 0.0F, 1.0F, 0.0F ) );
-	camera_one->_camera_base::translate( vec3( 0.0F, 1.F, 5.0F ) );
+	camera_one->_camera_base::translate( vec3( 0.0F, 2.F, 5.0F ) );
+	camera_one->_camera_base::translate( vec3( 0.0F, 2.F, 5.0F ) );
+	camera_one->_camera_base::rotate( -10.0F, vec3( 1.0F, 0.F, 0.0F ) );
 	add_camera( camera_one );
 	//
 	for(int i = 0; i < 5; ++i) {
@@ -122,7 +124,7 @@ void game_scene::edit_scene (void) {
 	object_two->set_rigid_body();
 	/* object_two->get_rigidbody()->applyCentralImpulse( btVector3(0.0, 0.0, 1.0) ); */
 	/* object_two->get_rigidbody()->clearForces(); */
-	object_two->get_rigidbody()->setMassProps( 5, btVector3(1.0, 1.0, 1.0) );
+	object_two->get_rigidbody()->setMassProps( 20, btVector3(0.6, 0.6, 0.6) );
 	add_object ( object_two, game_shader );
 
 }

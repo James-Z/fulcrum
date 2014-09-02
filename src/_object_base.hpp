@@ -71,7 +71,7 @@ public:
 	/* inline void catch_contrtoller ( const unsigned int controller_ID ) { _is_be_controlled = true; _be_catched_controller = controller_ID; } */
 	inline void realse_camera (void) { _is_catch_camera = false; }
 	inline void realse_controller (void) { _is_be_controlled = false; }
-	inline glm::mat4 get_matrix_in_world (void) const { return _matrix_in_world; }
+	inline glm::mat4 get_matrix_in_world (void) const { return _matrix_in_world * _matrix_follow_in_world; }
 	inline glm::mat4 get_matrix_in_camera_world (void) const { return _matrix_in_camera_world; }
 	inline glm::mat4 get_matrix_follow_in_world (void) const { return _matrix_follow_in_world; }
 	inline glm::vec4 get_local_position_in_world (void) const { return glm::vec4( glm::vec3( _matrix_in_world[3] ), 1.0F ); }
