@@ -367,7 +367,7 @@ int main ( int argc, char *argv[] ) {
 					ke=&xev.xkey;
 					ks=XLookupKeysym(ke,(ke->state&ShiftMask)?1:0);
 
-					switch(ks) {
+					switch( ks ) {
 						case XK_Escape:
 							glXMakeCurrent(dpy, None, NULL);
 							glXDestroyContext(dpy, glc);

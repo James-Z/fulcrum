@@ -495,11 +495,8 @@ BT_VORONOI_SIMPLEX_SOLVER_H	bullet/BulletCollision/NarrowPhaseCollision/btVorono
 BT_WHEEL_INFO_H	bullet/BulletDynamics/Vehicle/btWheelInfo.h	12;"	d	language:C++
 BT_WIN32_THREAD_SUPPORT_H	bullet/BulletMultiThreaded/Win32ThreadSupport.h	22;"	d	language:C++
 BULLET_COLLISION_COMMON_H	bullet/btBulletCollisionCommon.h	17;"	d	language:C++
-BULLET_COLLISION_COMMON_H	object/btBulletCollisionCommon.h	17;"	d	language:C++
 BULLET_C_API_H	bullet/Bullet-C-Api.h	24;"	d	language:C++
-BULLET_C_API_H	object/Bullet-C-Api.h	24;"	d	language:C++
 BULLET_DYNAMICS_COMMON_H	bullet/btBulletDynamicsCommon.h	17;"	d	language:C++
-BULLET_DYNAMICS_COMMON_H	object/btBulletDynamicsCommon.h	17;"	d	language:C++
 B_AXIS	bullet/BulletMultiThreaded/SpuNarrowPhaseCollisionTask/boxBoxDistance.cpp	/^	A_AXIS, B_AXIS, CROSS_AXIS$/;"	e	language:C++	enum:BoxSepAxisType	file:
 BackWard	MatrixStack.hpp	/^	inline void BackWard(float BackwardSpeed) {$/;"	f	language:C++	class:MatrixStack
 BaryCoord	bullet/BulletSoftBody/btSoftBodyInternals.h	/^static inline btVector3		BaryCoord(	const btVector3& a,$/;"	f	language:C++
@@ -2027,7 +2024,6 @@ PLANE_CLIP_TRIANGLE3D	bullet/BulletCollision/Gimpact/gim_clip_polygon.h	/^SIMD_F
 PLANE_CLIP_TRIANGLE_GENERIC	bullet/BulletCollision/Gimpact/gim_clip_polygon.h	/^SIMD_FORCE_INLINE GUINT PLANE_CLIP_TRIANGLE_GENERIC($/;"	f	language:C++
 PLANE_MINOR_AXES	bullet/BulletCollision/Gimpact/gim_basic_geometry_operations.h	232;"	d	language:C++
 PL_DECLARE_HANDLE	bullet/Bullet-C-Api.h	26;"	d	language:C++
-PL_DECLARE_HANDLE	object/Bullet-C-Api.h	26;"	d	language:C++
 POINT2POINT_CONSTRAINT_TYPE	bullet/BulletDynamics/ConstraintSolver/btTypedConstraint.h	/^	POINT2POINT_CONSTRAINT_TYPE=3,$/;"	e	language:C++	enum:btTypedConstraintType
 POINT_IN_HULL	bullet/BulletCollision/Gimpact/gim_basic_geometry_operations.h	/^SIMD_FORCE_INLINE bool POINT_IN_HULL($/;"	f	language:C++
 POLARDECOMPOSITION_H	bullet/LinearMath/btPolarDecomposition.h	2;"	d	language:C++
@@ -3494,7 +3490,6 @@ btBridgedManifoldResult	bullet/BulletCollision/CollisionDispatch/btCollisionWorl
 btBroadphaseAabbCallback	bullet/BulletCollision/BroadphaseCollision/btBroadphaseInterface.h	/^struct	btBroadphaseAabbCallback$/;"	s	language:C++
 btBroadphaseBenchmark	bullet/BulletCollision/BroadphaseCollision/btDbvtBroadphase.cpp	/^struct	btBroadphaseBenchmark$/;"	s	language:C++	file:
 btBroadphaseCallback	bullet/Bullet-C-Api.h	/^	typedef void(*btBroadphaseCallback)(void* clientData, void* object1,void* object2);$/;"	t	language:C++
-btBroadphaseCallback	object/Bullet-C-Api.h	/^	typedef void(*btBroadphaseCallback)(void* clientData, void* object1,void* object2);$/;"	t	language:C++
 btBroadphaseInterface	bullet/BulletCollision/BroadphaseCollision/btBroadphaseInterface.h	/^class btBroadphaseInterface$/;"	c	language:C++
 btBroadphasePairArray	bullet/BulletCollision/BroadphaseCollision/btOverlappingPairCache.h	/^typedef btAlignedObjectArray<btBroadphasePair>	btBroadphasePairArray;$/;"	t	language:C++
 btBroadphasePairSortPredicate	bullet/BulletCollision/BroadphaseCollision/btBroadphaseProxy.h	/^class btBroadphasePairSortPredicate$/;"	c	language:C++
@@ -7362,7 +7357,6 @@ m_bodies	bullet/BulletSoftBody/btSoftBody.h	/^		Body						m_bodies[2];$/;"	m	lan
 m_body	bullet/Bullet-C-Api.h	/^		plRigidBodyHandle		m_body;  $/;"	m	language:C++	struct:plRayCastResult
 m_body	bullet/BulletSoftBody/btSoftBody.h	/^		btRigidBody*			m_body;			\/\/ Body$/;"	m	language:C++	struct:btSoftBody::Anchor
 m_body	bullet/BulletSoftBody/btSoftBodyInternals.h	/^	btSoftBody*						m_body;$/;"	m	language:C++	class:btSoftBodyCollisionShape
-m_body	object/Bullet-C-Api.h	/^		plRigidBodyHandle		m_body;  $/;"	m	language:C++	struct:plRayCastResult
 m_body0	bullet/BulletDynamics/Vehicle/btRaycastVehicle.cpp	/^	btRigidBody* m_body0;$/;"	m	language:C++	struct:btWheelContactPoint	file:
 m_body0Wrap	bullet/BulletCollision/CollisionDispatch/btManifoldResult.h	/^	const btCollisionObjectWrapper* m_body0Wrap;$/;"	m	language:C++	class:btManifoldResult
 m_body1	bullet/BulletDynamics/Vehicle/btRaycastVehicle.cpp	/^	btRigidBody* m_body1;$/;"	m	language:C++	struct:btWheelContactPoint	file:
@@ -8528,7 +8522,6 @@ m_normalOnBInWorld	bullet/BulletCollision/NarrowPhaseCollision/btPointCollector.
 m_normalOnSurfaceB	bullet/BulletCollision/NarrowPhaseCollision/btDiscreteCollisionDetectorInterface.h	/^		btVector3	m_normalOnSurfaceB;$/;"	m	language:C++	struct:btStorageResult
 m_normalStride	bullet/BulletSoftBody/btSoftBodySolverVertexBuffer.h	/^	int m_normalStride;$/;"	m	language:C++	class:btVertexBufferDescriptor
 m_normalWorld	bullet/Bullet-C-Api.h	/^		plVector3				m_normalWorld;$/;"	m	language:C++	struct:plRayCastResult
-m_normalWorld	object/Bullet-C-Api.h	/^		plVector3				m_normalWorld;$/;"	m	language:C++	struct:plRayCastResult
 m_normalWorldOnB	bullet/BulletCollision/NarrowPhaseCollision/btManifoldPoint.h	/^			btVector3 m_normalWorldOnB;$/;"	m	language:C++	class:btManifoldPoint
 m_normalizeNormalsAndAreasKernel	bullet/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolver_OpenCL.h	/^	cl_kernel		m_normalizeNormalsAndAreasKernel;$/;"	m	language:C++	class:btOpenCLSoftBodySolver
 m_notes	bullet/BulletSoftBody/btSoftBody.h	/^	tNoteArray				m_notes;		\/\/ Notes$/;"	m	language:C++	class:btSoftBody
@@ -8806,7 +8799,6 @@ m_position	bullet/BulletMultiThreaded/GpuSoftBodySolvers/Shared/btSoftBodySolver
 m_position	bullet/BulletSoftBody/btSoftBodyData.h	/^	btVector3FloatData			m_position;$/;"	m	language:C++	struct:SoftBodyNodeData
 m_positionIterations	bullet/BulletSoftBody/btSoftBodyData.h	/^	int					m_positionIterations;	\/\/ Positions solver iterations$/;"	m	language:C++	struct:SoftBodyConfigData
 m_positionWorld	bullet/Bullet-C-Api.h	/^		plVector3				m_positionWorld; 		$/;"	m	language:C++	struct:plRayCastResult
-m_positionWorld	object/Bullet-C-Api.h	/^		plVector3				m_positionWorld; 		$/;"	m	language:C++	struct:plRayCastResult
 m_positionWorldOnA	bullet/BulletCollision/NarrowPhaseCollision/btManifoldPoint.h	/^			btVector3	m_positionWorldOnA;$/;"	m	language:C++	class:btManifoldPoint
 m_positionWorldOnB	bullet/BulletCollision/NarrowPhaseCollision/btManifoldPoint.h	/^			btVector3	m_positionWorldOnB;$/;"	m	language:C++	class:btManifoldPoint
 m_positions	bullet/BulletSoftBody/btSoftBodyData.h	/^	btVector3FloatData		*m_positions;			\/\/ Reference positions$/;"	m	language:C++	struct:SoftBodyPoseData
@@ -8991,7 +8983,6 @@ m_shadersInitialized	bullet/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoft
 m_shape	bullet/Bullet-C-Api.h	/^		plCollisionShapeHandle	m_shape; 		$/;"	m	language:C++	struct:plRayCastResult
 m_shape	bullet/BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h	/^	const btCollisionShape* m_shape;$/;"	m	language:C++	struct:btCollisionObjectWrapper
 m_shape	bullet/BulletCollision/NarrowPhaseCollision/btGjkEpa2.cpp	/^			tShape			m_shape;$/;"	m	language:C++	struct:gjkepa2_impl::GJK	file:
-m_shape	object/Bullet-C-Api.h	/^		plCollisionShapeHandle	m_shape; 		$/;"	m	language:C++	struct:plRayCastResult
 m_shapeCache	bullet/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.h	/^	btHashMap<btHashKey<btTriIndex>,btTriIndex> m_shapeCache;$/;"	m	language:C++	class:btSoftBodyTriangleCallback
 m_shapePart	bullet/BulletCollision/CollisionDispatch/btCollisionWorld.h	/^		int	m_shapePart;$/;"	m	language:C++	struct:btCollisionWorld::LocalShapeInfo
 m_shapeType	bullet/BulletCollision/BroadphaseCollision/btMultiSapBroadphase.h	/^		int	m_shapeType;$/;"	m	language:C++	struct:btMultiSapBroadphase::btMultiSapProxy
@@ -10459,15 +10450,10 @@ plAddChildShape	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void	plAddChil
 plAddRigidBody	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plAddRigidBody(plDynamicsWorldHandle world, plRigidBodyHandle object)$/;"	f	language:C++
 plAddVertex	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void		plAddVertex(plCollisionShapeHandle cshape, plReal x,plReal y,plReal z)$/;"	f	language:C++
 plBroadphaseProxyHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plBroadphaseProxyHandle);$/;"	v	language:C++
-plBroadphaseProxyHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plBroadphaseProxyHandle);$/;"	v	language:C++
 plCollisionBroadphaseHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionBroadphaseHandle);$/;"	v	language:C++
-plCollisionBroadphaseHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionBroadphaseHandle);$/;"	v	language:C++
 plCollisionShapeHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionShapeHandle);$/;"	v	language:C++
-plCollisionShapeHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionShapeHandle);$/;"	v	language:C++
 plCollisionWorldHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionWorldHandle);$/;"	v	language:C++
-plCollisionWorldHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plCollisionWorldHandle);$/;"	v	language:C++
 plConstraintHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plConstraintHandle);$/;"	v	language:C++
-plConstraintHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plConstraintHandle);$/;"	v	language:C++
 plCreateDynamicsWorld	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plDynamicsWorldHandle plCreateDynamicsWorld(plPhysicsSdkHandle physicsSdkHandle)$/;"	f	language:C++
 plCreateRigidBody	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plRigidBodyHandle plCreateRigidBody(	void* user_data,  float mass, plCollisionShapeHandle cshape )$/;"	f	language:C++
 plDeleteDynamicsWorld	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void           plDeleteDynamicsWorld(plDynamicsWorldHandle world)$/;"	f	language:C++
@@ -10475,12 +10461,10 @@ plDeletePhysicsSdk	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void		plDel
 plDeleteRigidBody	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plDeleteRigidBody(plRigidBodyHandle cbody)$/;"	f	language:C++
 plDeleteShape	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plDeleteShape(plCollisionShapeHandle cshape)$/;"	f	language:C++
 plDynamicsWorldHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plDynamicsWorldHandle);$/;"	v	language:C++
-plDynamicsWorldHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plDynamicsWorldHandle);$/;"	v	language:C++
 plGetOpenGLMatrix	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void	plGetOpenGLMatrix(plRigidBodyHandle object, plReal* matrix)$/;"	f	language:C++
 plGetOrientation	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plGetOrientation(plRigidBodyHandle object,plQuaternion orientation)$/;"	f	language:C++
 plGetPosition	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void	plGetPosition(plRigidBodyHandle object,plVector3 position)$/;"	f	language:C++
 plMeshInterfaceHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plMeshInterfaceHandle);$/;"	v	language:C++
-plMeshInterfaceHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plMeshInterfaceHandle);$/;"	v	language:C++
 plNearestPoints	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^double plNearestPoints(float p1[3], float p2[3], float p3[3], float q1[3], float q2[3], float q3[3], float *pa, float *pb, float normal[3])$/;"	f	language:C++
 plNewBoxShape	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plCollisionShapeHandle plNewBoxShape(plReal x, plReal y, plReal z)$/;"	f	language:C++
 plNewBulletSdk	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plPhysicsSdkHandle	plNewBulletSdk()$/;"	f	language:C++
@@ -10492,20 +10476,13 @@ plNewCylinderShape	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plCollision
 plNewMeshInterface	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plMeshInterfaceHandle		   plNewMeshInterface()$/;"	f	language:C++
 plNewSphereShape	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^plCollisionShapeHandle plNewSphereShape(plReal radius)$/;"	f	language:C++
 plPhysicsSdkHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plPhysicsSdkHandle);$/;"	v	language:C++
-plPhysicsSdkHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plPhysicsSdkHandle);$/;"	v	language:C++
 plQuaternion	bullet/Bullet-C-Api.h	/^typedef plReal	plQuaternion[4];$/;"	t	language:C++
-plQuaternion	object/Bullet-C-Api.h	/^typedef plReal	plQuaternion[4];$/;"	t	language:C++
 plRayCastResult	bullet/Bullet-C-Api.h	/^	typedef struct plRayCastResult {$/;"	s	language:C++
 plRayCastResult	bullet/Bullet-C-Api.h	/^	} plRayCastResult;$/;"	t	language:C++	typeref:struct:plRayCastResult
-plRayCastResult	object/Bullet-C-Api.h	/^	typedef struct plRayCastResult {$/;"	s	language:C++
-plRayCastResult	object/Bullet-C-Api.h	/^	} plRayCastResult;$/;"	t	language:C++	typeref:struct:plRayCastResult
 plReal	bullet/Bullet-C-Api.h	/^typedef double	plReal;$/;"	t	language:C++
 plReal	bullet/Bullet-C-Api.h	/^typedef float	plReal;$/;"	t	language:C++
-plReal	object/Bullet-C-Api.h	/^typedef double	plReal;$/;"	t	language:C++
-plReal	object/Bullet-C-Api.h	/^typedef float	plReal;$/;"	t	language:C++
 plRemoveRigidBody	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plRemoveRigidBody(plDynamicsWorldHandle world, plRigidBodyHandle object)$/;"	f	language:C++
 plRigidBodyHandle	bullet/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plRigidBodyHandle);$/;"	v	language:C++
-plRigidBodyHandle	object/Bullet-C-Api.h	/^	PL_DECLARE_HANDLE(plRigidBodyHandle);$/;"	v	language:C++
 plSetEuler	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plSetEuler(plReal yaw,plReal pitch,plReal roll, plQuaternion orient)$/;"	f	language:C++
 plSetOpenGLMatrix	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void	plSetOpenGLMatrix(plRigidBodyHandle object, plReal* matrix)$/;"	f	language:C++
 plSetOrientation	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plSetOrientation(plRigidBodyHandle object, const plQuaternion orientation)$/;"	f	language:C++
@@ -10513,7 +10490,6 @@ plSetPosition	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plSetPositi
 plSetScaling	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void plSetScaling(plCollisionShapeHandle cshape, plVector3 cscaling)$/;"	f	language:C++
 plStepSimulation	bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp	/^void	plStepSimulation(plDynamicsWorldHandle world,	plReal	timeStep)$/;"	f	language:C++
 plVector3	bullet/Bullet-C-Api.h	/^typedef plReal	plVector3[3];$/;"	t	language:C++
-plVector3	object/Bullet-C-Api.h	/^typedef plReal	plVector3[3];$/;"	t	language:C++
 plane_classify	bullet/BulletCollision/Gimpact/gim_box_collision.h	/^	SIMD_FORCE_INLINE ePLANE_INTERSECTION_TYPE plane_classify(const btVector4 &plane) const$/;"	f	language:C++	class:GIM_AABB
 planetest	bullet/LinearMath/btConvexHull.cpp	/^	unsigned char planetest;$/;"	m	language:C++	class:EdgeFlag	file:
 planetest	bullet/LinearMath/btConvexHull.cpp	/^	unsigned char planetest;$/;"	m	language:C++	class:VertFlag	file:
