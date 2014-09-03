@@ -1,4 +1,4 @@
-OBJS = object/*.o fulcrum.o math3d.o MatrixStack.o ShaderManage.o MatrixStack.o ManageGraph.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
+OBJS = bullet/*.o fulcrum.o math3d.o MatrixStack.o ShaderManage.o MatrixStack.o ManageGraph.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
 HDRS = ogl.hpp MatrixStack.hpp ShaderManage.hpp math3d.h MatrixStack.hpp
 SCRS = fulcrum.cpp math3d.cpp MatrixStack.cpp ShaderManage.cpp ogl.cpp MatrixStack.cpp
 LS = -lGL -lX11 -lGLEW -lGLU -std=c++11

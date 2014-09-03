@@ -1955,7 +1955,7 @@ NumBatchesVerticesPair	bullet/BulletMultiThreaded/GpuSoftBodySolvers/DX11/btSoft
 NumBatchesVerticesPair	bullet/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/btSoftBodySolverLinkData_OpenCLSIMDAware.h	/^	struct NumBatchesVerticesPair$/;"	s	language:C++	class:btSoftBodyLinkDataOpenCLSIMDAware
 OBJDUMP	bullet/Makefile	/^OBJDUMP = objdump$/;"	m	language:Make
 OBJEXT	bullet/Makefile	/^OBJEXT = o$/;"	m	language:Make
-OBJS	Makefile	/^OBJS = object\/*.o fulcrum.o math3d.o MatrixStack.o ShaderManage.o MatrixStack.o ManageGraph.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o$/;"	m	language:Make
+OBJS	Makefile	/^OBJS = bullet\/*.o fulcrum.o math3d.o MatrixStack.o ShaderManage.o MatrixStack.o ManageGraph.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o$/;"	m	language:Make
 OPENGL_BUFFER	bullet/BulletSoftBody/btSoftBodySolverVertexBuffer.h	/^		OPENGL_BUFFER$/;"	e	language:C++	enum:btVertexBufferDescriptor::BufferTypes
 OTOOL	bullet/Makefile	/^OTOOL = $/;"	m	language:Make
 OTOOL64	bullet/Makefile	/^OTOOL64 = $/;"	m	language:Make
