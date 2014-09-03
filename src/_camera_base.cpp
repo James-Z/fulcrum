@@ -18,11 +18,6 @@ void _camera_base::update_camera_matrix ( const glm::mat4& update_matrix ) {
 }
 
 void _camera_base::update_camera_matrix_follow_in_world_gl_uniform ( const _shader_manager& be_using_shader ) {
-	/* for(auto i = 0;i<4; ++i) { */
-	/* 	for(auto j = 0; j<4; ++j) { */
-	/* 		std::cerr<<"camera mat: "<<this->get_follow_matrix()[i][j]<<std::endl; */
-	/* 	} */
-	/* } */
 	glUniformMatrix4fv( be_using_shader.camera_transforms, 1, GL_FALSE,
 			glm::value_ptr( this->get_matrix_follow_in_world() ) );
 }
