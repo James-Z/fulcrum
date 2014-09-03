@@ -2,9 +2,9 @@
 #define _CONTROLLER_BASE_HPP_
 
 #include "_object_base.hpp"
-#include "src/BulletDynamics/Dynamics/btRigidBody.h"
-#include "src/LinearMath/btDefaultMotionState.h"
-#include "src/LinearMath/btTransform.h"
+#include "bullet/BulletDynamics/Dynamics/btRigidBody.h"
+#include "bullet/LinearMath/btDefaultMotionState.h"
+#include "bullet/LinearMath/btTransform.h"
 
 class _controller_base : public _object_base {
 private:

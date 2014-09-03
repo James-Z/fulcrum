@@ -19,13 +19,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
-#include "src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.h"
-#include "src/BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
-#include "src/BulletCollision/CollisionDispatch/btCollisionDispatcher.h"
-#include "src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
-#include "src/BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
-#include "src/LinearMath/btQuickprof.h"
+#include "bullet/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
+#include "bullet/BulletDynamics/Dynamics/btSimpleDynamicsWorld.h"
+#include "bullet/BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
+#include "bullet/BulletCollision/CollisionDispatch/btCollisionDispatcher.h"
+#include "bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
+#include "bullet/BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
+#include "bullet/LinearMath/btQuickprof.h"
 
 enum {NORMAL_SHADER, LIGHT_SOURCE_SHADER};
 
