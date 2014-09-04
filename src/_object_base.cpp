@@ -121,7 +121,10 @@ void _object_base::set_rigid_body ( void ) {
 	btCollisionShape* sphere = new btBoxShape( btVector3( 1, 1, 1 ) );
 	btVector3 localInertia = btVector3( 0.6F, 0.6F, 0.6F );
 	sphere->calculateLocalInertia( btScalar(2.F), localInertia );
-	btRigidBody::btRigidBodyConstructionInfo rbInfo = btRigidBody::btRigidBodyConstructionInfo( btScalar(2.F), motion_state, sphere, localInertia );
+	btRigidBody::btRigidBodyConstructionInfo rbInfo = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
+													motion_state,
+													sphere,
+													localInertia );
 	btRigidBody* rigid_body = new btRigidBody( rbInfo );
 	rigid_body->setDamping( 0.392F, 0.392F );
 	/* rigid_body->applyGravity(); */
