@@ -98,16 +98,25 @@ void game_scene::edit_scene (void) {
 		object_one->generate_model();
 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
 		object_one->translate( vec3( 0.0F, 0.0F, 7.0F * i ) );
-		object_one->set_rigid_body();
+		btCollisionShape* shape = new btSphereShape( 1.0F );
+		object_one->init_rigid_body( (btScalar(i)+1.0F), btVector3( 0.6F, 0.6F, 0.6F ), shape );
+		object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
+		object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
+		object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
+		/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
 		/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
 		add_object( object_one, game_shader );
 	}
-	for(int i = 0; i < 5; ++i) {
+	for(float i = 0; i < 5.0F; ++i) {
 		game_object* object_one = new game_object();
 		object_one->generate_model();
 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
 		object_one->translate( vec3( 10.0F, 0.0F, 7.0F * i ) );
-		object_one->set_rigid_body();
+		btCollisionShape* shape = new btSphereShape( 1.0F );
+		object_one->init_rigid_body( btScalar(i), btVector3( 0.6F, 0.6F, 0.6F ), shape );
+		object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
+		object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
+		object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
 		/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
 		add_object( object_one, game_shader );
 	}
@@ -121,10 +130,12 @@ void game_scene::edit_scene (void) {
 	object_two->catch_camera( camera_one->get_ID() );
 	/* object_two->translate( vec3( 0.0F, 1.0F, -0.0F ) ); */
 	/* object_two->realse_camera(); */
-	object_two->set_rigid_body();
-	/* object_two->get_rigidbody()->applyCentralImpulse( btVector3(0.0, 0.0, 1.0) ); */
-	/* object_two->get_rigidbody()->clearForces(); */
-	object_two->get_rigidbody()->setMassProps( 20, btVector3(0.6, 0.6, 0.6) );
+	btCollisionShape* shape = new btSphereShape( 1.0F );
+	object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), shape );
+	object_two->get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
+	object_two->get_rigidbody()->setDamping( 0.192F, 0.392F );
+	object_two->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
+	object_two->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
 	add_object ( object_two, game_shader );
 
 }
@@ -374,17 +385,27 @@ int main ( int argc, char *argv[] ) {
 							XDestroyWindow(dpy, win);
 							XCloseDisplay(dpy);
 							exit(0);
-						case XK_a:
-							scene_out_test->_controller_in_scene->move_object( CLOCK_WISE_ROTATION );
-							break;
-						case XK_d:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
-							break;
 						case XK_w:
 							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::FORWORD );
 							break;
 						case XK_s:
 							scene_out_test->_controller_in_scene->move_object( BACKWARD );
+							break;
+						default:
+							break;
+					}
+					switch( ks ) {
+						case XK_Escape:
+							glXMakeCurrent(dpy, None, NULL);
+							glXDestroyContext(dpy, glc);
+							XDestroyWindow(dpy, win);
+							XCloseDisplay(dpy);
+							exit(0);
+						case XK_a:
+							scene_out_test->_controller_in_scene->move_object( CLOCK_WISE_ROTATION );
+							break;
+						case XK_d:
+							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
 							break;
 						default:
 							break;
@@ -407,16 +428,16 @@ int main ( int argc, char *argv[] ) {
 							XCloseDisplay(dpy);
 							exit(0);
 						case XK_a:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::STOP );
+							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::TURN_STOP );
 							break;
 						case XK_d:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::STOP  );
+							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::TURN_STOP  );
 							break;
 						case XK_w:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::STOP );
+							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::MOVE_STOP );
 							break;
 						case XK_s:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::STOP );
+							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::MOVE_STOP );
 							break;
 						default:
 							break;

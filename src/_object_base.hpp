@@ -18,7 +18,18 @@
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"
 
-enum MOTION_STATE { STOP = 10, FORWORD = 1, BACKWARD = 2, LEFT_ROTATION, RIGHT_ROTATION, CLOCK_WISE_ROTATION = 5, ANTI_CLOCK_WISE_ROTATION = 6, UP_WARD, DOWN_WARD };
+enum MOTION_STATE {	NO_MOSTION = 0,
+			FORWORD = 1,
+			BACKWARD,
+			LEFT_ROTATION,
+			RIGHT_ROTATION,
+			CLOCK_WISE_ROTATION,
+			ANTI_CLOCK_WISE_ROTATION,
+			UP_WARD,
+			DOWN_WARD,
+			MOVE_STOP,
+			TURN_STOP
+};
 
 class _object_base {
 protected:
@@ -31,6 +42,10 @@ protected:
 	glm::vec4 _position_in_world;
 
 	btRigidBody* _rigid_body;
+	btDefaultMotionState* _motion_state;
+	btCollisionShape* _shape;
+	btVector3 _inertia;
+	btScalar _mass;
 	btVector3 _force;
 	btVector3 _angular;
 	int _state;
@@ -55,7 +70,7 @@ public:
 	virtual void translate ( const glm::vec3& direction );
 	virtual void rotate ( const float& angle, const glm::vec3& rotate_axis );
 	void set_position_in_world ( const glm::vec3& position );
-	void set_rigid_body ( void );
+	void init_rigid_body ( const btScalar mass, const btVector3 inertia, btCollisionShape* shape );
 	//
 	void draw (void);
 	void update_gl_uniform ( const _shader_manager& be_using_shader );

@@ -7,7 +7,9 @@ _object_base::_object_base (void) :	_force( 0, 0, 0 ),
 					_is_be_controlled( false ),
 					_is_catch_camera( false ),
 					_model(),
-					_rigid_body( nullptr ) {}
+					_rigid_body( nullptr ),
+					_motion_state( nullptr ),
+					_shape( nullptr ) {}
 
 _object_base::~_object_base (void) {}
 
@@ -54,15 +56,10 @@ void _object_base::update (void) {
 }
 
 void _object_base::apply_physics (void) {
-	/* _rigid_body->applyCentralImpulse( _force ); */
-	_rigid_body->setAngularFactor( btVector3(0.0F, 0.6F, 0.0F) );
-	_rigid_body->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
-	_rigid_body->updateInertiaTensor();
-	/* std::cout<<_angular.getY(); */
-	_rigid_body->applyCentralForce( _force );
 	_rigid_body->applyTorque( _angular );
+	btVector3 v = _rigid_body->getWorldTransform().getBasis() * _force;
+	_rigid_body->applyCentralForce( v );
 	/* _rigid_body->applyTorqueImpulse( _angular ); */
-	/* std::cout<<"Torque: "<<_rigid_body->getTotalTorque().getY()<<"\n"; */
 	/* _rigid_body->setLinearVelocity( _force ); */
 	/* _rigid_body->setAngularVelocity( _angular ); */
 }
@@ -70,25 +67,20 @@ void _object_base::apply_physics (void) {
 void _object_base::move_and_turn ( const int state ) {
 	_state = state;
 	if( state == MOTION_STATE::FORWORD ) {
-		_force = btVector3( 0.0F, 0.0F, -20.5F );
-		_force = _rigid_body->getWorldTransform().getBasis() * _force;
+		_force = btVector3( 0.0F, 0.0F, -30.5F );
 	} else if( state == BACKWARD ) {
-		_force = btVector3( 0.0F, 0.0F, 20.0F );
-		_force = _rigid_body->getWorldTransform().getBasis() * _force;
+		_force = btVector3( 0.0F, 0.0F, 30.0F );
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, 1.0F, 0.0F );
 		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, -1.0F, 0.0F );
 		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
-	} else if( state == MOTION_STATE::STOP ) {
+	} else if( state == MOTION_STATE::MOVE_STOP ) {
 		_force = btVector3( 0.0F, 0.0F, 0.0F );
+	} else if( state == MOTION_STATE::TURN_STOP ) {
 		_angular = btVector3( 0.0F, 0.0F, 0.0F );
-	} else {
-		/* _angular = btVector3( 0.0F, 0.0F, 0.0F ); */
-		/* _force = btVector3( 0.0F, 0.0F, 0.0F ); */
-		/* std::cout<<"else"<<std::endl; */
-	}
+	} else {}
 }
 
 void _object_base::destory (void) {
@@ -112,24 +104,18 @@ void _object_base::set_position_in_world ( const glm::vec3& position ) {
 	_matrix_in_world = glm::translate( glm::mat4(1.0F), position );
 }
 
-void _object_base::set_rigid_body ( void ) {
-	btTransform trasform;
-	trasform.setIdentity();
-	/* trasform.setOrigin( btVector3(_position_in_world.x, _position_in_world.y, _position_in_world.z) ); */
-	trasform.setFromOpenGLMatrix( glm::value_ptr(_matrix_in_world) );
-	btDefaultMotionState* motion_state = new btDefaultMotionState( trasform );
-	btCollisionShape* sphere = new btBoxShape( btVector3( 1, 1, 1 ) );
-	btVector3 localInertia = btVector3( 0.6F, 0.6F, 0.6F );
-	sphere->calculateLocalInertia( btScalar(2.F), localInertia );
-	btRigidBody::btRigidBodyConstructionInfo rbInfo = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
-													motion_state,
-													sphere,
-													localInertia );
-	btRigidBody* rigid_body = new btRigidBody( rbInfo );
-	rigid_body->setDamping( 0.392F, 0.392F );
-	/* rigid_body->applyGravity(); */
-	/* rigid_body->setGravity( btVector3(0, -10, 0) ); */
-	/* rigid_body->applyCentralImpulse( btVector3(0, -10, 0) ); */
+void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inertia, btCollisionShape* shape ) {
+
+	btTransform bt_matrix_in_world;
+	bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
+	_motion_state = new btDefaultMotionState( bt_matrix_in_world );
+	_shape = shape;
+
+	btRigidBody::btRigidBodyConstructionInfo rigidbody_info = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
+														_motion_state,
+														_shape,
+														inertia );
+	btRigidBody* rigid_body = new btRigidBody( rigidbody_info );
 	_rigid_body = rigid_body;
 }
 
