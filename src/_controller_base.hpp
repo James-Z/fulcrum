@@ -33,7 +33,7 @@ public:
 	inline glm::mat4 get_object_controller_matrix (void) const { return _object_controller_matrix; }
 	inline glm::mat4 get_camera_controller_matrix (void) const { return _camera_controller_matrix; }
 	inline int get_object_motion_state (void) const { return _object_motion_state; }
-	inline void reset_object_motion_state (void) { _object_motion_state = 0; }
+	/* inline void reset_object_motion_state (void) { _object_motion_state = 0; } */
 };
 
 #endif

@@ -1,17 +1,38 @@
 #include "_object_base.hpp"
 
-_object_base::_object_base (void) :	_force( 0, 0, 0 ),
-					_angular( 0, 0, 0 ),
-					_state( 0 ),
+_object_base::_object_base (void) :	_matrix_catch_camera_in_world( 1 ),
+					_matrix_in_world( 1 ),
+					_matrix_in_camera_world( 1 ),
+					_matrix_follow_in_world( 1 ),
+					_position_in_world( 0 ),
+					_ID( 0 ),
+					_be_catched_camera_ID( 0 ),
+					_be_catched_controller_ID( 0 ),
 					_is_destoried( false ),
-					_is_be_controlled( false ),
 					_is_catch_camera( false ),
+					_is_be_controlled( false ),
 					_model(),
-					_rigid_body( nullptr ),
+					_force( 0, 0, 0 ),
+					_angular( 0, 0, 0 ),
+					_mass( 0 ),
+					_inertia( 0, 0, 0 ),
+					_state( 0 ),
 					_motion_state( nullptr ),
-					_shape( nullptr ) {}
+					_shape( nullptr ),
+					_rigid_body( nullptr ) {}
 
-_object_base::~_object_base (void) {}
+_object_base::~_object_base (void) {
+	this->destory();
+}
+
+void _object_base::destory (void) {
+	if( _motion_state != nullptr )
+		delete _motion_state;
+	if( _shape != nullptr )
+		delete _shape;
+	if( _rigid_body != nullptr )
+		delete _rigid_body;
+}
 
 void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
 	if( is_be_controlled() ) {
@@ -58,7 +79,7 @@ void _object_base::update (void) {
 void _object_base::apply_physics (void) {
 	_rigid_body->applyTorque( _angular );
 	btVector3 v = _rigid_body->getWorldTransform().getBasis() * _force;
-	_rigid_body->applyCentralForce( v );
+	this->get_rigidbody()->applyCentralForce( v );
 	/* _rigid_body->applyTorqueImpulse( _angular ); */
 	/* _rigid_body->setLinearVelocity( _force ); */
 	/* _rigid_body->setAngularVelocity( _angular ); */
@@ -67,15 +88,15 @@ void _object_base::apply_physics (void) {
 void _object_base::move_and_turn ( const int state ) {
 	_state = state;
 	if( state == MOTION_STATE::FORWORD ) {
-		_force = btVector3( 0.0F, 0.0F, -30.5F );
+		_force = btVector3( 0.0F, 0.0F, -10.5F );
 	} else if( state == BACKWARD ) {
-		_force = btVector3( 0.0F, 0.0F, 30.0F );
+		_force  = btVector3( 0.0F, 0.0F, 10.0F );
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, 1.0F, 0.0F );
 		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, -1.0F, 0.0F );
-		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
+		/* _angular = _rigid_body->getWorldTransform().getBasis() * _angular; */
 	} else if( state == MOTION_STATE::MOVE_STOP ) {
 		_force = btVector3( 0.0F, 0.0F, 0.0F );
 	} else if( state == MOTION_STATE::TURN_STOP ) {
@@ -83,12 +104,10 @@ void _object_base::move_and_turn ( const int state ) {
 	} else {}
 }
 
-void _object_base::destory (void) {
-}
-
-void _object_base::set_matrix_in_world ( const glm::mat4& matrix ) {
-	//set object martix to set_matrix
-	_matrix_in_world = matrix;
+void _object_base::apply_physics_transform_update (void) {
+	glm::mat4 tem( 1 );
+	this->get_rigidbody()->getWorldTransform().getOpenGLMatrix( glm::value_ptr(tem) );
+	this->set_matrix_in_world( tem );
 }
 
 void _object_base::multiply_matrix_in_world ( const glm::mat4& matrix ) {

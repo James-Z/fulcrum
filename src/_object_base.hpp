@@ -41,14 +41,14 @@ protected:
 	glm::mat4 _matrix_follow_in_world;
 	glm::vec4 _position_in_world;
 
-	btRigidBody* _rigid_body;
-	btDefaultMotionState* _motion_state;
-	btCollisionShape* _shape;
-	btVector3 _inertia;
-	btScalar _mass;
+	int _state;
 	btVector3 _force;
 	btVector3 _angular;
-	int _state;
+	btScalar _mass;
+	btVector3 _inertia;
+	btDefaultMotionState* _motion_state;
+	btCollisionShape* _shape;
+	btRigidBody* _rigid_body;
 
 	int _ID;
 	int _be_catched_camera_ID;
@@ -64,7 +64,6 @@ public:
 	//
 	void update_matrix_in_camera_world ( const glm::mat4& update_matrix );
 	void update_matrix_catch_camera_in_world ( const glm::mat4& update_matrix );
-	void set_matrix_in_world ( const glm::mat4& matrix );
 	void multiply_matrix_in_world ( const glm::mat4& matrix );
 	void multiply_matrix_follow_in_world ( const glm::mat4& matrix );
 	virtual void translate ( const glm::vec3& direction );
@@ -79,6 +78,7 @@ public:
 	//
 	void apply_physics (void);
 	void move_and_turn ( const int state );
+	void apply_physics_transform_update (void);
 	//
 	inline void set_ID ( const unsigned int ID ) { _ID = ID; }
 	inline void catch_camera ( const unsigned int camera_ID ) { _is_catch_camera = true; _be_catched_camera_ID = camera_ID; }
@@ -86,6 +86,7 @@ public:
 	/* inline void catch_contrtoller ( const unsigned int controller_ID ) { _is_be_controlled = true; _be_catched_controller = controller_ID; } */
 	inline void realse_camera (void) { _is_catch_camera = false; }
 	inline void realse_controller (void) { _is_be_controlled = false; }
+	inline void set_matrix_in_world ( const glm::mat4& matrix ) { _matrix_in_world = matrix; }
 	inline glm::mat4 get_matrix_in_world (void) const { return _matrix_in_world * _matrix_follow_in_world; }
 	inline glm::mat4 get_matrix_in_camera_world (void) const { return _matrix_in_camera_world; }
 	inline glm::mat4 get_matrix_follow_in_world (void) const { return _matrix_follow_in_world; }
