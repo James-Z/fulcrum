@@ -1,6 +1,6 @@
 #include "_light_base.hpp"
 
-_light_base::_light_base (void) : _object_base(), _diffuse_color()   {}
+_light_base::_light_base (void) : _object_base(), _diffuse_color(), _light_position() {}
 
 _light_base::~_light_base (void) {}
 

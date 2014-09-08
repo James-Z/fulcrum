@@ -2,7 +2,7 @@
 
 _camera_base::_camera_base (void) : _object_base(), _perspective_matrix(1) {}
 
-_camera_base::~_camera_base (void) {}
+_camera_base::~_camera_base (void) { }
 
 void _camera_base::perspective ( float fovy, float aspect, float zNear, float zFar ) {
 	_perspective_matrix = glm::perspective( fovy, aspect, zNear, zFar );

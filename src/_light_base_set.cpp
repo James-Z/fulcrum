@@ -2,10 +2,12 @@
 
 _light_base_set::_light_base_set (void) : _lights(), _diffuse_colors() {}
 
-_light_base_set::~_light_base_set (void) {}
+_light_base_set::~_light_base_set (void) {
+	_lights.clear();
+}
 
 void _light_base_set::add_light ( _light_base* light ) {
-	_lights.push_back( light );
+	_lights.push_back( shared_ptr<_light_base>( light ) );
 }
 
 void _light_base_set::update_lights (void) {

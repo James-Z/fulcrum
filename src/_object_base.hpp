@@ -2,6 +2,7 @@
 #define _OBJECT_BASE_HPP_
 
 #include <iostream>
+#include <memory>
 
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -46,9 +47,9 @@ protected:
 	btVector3 _angular;
 	btScalar _mass;
 	btVector3 _inertia;
-	btDefaultMotionState* _motion_state;
-	btCollisionShape* _shape;
-	btRigidBody* _rigid_body;
+	shared_ptr<btDefaultMotionState> _motion_state;
+	shared_ptr<btCollisionShape> _shape;
+	shared_ptr<btRigidBody> _rigid_body;
 
 	int _ID;
 	int _be_catched_camera_ID;
@@ -91,7 +92,7 @@ public:
 	inline glm::mat4 get_matrix_in_camera_world (void) const { return _matrix_in_camera_world; }
 	inline glm::mat4 get_matrix_follow_in_world (void) const { return _matrix_follow_in_world; }
 	inline glm::vec4 get_local_position_in_world (void) const { return glm::vec4( glm::vec3( _matrix_in_world[3] ), 1.0F ); }
-	inline btRigidBody* get_rigidbody (void) const { return _rigid_body; }
+	inline btRigidBody* get_rigidbody (void) const { return _rigid_body.get(); }
 	inline int get_ID (void) const { return _ID; }
 	inline int be_catched_camera_ID (void) const { return _be_catched_camera_ID; }
 	inline bool is_destory (void) const { return _is_destoried; }

@@ -18,10 +18,10 @@
 
 class _camera_base : public _object_base {
 private:
+	glm::mat4 _perspective_matrix;
 public:
 	_camera_base (void);
 	virtual ~_camera_base (void);
-	glm::mat4 _perspective_matrix;
 
 	void perspective (float fovy, float aspect, float zNear, float zFar);
 	virtual void update_camera_matrix_from_object ( const glm::mat4& object_matrix );

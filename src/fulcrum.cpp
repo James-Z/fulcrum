@@ -58,6 +58,7 @@ game_scene::game_scene (void) : _scene_base() {}
 game_scene::~game_scene (void) {}
 
 void game_scene::edit_scene (void) {
+	get_physics_world()->setGravity( btVector3(0.0F,0.0F,0.0F) );
 	//
 	string shader_file_name = "ver.sdr fag.sdr";
 	const unsigned int game_shader = 1;
@@ -384,16 +385,17 @@ int main ( int argc, char *argv[] ) {
 
 					switch( ks ) {
 						case XK_Escape:
+							scene_out_test->~_scene_base();
 							glXMakeCurrent(dpy, None, NULL);
 							glXDestroyContext(dpy, glc);
 							XDestroyWindow(dpy, win);
 							XCloseDisplay(dpy);
 							exit(0);
 						case XK_w:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::FORWORD );
+							scene_out_test->get_controller()->move_object( MOTION_STATE::FORWORD );
 							break;
 						case XK_s:
-							scene_out_test->_controller_in_scene->move_object( BACKWARD );
+							scene_out_test->get_controller()->move_object( BACKWARD );
 							break;
 						default:
 							break;
@@ -406,10 +408,10 @@ int main ( int argc, char *argv[] ) {
 							XCloseDisplay(dpy);
 							exit(0);
 						case XK_a:
-							scene_out_test->_controller_in_scene->move_object( CLOCK_WISE_ROTATION );
+							scene_out_test->get_controller()->move_object( CLOCK_WISE_ROTATION );
 							break;
 						case XK_d:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
+							scene_out_test->get_controller()->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
 							break;
 						default:
 							break;
@@ -432,16 +434,16 @@ int main ( int argc, char *argv[] ) {
 							XCloseDisplay(dpy);
 							exit(0);
 						case XK_a:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::TURN_STOP );
+							scene_out_test->get_controller() ->move_object( MOTION_STATE::TURN_STOP );
 							break;
 						case XK_d:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::TURN_STOP  );
+							scene_out_test->get_controller()->move_object( MOTION_STATE::TURN_STOP  );
 							break;
 						case XK_w:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::MOVE_STOP );
+							scene_out_test->get_controller()->move_object( MOTION_STATE::MOVE_STOP );
 							break;
 						case XK_s:
-							scene_out_test->_controller_in_scene->move_object( MOTION_STATE::MOVE_STOP );
+							scene_out_test->get_controller()->move_object( MOTION_STATE::MOVE_STOP );
 							break;
 						default:
 							break;

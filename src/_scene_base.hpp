@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <list>
 #include <string>
+#include <memory>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <glm/glm.hpp>
@@ -31,33 +32,27 @@ enum {NORMAL_SHADER, LIGHT_SOURCE_SHADER};
 
 class _scene_base {
 private:
-	std::list<_camera_base*> _cameras_in_scene;
-	std::list<_light_base*> _lights_in_scene;
-	_light_base_set* _light_base_set_in_scene;
-	std::unordered_map<unsigned int, std::list<_object_base*>> _shaders_and_objects_in_scene;
-	std::unordered_map<unsigned int, _shader_manager*> _shaders;
-	_shader_manager* _current_shader;
-	glm::vec4 _ambient_color_in_scene;
+	std::unordered_map<unsigned int, shared_ptr<_shader_manager>> _shaders;
+	std::list<shared_ptr<_camera_base>> _cameras_in_scene;
+	std::unordered_map<unsigned int, std::list<shared_ptr<_object_base>>> _shaders_and_objects_in_scene;
+	shared_ptr<_light_base_set> _light_base_set_in_scene;
+	shared_ptr<_shader_manager> _current_shader;
+	shared_ptr<_controller_base> _controller_in_scene;
 
-	btDefaultCollisionConfiguration* _collision_configuration;
-	btCollisionDispatcher* _dispatcher;
-	btDbvtBroadphase* _broadphase;
-	btSequentialImpulseConstraintSolver* _solver;
-	btDiscreteDynamicsWorld* _physic_world;
+	shared_ptr<btDefaultCollisionConfiguration> _collision_configuration;
+	shared_ptr<btCollisionDispatcher> _dispatcher;
+	shared_ptr<btDbvtBroadphase> _broadphase;
+	shared_ptr<btSequentialImpulseConstraintSolver> _solver;
+	shared_ptr<btDiscreteDynamicsWorld> _physics_world;
 	btClock _clock;
 
-	/* std::list<_object_base>::iterator _camera_look_at_object_iter; */
-	/* MatrixStack _matrix_stack; */
-	std::list<_camera_base*>::iterator _cameras_in_scene_iter;
-	std::list<_light_base*>::iterator _lights_in_scene_iter;
-	std::unordered_map<unsigned int, std::list<_object_base*>>::iterator _shaders_and_objects_in_scene_iter;
-	std::list<_object_base*>::iterator _objects_in_scene_iter;
-	/* std::unordered_map<unsigned int, _shader_manager*>::iterator _shaders_iter; */
+	std::list<shared_ptr<_camera_base>>::iterator _cameras_in_scene_iter;
+	std::unordered_map<unsigned int, std::list<shared_ptr<_object_base>>>::iterator _shaders_and_objects_in_scene_iter;
+	std::list<shared_ptr<_object_base>>::iterator _objects_in_scene_iter;
 
-	void load_datas ( std::list<_light_base*>& _lights );
+	glm::vec4 _ambient_color_in_scene;
 
 public:
-	_controller_base* _controller_in_scene;
 	_scene_base (void);
 	virtual ~_scene_base (void);
 	virtual void initilize_scene (void);
@@ -72,7 +67,9 @@ public:
 	virtual void edit_scene (void);
 
 	inline glm::vec4 get_ambient_color (void) const { return _ambient_color_in_scene; }
-	inline _shader_manager* get_test_shader (void) { return _current_shader; }
+	inline _shader_manager* get_test_shader (void) { return _current_shader.get(); }
+	inline _controller_base* get_controller (void) const { return _controller_in_scene.get(); }
+	inline btDiscreteDynamicsWorld* get_physics_world (void) const { return _physics_world.get(); }
 
 };	// _scene_base
 

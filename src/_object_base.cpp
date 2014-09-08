@@ -18,20 +18,14 @@ _object_base::_object_base (void) :	_matrix_catch_camera_in_world( 1 ),
 					_inertia( 0, 0, 0 ),
 					_state( 0 ),
 					_motion_state( nullptr ),
-					_shape( nullptr ),
-					_rigid_body( nullptr ) {}
+					_rigid_body( nullptr ),
+					_shape( nullptr ) {}
 
 _object_base::~_object_base (void) {
 	this->destory();
 }
 
 void _object_base::destory (void) {
-	if( _motion_state != nullptr )
-		delete _motion_state;
-	if( _shape != nullptr )
-		delete _shape;
-	if( _rigid_body != nullptr )
-		delete _rigid_body;
 }
 
 void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
@@ -93,10 +87,8 @@ void _object_base::move_and_turn ( const int state ) {
 		_force  = btVector3( 0.0F, 0.0F, 10.0F );
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, 1.0F, 0.0F );
-		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, -1.0F, 0.0F );
-		/* _angular = _rigid_body->getWorldTransform().getBasis() * _angular; */
 	} else if( state == MOTION_STATE::MOVE_STOP ) {
 		_force = btVector3( 0.0F, 0.0F, 0.0F );
 	} else if( state == MOTION_STATE::TURN_STOP ) {
@@ -127,14 +119,13 @@ void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inerti
 
 	btTransform bt_matrix_in_world;
 	bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
-	_motion_state = new btDefaultMotionState( bt_matrix_in_world );
-	_shape = shape;
+	_motion_state = make_shared<btDefaultMotionState>( bt_matrix_in_world );
+	_shape = shared_ptr<btCollisionShape>( shape );
 
 	btRigidBody::btRigidBodyConstructionInfo rigidbody_info = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
-														_motion_state,
-														_shape,
+														_motion_state.get(),
+														_shape.get(),
 														inertia );
-	btRigidBody* rigid_body = new btRigidBody( rigidbody_info );
-	_rigid_body = rigid_body;
+	_rigid_body = make_shared<btRigidBody>( rigidbody_info );
 }
 

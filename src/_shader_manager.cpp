@@ -2,7 +2,7 @@
 
 _shader_manager::_shader_manager (void) : _shaderManage (), _shader (), _uniformNames () {}
 
-_shader_manager::~_shader_manager (void) {}
+_shader_manager::~_shader_manager (void) { }
 
 /**
  * this shoudn't be here. be better in a function toolkit
