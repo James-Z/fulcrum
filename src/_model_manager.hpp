@@ -25,6 +25,8 @@ private:
 	GLuint _triangle_number;
 	GLuint _vbo;
 	GLuint _vao;
+	void generate_cude_side ( glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d );
+	void generate_cube_vertexs ( glm::vec3 start_vertex, float side_length );
 public:
 	_model_manager (void);
 	~_model_manager (void);

@@ -34,18 +34,18 @@ void _scene_base::initilize_scene (void) {
 	//need initilize_shader
 	//
 
-	_light_base_set_in_scene = make_shared<_light_base_set>();
-	_controller_in_scene = make_shared<_controller_base>();
+	_light_base_set_in_scene = std::make_shared<_light_base_set>();
+	_controller_in_scene = std::make_shared<_controller_base>();
 	//initilize the physics world
-	_collision_configuration = make_shared<btDefaultCollisionConfiguration>();
-	_dispatcher = make_shared<btCollisionDispatcher>( _collision_configuration.get() );
-	_broadphase = make_shared<btDbvtBroadphase>();
-	_solver = make_shared<btSequentialImpulseConstraintSolver>();
-	_physics_world = make_shared<btDiscreteDynamicsWorld>( _dispatcher.get(), _broadphase.get(), _solver.get(), _collision_configuration.get() );
+	_collision_configuration = std::make_shared<btDefaultCollisionConfiguration>();
+	_dispatcher = std::make_shared<btCollisionDispatcher>( _collision_configuration.get() );
+	_broadphase = std::make_shared<btDbvtBroadphase>();
+	_solver = std::make_shared<btSequentialImpulseConstraintSolver>();
+	_physics_world = std::make_shared<btDiscreteDynamicsWorld>( _dispatcher.get(), _broadphase.get(), _solver.get(), _collision_configuration.get() );
 }	//initilize_scene
 
 void _scene_base::shader_load ( const std::string shader_file_names, const unsigned int shader_name ) {
-	shared_ptr<_shader_manager> shader = make_shared<_shader_manager>();
+	std::shared_ptr<_shader_manager> shader = std::make_shared<_shader_manager>();
 	shader->create_shader( shader_file_names );
 	_current_shader = shader;
 	_shaders.insert( std::make_pair( shader_name, shader ) );
@@ -55,7 +55,7 @@ void _scene_base::shader_load ( const std::string shader_file_names, const unsig
 }
 
 void _scene_base::add_camera ( _camera_base* camera ) {
-	_cameras_in_scene.push_back( shared_ptr<_camera_base>(camera) );
+	_cameras_in_scene.push_back( std::shared_ptr<_camera_base>(camera) );
 }
 
 void _scene_base::add_light ( _light_base* light ) {
@@ -66,7 +66,7 @@ void _scene_base::add_object ( _object_base* object, const unsigned int shader_n
 	_shaders_and_objects_in_scene_iter = _shaders_and_objects_in_scene.find( shader_name );//->second.push_back( object );
 	if( _shaders_and_objects_in_scene_iter != _shaders_and_objects_in_scene.end() ) {
 		if( object ) {
-			_shaders_and_objects_in_scene_iter->second.push_back( shared_ptr<_object_base>(object) );
+			_shaders_and_objects_in_scene_iter->second.push_back( std::shared_ptr<_object_base>(object) );
 			if( object->get_rigidbody() ) {
 				_physics_world->addRigidBody( object->get_rigidbody() );
 				/* _physics_world->addCollisionObject( object->get_rigidbody() ); */

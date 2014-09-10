@@ -32,23 +32,23 @@ enum {NORMAL_SHADER, LIGHT_SOURCE_SHADER};
 
 class _scene_base {
 private:
-	std::unordered_map<unsigned int, shared_ptr<_shader_manager>> _shaders;
-	std::list<shared_ptr<_camera_base>> _cameras_in_scene;
-	std::unordered_map<unsigned int, std::list<shared_ptr<_object_base>>> _shaders_and_objects_in_scene;
-	shared_ptr<_light_base_set> _light_base_set_in_scene;
-	shared_ptr<_shader_manager> _current_shader;
-	shared_ptr<_controller_base> _controller_in_scene;
+	std::unordered_map<unsigned int, std::shared_ptr<_shader_manager>> _shaders;
+	std::list<std::shared_ptr<_camera_base>> _cameras_in_scene;
+	std::unordered_map<unsigned int, std::list<std::shared_ptr<_object_base>>> _shaders_and_objects_in_scene;
+	std::shared_ptr<_light_base_set> _light_base_set_in_scene;
+	std::shared_ptr<_shader_manager> _current_shader;
+	std::shared_ptr<_controller_base> _controller_in_scene;
 
-	shared_ptr<btDefaultCollisionConfiguration> _collision_configuration;
-	shared_ptr<btCollisionDispatcher> _dispatcher;
-	shared_ptr<btDbvtBroadphase> _broadphase;
-	shared_ptr<btSequentialImpulseConstraintSolver> _solver;
-	shared_ptr<btDiscreteDynamicsWorld> _physics_world;
+	std::shared_ptr<btDefaultCollisionConfiguration> _collision_configuration;
+	std::shared_ptr<btCollisionDispatcher> _dispatcher;
+	std::shared_ptr<btDbvtBroadphase> _broadphase;
+	std::shared_ptr<btSequentialImpulseConstraintSolver> _solver;
+	std::shared_ptr<btDiscreteDynamicsWorld> _physics_world;
 	btClock _clock;
 
-	std::list<shared_ptr<_camera_base>>::iterator _cameras_in_scene_iter;
-	std::unordered_map<unsigned int, std::list<shared_ptr<_object_base>>>::iterator _shaders_and_objects_in_scene_iter;
-	std::list<shared_ptr<_object_base>>::iterator _objects_in_scene_iter;
+	std::list<std::shared_ptr<_camera_base>>::iterator _cameras_in_scene_iter;
+	std::unordered_map<unsigned int, std::list<std::shared_ptr<_object_base>>>::iterator _shaders_and_objects_in_scene_iter;
+	std::list<std::shared_ptr<_object_base>>::iterator _objects_in_scene_iter;
 
 	glm::vec4 _ambient_color_in_scene;
 
