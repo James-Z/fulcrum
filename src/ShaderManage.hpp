@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _SHADER_MANAGE_HPP_
+#define _SHADER_MANAGE_HPP_
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -9,8 +11,7 @@
 #include <GL/glew.h>
 #include "AttributeIndex.hpp"
 
-class ShaderManage
-{
+class ShaderManage {
 private:
 	GLuint program;
 	GLuint shader;
@@ -110,4 +111,6 @@ public:
 	//}
 //
 };
+
+#endif
 

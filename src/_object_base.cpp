@@ -25,8 +25,7 @@ _object_base::~_object_base (void) {
 	this->destory();
 }
 
-void _object_base::destory (void) {
-}
+void _object_base::destory (void) {}
 
 void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
 	if( is_be_controlled() ) {
@@ -119,13 +118,13 @@ void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inerti
 
 	btTransform bt_matrix_in_world;
 	bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
-	_motion_state = make_shared<btDefaultMotionState>( bt_matrix_in_world );
-	_shape = shared_ptr<btCollisionShape>( shape );
+	_motion_state = std::make_shared<btDefaultMotionState>( bt_matrix_in_world );
+	_shape = std::shared_ptr<btCollisionShape>( shape );
 
 	btRigidBody::btRigidBodyConstructionInfo rigidbody_info = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
 														_motion_state.get(),
 														_shape.get(),
 														inertia );
-	_rigid_body = make_shared<btRigidBody>( rigidbody_info );
+	_rigid_body = std::make_shared<btRigidBody>( rigidbody_info );
 }
 

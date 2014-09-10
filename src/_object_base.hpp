@@ -47,9 +47,9 @@ protected:
 	btVector3 _angular;
 	btScalar _mass;
 	btVector3 _inertia;
-	shared_ptr<btDefaultMotionState> _motion_state;
-	shared_ptr<btCollisionShape> _shape;
-	shared_ptr<btRigidBody> _rigid_body;
+	std::shared_ptr<btDefaultMotionState> _motion_state;
+	std::shared_ptr<btCollisionShape> _shape;
+	std::shared_ptr<btRigidBody> _rigid_body;
 
 	int _ID;
 	int _be_catched_camera_ID;

@@ -49,9 +49,28 @@ void _model_manager::generate_vertex_data (void) {
 	triangles temp_triangle;
 	temp_triangle.x.x = 0.0F; temp_triangle.x.y = 1.0F; temp_triangle.x.z = 0.0F;
 	temp_triangle.y.x = 0.0F; temp_triangle.y.y = 0.0F; temp_triangle.y.z = 0.0F;
-	temp_triangle.z.x = 2.0F; temp_triangle.z.y = 0.0F; temp_triangle.z.z = 0.0F;
+	temp_triangle.z.x = 1.0F; temp_triangle.z.y = 0.0F; temp_triangle.z.z = 0.0F;
 	_data.push_back( temp_triangle );
 
+	temp_triangle.x.x = 0.0F; temp_triangle.x.y = 1.0F; temp_triangle.x.z = 0.0F;
+	temp_triangle.y.x = 1.0F; temp_triangle.y.y = 0.0F; temp_triangle.y.z = 0.0F;
+	temp_triangle.z.x = 1.0F; temp_triangle.z.y = 1.0F; temp_triangle.z.z = 0.0F;
+	_data.push_back( temp_triangle );
+
+	temp_triangle.x.x = 1.0F; temp_triangle.x.y = 1.0F; temp_triangle.x.z = 0.0F;
+	temp_triangle.y.x = 1.0F; temp_triangle.y.y = 0.0F; temp_triangle.y.z = 0.0F;
+	temp_triangle.z.x = 1.0F; temp_triangle.z.y = 0.0F; temp_triangle.z.z = -1.0F;
+	_data.push_back( temp_triangle );
+
+	temp_triangle.x.x = 1.0F; temp_triangle.x.y = 1.0F; temp_triangle.x.z = 0.0F;
+	temp_triangle.y.x = 1.0F; temp_triangle.y.y = 0.0F; temp_triangle.y.z = -1.0F;
+	temp_triangle.z.x = 1.0F; temp_triangle.z.y = 1.0F; temp_triangle.z.z = -1.0F;
+	_data.push_back( temp_triangle );
+
+	/* temp_triangle.x.x = 0.0F; temp_triangle.x.y = 1.0F; temp_triangle.x.z = 0.0F; */
+	/* temp_triangle.y.x = 1.0F; temp_triangle.y.y = 0.0F; temp_triangle.y.z = 0.0F; */
+	/* temp_triangle.z.x = 1.0F; temp_triangle.z.y = 1.0F; temp_triangle.z.z = 0.0F; */
+	/* _data.push_back( temp_triangle ); */
 	/* temp_triangle.x.x = -length; temp_triangle.x.y = length; temp_triangle.x.z = 0.0F; */
 	/* temp_triangle.y.x = -length; temp_triangle.y.y = -length; temp_triangle.y.z = 0.0F; */
 	/* temp_triangle.z.x = length; temp_triangle.z.y = -length; temp_triangle.z.z = 0.0F; */

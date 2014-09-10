@@ -1,12 +1,7 @@
-#include "fulcrum.hpp"
-
-#include "_scene_base.hpp"
-#include "_object_base.hpp"
-#include "_shader_manager.hpp"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xatom.h>
-#include <X11/cursorfont.h>
+#include <vector>
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
 
 #include <signal.h>
 #include <stdio.h>
@@ -17,10 +12,26 @@
 #include <sys/file.h>
 #include <unistd.h>
 #include <errno.h>
+
+#include <GL/glew.h>
+/* #include <GL/gl.h> */
+#include <GL/glx.h>
+
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <X11/cursorfont.h>
+
+
+#include "_scene_base.hpp"
+#include "_object_base.hpp"
+#include "_shader_manager.hpp"
+
 /***********************************************************************
 			scene test class
 ************************************************************************/
-const unsigned int shader_one = 1;
 class game_object : public _object_base {
 public:
 	game_object (void);
@@ -28,13 +39,6 @@ public:
 };
 game_object::game_object (void) : _object_base() {}
 game_object::~game_object (void) {}
-game_object* object_out_test;
-unsigned int shader_out_test;
-void init_object (void) {
-	object_out_test = new game_object();
-	object_out_test->generate_model();
-	object_out_test->set_position_in_world( vec3( 0.0F, 0.0F, -20.0F ) );
-}
 //
 class game_camera : public _camera_base {
 public:
@@ -58,7 +62,7 @@ game_scene::game_scene (void) : _scene_base() {}
 game_scene::~game_scene (void) {}
 
 void game_scene::edit_scene (void) {
-	get_physics_world()->setGravity( btVector3(0.0F,0.0F,0.0F) );
+	get_physics_world()->setGravity( btVector3(0.0F, 0.0F, 0.0F) );
 	//
 	string shader_file_name = "ver.sdr fag.sdr";
 	const unsigned int game_shader = 1;
@@ -140,45 +144,16 @@ void game_scene::edit_scene (void) {
 		object_two->get_rigidbody()->setDamping( 0.192F, 0.392F );
 		object_two->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
 		object_two->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
-		add_object ( object_two, game_shader );
+		add_object( object_two, game_shader );
 	}
 
 }
-game_scene* scene_out_test;
-/* _camera_base* camera_out_test; */
+shared_ptr<game_scene> scene_out_test;
 void init_scene ( void ) {
-	scene_out_test = new game_scene();
+	scene_out_test = make_shared<game_scene>();
 	scene_out_test->initilize_scene();
 	scene_out_test->edit_scene();
 	scene_out_test->load_scene();
-	//
-	/* camera_out_test =  new _camera_base(); */
-	/* camera_out_test->_object_base::set_position_in_world( glm::vec3( 0.0F, 0.0F, -30.0F ) ); */
-
-	/* float diffuseColor[] = {0.36, 0.05, 0.67, 1.0}; */
-	/* float ambientColor[] = {0.058, 0.082, 0.070, 1.0}; */
-	/* float specularColor[] = {0.9, 0.9, 0.9, 1.0}; */
-	/* float lightPosition[] = {0.0, 0.0, -100.0}; */
-
-	/* glUseProgram(scene_out_test->get_test_shader()->get_shader()); */
-	/* glUniform3fv( scene_out_test->get_test_shader()->light_position_in_world, 1, lightPosition); */
-	/* glUniform4fv( scene_out_test->get_test_shader()->ambient_color, 1, ambientColor); */
-	/* glUniform4fv( scene_out_test->get_test_shader()->specular_color, 1, specularColor); */
-	/* glUniform4fv( scene_out_test->get_test_shader()->diffuse_color, 1, diffuseColor); */
-
-	/* glUseProgram(0); */
-}
-void drawObject ( void ) {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-	glUseProgram( scene_out_test->get_test_shader()->get_shader() );
-
-	glUniformMatrix4fv( scene_out_test->get_test_shader()->object_transforms, 1, GL_FALSE, glm::value_ptr( object_out_test->get_matrix_in_world() ) );
-	/* glUniformMatrix4fv( scene_out_test->get_test_shader()->object_transforms, 1, GL_FALSE, glm::value_ptr( object_out_test->get_matrix_in_world() ) ); */
-	glUniformMatrix3fv( scene_out_test->get_test_shader()->normal_transforms, 1, GL_FALSE, glm::value_ptr( glm::mat3( object_out_test->get_matrix_in_world() ) ) );
-	object_out_test->draw();
-	//shadertest
-	glUseProgram( 0 );
 }
 /***********************************************************************
 			scene test class
@@ -197,121 +172,6 @@ XWindowAttributes       gwa;
 XEvent                  xev;
 KeySym key;             /* a dealie-bob to handle KeyPress Events */
 char text[255];         /* a char buffer for KeyPress Events */
-
-void initprog () {
-	std::string shaderSourceNames ("testvert.vert testfrag.frag");
-	shadertest = shaderManage.CreateShader(shaderSourceNames);
-	std::string uniforNames ("tranMa perspectiveMa normalMa diffuseColor ambientColor specularColor lightPosition lightColor diffMaterial lightPosMa cameraPosMa");
-	shaderManage.GetUniformLocation (uniforNames);
-
-	tranUnif = shaderManage.UniformName ("tranMa");
-	persUnif = shaderManage.UniformName ("perspectiveMa");
-	norMaUnif = shaderManage.UniformName ("normalMa");
-	diffColorUnif = shaderManage.UniformName ("diffuseColor");
-	ambientColorUnif = shaderManage.UniformName ("ambientColor");
-	specularColorUnif = shaderManage.UniformName ("specularColor");
-	lightPosUnif = shaderManage.UniformName ("lightPosition");
-	diffMaterialUnif = shaderManage.UniformName ("diffMaterial");
-	lightColorUnif = shaderManage.UniformName ("lightColor");
-	lightPosMaUnif = shaderManage.UniformName ("lightPosMa");
-	cameraPosMaUnif = shaderManage.UniformName ("cameraPosMa");
-
-	float diffuseColor[] = {0.36, 0.05, 0.67, 1.0};
-	float ambientColor[] = {0.058, 0.082, 0.070, 1.0};
-	float specularColor[] = {0.9, 0.9, 0.9, 1.0};
-	float lightPosition[] = {0.0, 0.0, 100.0};
-
-	glUseProgram(shadertest);
-	glUniform3fv(lightPosUnif, 1, lightPosition);
-	glUniform4fv(ambientColorUnif, 1, ambientColor);
-	glUniform4fv(specularColorUnif, 1, specularColor);
-	glUniform4fv(diffColorUnif, 1, diffuseColor);
-
-	trantest.Perspective(45.0, 1.0, 1.0, 100.0);
-	glUniformMatrix4fv(persUnif, 1, GL_FALSE, trantest.GetPerspectiveMatrix());
-	glUseProgram(0);
-}
-
-void initmodel () {
-	triangle[0] = triangle[1] = triangle[2] = triangle[4] = triangle[5] = triangle[6] = triangle[8] = 0.0f;
-	triangle[3] = triangle[7] = 2.0f;
-	triangle[9] = triangle[10] = triangle[12] = triangle[13] = triangle[15] = triangle[16] = 0.0f;
-	triangle[11] = triangle[14] = triangle[17] = -1.0f;
-
-	glGenBuffers(1, &modelbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, modelbuffer);
-	glBufferData(GL_ARRAY_BUFFER, (sizeof(float) * 3 * 3 * 2), triangle, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenVertexArrays(1, &vao); 
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, modelbuffer);
-
-		glEnableVertexAttribArray(ATTRIBUTE_INDEX_VERTEX);
-		glVertexAttribPointer(ATTRIBUTE_INDEX_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-		glEnableVertexAttribArray(ATTRIBUTE_INDEX_NORMAL);
-		glVertexAttribPointer(ATTRIBUTE_INDEX_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 9));
-
-	glBindVertexArray(0);
-}
-
-void drawtriangle () {
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glBindVertexArray(0);
-	glDisableVertexAttribArray(ATTRIBUTE_INDEX_VERTEX);
-	glDisableVertexAttribArray(ATTRIBUTE_INDEX_NORMAL);
-}
-
-void InitOGL () {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glEnable (GL_DEPTH_TEST);
-	glDepthRange(0.0f, 1.0f);
-	glFrontFace(GL_CCW);
-	//cull face 
-	//glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
-	glViewport (0, 0, gwa.width, gwa.height);
-	initprog ();
-	initmodel ();
-}
-
-float rotation = 0.0F;
-
-void DrawAQuad () {
-	init_object();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glUseProgram(shadertest);
-	
-	trantest.PushMatrix ();
-	glUniformMatrix4fv(cameraPosMaUnif, 1, GL_FALSE, trantest.GetCurrentMatrix());
-	trantest.Camera ();
-	trantest.ApplyCameraTransform(offsetx, offsety, offsetz);
-	glUniformMatrix3fv(lightPosMaUnif, 1, GL_FALSE, trantest.GetNormalMatrix());
-	
-	trantest.PushMatrix();
-	trantest.Rotate(ration, 0.0f, 1.0f, 0.0f);
-	glUniformMatrix4fv(tranUnif, 1, GL_FALSE, trantest.GetCurrentMatrix());
-	glUniformMatrix3fv(norMaUnif, 1, GL_FALSE, trantest.GetNormalMatrix());
-	trantest.Translate(0.0F, 0.0F, 30.0F);
-	glUniformMatrix4fv(tranUnif, 1, GL_FALSE, glm::value_ptr( object_out_test->get_matrix_in_world() ) );
-	glUniformMatrix3fv(norMaUnif, 1, GL_FALSE, glm::value_ptr( glm::mat3( object_out_test->get_matrix_in_world() ) ) );
-	object_out_test->draw();
-		/* trantest.PushMatrix(); */
-		/* 	trantest.Rotate(rotation, 0.0f, 1.0f, 0.0f); */
-		/* 	trantest.Rotate(rotation, 0.0f, 0.0f, 1.0f); */
-		/* 	glUniformMatrix4fv(tranUnif, 1, GL_FALSE, trantest.GetCurrentMatrix()); */
-		/* 	glUniformMatrix3fv(norMaUnif, 1, GL_FALSE, trantest.GetNormalMatrix()); */
-		/* 	drawtriangle(); */
-		/* trantest.PopMatrix(); */
-	trantest.PopMatrix();
-
-	trantest.PopMatrix();
-	//shadertest
-	glUseProgram(0);
-}
 
 int main ( int argc, char *argv[] ) {
 	dpy = XOpenDisplay (NULL);
@@ -354,12 +214,9 @@ int main ( int argc, char *argv[] ) {
 	XGetWindowAttributes (dpy, win, &gwa);
 
 	init_scene();
-	/* InitOGL(); */
-	/* init_object(); */
 	glViewport (0, 0, gwa.width, gwa.height);
 
 	while(1) {
-		++rotation;
 		if( XPending( dpy ) ) {
 			//
 			XNextEvent (dpy, &xev);
@@ -368,7 +225,6 @@ int main ( int argc, char *argv[] ) {
 			switch(xev.type) {
 				case Expose:
 				{
-					glViewport (0, 0, gwa.width, gwa.height);
 					scene_out_test->update_scene();
 					scene_out_test->render_scene();
 					glXSwapBuffers (dpy, win);
@@ -385,7 +241,6 @@ int main ( int argc, char *argv[] ) {
 
 					switch( ks ) {
 						case XK_Escape:
-							scene_out_test->~_scene_base();
 							glXMakeCurrent(dpy, None, NULL);
 							glXDestroyContext(dpy, glc);
 							XDestroyWindow(dpy, win);

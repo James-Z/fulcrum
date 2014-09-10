@@ -1,13 +1,10 @@
 #ifndef _SHADER_MANAGER_HPP_
 #define _SHADER_MANAGER_HPP_
-#pragma once
 
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-#include "MatrixStack.hpp"
 #include "ShaderManage.hpp"
-#include "ManageGraph.hpp"
 
 #include <vector>
 #include <string>

@@ -2,6 +2,7 @@
 #define _MODEL_MANAGER_HPP_
 
 #include <iostream>
+#include <vector>
 
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -16,6 +17,14 @@ struct triangles {
 };
 
 class _model_manager {
+private:
+	std::vector<triangles> _data;
+	/* GLfloat* _data; */
+	GLuint _float_number;
+	GLuint _vertex_number;
+	GLuint _triangle_number;
+	GLuint _vbo;
+	GLuint _vao;
 public:
 	_model_manager (void);
 	~_model_manager (void);
@@ -25,14 +34,6 @@ public:
 	void draw (void);
 	void generate_vertex_data (void);
 	void generate_normal_data (void);
-private:
-	vector<triangles> _data;
-	/* GLfloat* _data; */
-	GLuint _float_number;
-	GLuint _vertex_number;
-	GLuint _triangle_number;
-	GLuint _vbo;
-	GLuint _vao;
 };
 
 #endif

@@ -1,24 +1,18 @@
-OBJS = bullet/*.o fulcrum.o math3d.o MatrixStack.o ShaderManage.o MatrixStack.o ManageGraph.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
-HDRS = ogl.hpp MatrixStack.hpp ShaderManage.hpp math3d.h MatrixStack.hpp
-SCRS = fulcrum.cpp math3d.cpp MatrixStack.cpp ShaderManage.cpp ogl.cpp MatrixStack.cpp
+OBJS = bullet/*.o fulcrum.o math3d.o  ShaderManage.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
+HDRS = 
+SCRS =
 LS = -lGL -lX11 -lGLEW -lGLU -std=c++11
 fulcrum : $(OBJS)
 	g++ -g -o fulcrum $(OBJS) $(LS)
 
-fulcrum.o : fulcrum.cpp fulcrum.hpp
+fulcrum.o : fulcrum.cpp
 	g++ -g -c fulcrum.cpp $(LS)
 
 math3d.o : math3d.cpp math3d.h
 	g++ -g -c math3d.cpp $(LS)
 
-MatrixStack.o : MatrixStack.cpp MatrixStack.hpp
-	g++ -g -c MatrixStack.cpp $(LS)
-
 ShaderManage.o : ShaderManage.cpp ShaderManage.hpp
 	g++ -g -c ShaderManage.cpp $(LS)
-
-ManageGraph.o : ManageGraph.cpp ManageGraph.hpp
-	g++ -g -c ManageGraph.cpp $(LS)
 
 _scene_base.o : _scene_base.cpp _scene_base.hpp
 	g++ -g -c _scene_base.cpp $(LS)

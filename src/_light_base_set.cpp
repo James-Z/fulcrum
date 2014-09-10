@@ -7,7 +7,7 @@ _light_base_set::~_light_base_set (void) {
 }
 
 void _light_base_set::add_light ( _light_base* light ) {
-	_lights.push_back( shared_ptr<_light_base>( light ) );
+	_lights.push_back( std::shared_ptr<_light_base>( light ) );
 }
 
 void _light_base_set::update_lights (void) {
@@ -33,7 +33,7 @@ void _light_base_set::update_lights_data ( const glm::mat4& update_matrix ) {
 		_specular_colors.push_back( (*_lights_iter)->get_specular_color() );
 
 		(*_lights_iter)->update_matrix_in_camera_world( update_matrix );
-		_lights_positions.push_back( vec3((*_lights_iter)->get_matrix_in_camera_world()[3]) );
+		_lights_positions.push_back( glm::vec3((*_lights_iter)->get_matrix_in_camera_world()[3]) );
 	}
 	_lights_count = count;
 }
