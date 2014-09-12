@@ -16,7 +16,7 @@ void _light_base_set::update_lights (void) {
 		(*_lights_iter)->update();
 
 		if( (*_lights_iter)->is_destory() ) {
-			(*_lights_iter)->destory();
+			/* (*_lights_iter)->destory(); */
 			_lights.erase( _lights_iter );
 		}
 	}

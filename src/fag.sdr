@@ -25,15 +25,15 @@ layout(location = 0) out vec4 outputColor;
 void main () {
 	vec4 theColor;
 	for(int i = 0; i < lights_count; ++i) {
-		if( lighting[i] == 1 ) {
+		/* if( lighting[i] == 1 ) { */
 			float tempDot= dot( normalize(vVaryingNormal), normalize(vVaryingLightDir[i]) );
 			if( tempDot < 0.0 ) {
-				tempDot = -tempDot;
+				/* tempDot = -tempDot; */
 			}
-			float diff= max( 0.0, tempDot );
-			theColor.rgb = theColor.rgb + (diff * diffuse_color[i].rgb);
-			theColor.a= theColor.a + diffuse_color[i].a;
-		}
+				float diff= max( 0.0, tempDot );
+				theColor.rgb = theColor.rgb + (diff * diffuse_color[i].rgb);
+				theColor.a= theColor.a + diffuse_color[i].a;
+		/* } */
 	}
 	theColor+= ambient_color;
 	//vec3 vRecflection= normalize(reflect(-normalize(vVaryingLightDir), normalize(vVaryingNormal)));

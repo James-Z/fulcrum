@@ -68,7 +68,7 @@ void game_scene::edit_scene (void) {
 	const unsigned int game_shader = 1;
 	shader_load( shader_file_name, game_shader );
 	//
-	set_ambient_color( glm::vec4(0.058F, 0.082F, 0.07F, 1.0F) );
+	set_ambient_color( glm::vec4(0.3F, 0.3F, 0.3F, 1.0F) );
 	//
 	_light_base* light_one = new _light_base();
 	light_one->set_diffuse_color( glm::vec3(0.0F, 1.0F, 0.0F) );
@@ -76,25 +76,24 @@ void game_scene::edit_scene (void) {
 	light_one->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_one->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_one->translate( glm::vec3(400.0F, 200.0F, -400.0F) );
+	light_one->translate( glm::vec3(400.0F, -100.0F, -400.0F) );
 	add_light( light_one );
 
-	_light_base* light_two = new _light_base();
-	light_two->set_diffuse_color( glm::vec3(0.F, 0.F, 1.F) );
-	light_two->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
-	light_two->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
-	/* light_two->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_two->translate( glm::vec3(-400.0F, 100.0F, 400.0F) );
-	add_light( light_two );
+	/* _light_base* light_two = new _light_base(); */
+	/* light_two->set_diffuse_color( glm::vec3(0.F, 0.F, 1.F) ); */
+	/* light_two->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) ); */
+	/* light_two->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) ); */
+	/* /1* light_two->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); *1/ */
+	/* light_two->translate( glm::vec3(-400.0F, 200.0F, 400.0F) ); */
+	/* add_light( light_two ); */
 	/* std::cout<<"dot: "<<glm::dot( glm::vec3(0.0F, 0.0F, -4.0), glm::vec3(0.0F, 0.0F, -1.0) )<<std::endl; */
 	//
 	game_camera* camera_one = new game_camera();
 	camera_one->set_ID( 11 );
-	camera_one->perspective( 45.0F,1.0F, 1.0F, 1000.0F );
+	camera_one->perspective( 45.0F, 1366.0F / 768.0F, 1.0F, 1000.0F );
 	camera_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
 	camera_one->rotate( 0.0F, glm::vec3( 0.0F, 1.0F, 0.0F ) );
-	camera_one->_camera_base::translate( glm::vec3( 0.0F, 2.F, 5.0F ) );
-	camera_one->_camera_base::translate( glm::vec3( 0.0F, 2.F, 5.0F ) );
+	camera_one->_camera_base::translate( glm::vec3( 0.0F, 3.F, 8.0F ) );
 	camera_one->_camera_base::rotate( -10.0F, glm::vec3( 1.0F, 0.F, 0.0F ) );
 	add_camera( camera_one );
 
@@ -104,8 +103,8 @@ void game_scene::edit_scene (void) {
 			game_object* object_one = new game_object();
 			object_one->generate_model();
 			object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
-			object_one->translate( glm::vec3( -j * 2.0F, 0.0F, 2.0F * i ) );
-			btCollisionShape* shape = new btSphereShape( 0.5F );
+			object_one->translate( glm::vec3( -j * 5.0F, 0.0F, 5.0F * i ) );
+			btCollisionShape* shape = new btSphereShape( 0.1F );
 			object_one->init_rigid_body( (btScalar(i)+1.0F), btVector3( 0.6F, 0.6F, 0.6F ), shape );
 			object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
 			object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
@@ -121,12 +120,12 @@ void game_scene::edit_scene (void) {
 		object_two->generate_model();
 		object_two->catch_contrtoller();
 		object_two->set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) );
-		object_two->rotate( 180.0F, glm::vec3( 0.0F, 1.0F, 0.0F ) );
+		/* object_two->rotate( 180.0F, glm::vec3( 0.0F, 0.0F, 0.0F ) ); */
 		/* object_two->rotate( 180.0F, glm::vec3( 0.0F, 0.0F, 1.0F ) ); */
 		object_two->catch_camera( camera_one->get_ID() );
 		/* object_two->translate( vec3( 0.0F, 1.0F, -0.0F ) ); */
 		/* object_two->realse_camera(); */
-		btCollisionShape* shape = new btSphereShape( 0.5F );
+		btCollisionShape* shape = new btSphereShape( 0.43F );
 		object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), shape );
 		object_two->get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
 		object_two->get_rigidbody()->setDamping( 0.192F, 0.392F );
@@ -184,7 +183,7 @@ int main ( int argc, char *argv[] ) {
 	swa.colormap = cmap;
 	swa.event_mask = ExposureMask | KeyPressMask;
 
-	win = XCreateWindow (dpy, root, 0, 0, 600, 600, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+	win = XCreateWindow (dpy, root, 0, 0, 1366, 768, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
 	
 	XMapWindow (dpy, win);
 	XStoreName (dpy, win, "FULCRUM");
@@ -213,6 +212,7 @@ int main ( int argc, char *argv[] ) {
 			switch(xev.type) {
 				case Expose:
 				{
+					glViewport (0, 0, gwa.width, gwa.height);
 					scene_out_test->update_scene();
 					scene_out_test->render_scene();
 					glXSwapBuffers (dpy, win);
@@ -225,14 +225,14 @@ int main ( int argc, char *argv[] ) {
 					int ks(0);
 
 					ke=&xev.xkey;
-					ks=XLookupKeysym(ke,(ke->state&ShiftMask)?1:0);
+					ks=XLookupKeysym( ke,(ke->state&ShiftMask)?1:0 );
 
 					switch( ks ) {
 						case XK_Escape:
-							glXMakeCurrent(dpy, None, NULL);
-							glXDestroyContext(dpy, glc);
-							XDestroyWindow(dpy, win);
-							XCloseDisplay(dpy);
+							glXMakeCurrent( dpy, None, NULL );
+							glXDestroyContext( dpy, glc );
+							XDestroyWindow( dpy, win );
+							XCloseDisplay( dpy );
 							exit(0);
 						case XK_w:
 							scene_out_test->get_controller()->move_object( MOTION_STATE::FORWORD );

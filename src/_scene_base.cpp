@@ -20,10 +20,10 @@ void _scene_base::initilize_scene (void) {
 	glClearColor( 0.6f, 0.0f, 0.6f, 1.0f );
 	glEnable( GL_DEPTH_TEST );
 	glDepthRange( 0.0f, 1.0f );
-	/* glFrontFace( GL_CCW ); */
+	glFrontFace( GL_CCW );
 	//cull face
-	/* glEnable( GL_CULL_FACE ); */
-	/* glCullFace( GL_BACK ); */
+	glEnable( GL_CULL_FACE );
+	glCullFace( GL_BACK );
 
 	//
 	/* GLenum err = glewInit (); */
@@ -126,10 +126,10 @@ void _scene_base::update_scene (void) {
 					(*_objects_in_scene_iter)->apply_physics_transform_update();
 					/* std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl; */
 
-					if( !(*_objects_in_scene_iter)->get_rigidbody()->isActive() ) {
-						std::cout<<"unactive\n";
-						(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
-					}
+					/* if( !(*_objects_in_scene_iter)->get_rigidbody()->isActive() ) { */
+					/* 	std::cout<<"unactive\n"; */
+					(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
+					/* } */
 				} else {
 					(*_objects_in_scene_iter)->update();
 

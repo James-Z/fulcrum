@@ -86,8 +86,10 @@ void _object_base::move_and_turn ( const int state ) {
 		_force  = btVector3( 0.0F, 0.0F, 10.0F );
 	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, 1.0F, 0.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
 		_angular = btVector3( 0.0F, -1.0F, 0.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::MOVE_STOP ) {
 		_force = btVector3( 0.0F, 0.0F, 0.0F );
 	} else if( state == MOTION_STATE::TURN_STOP ) {
