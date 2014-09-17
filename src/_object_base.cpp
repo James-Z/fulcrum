@@ -70,31 +70,128 @@ void _object_base::update (void) {
 }
 
 void _object_base::apply_physics (void) {
-	_rigid_body->applyTorque( _angular );
+	/* _rigid_body->applyTorque( _angular ); */
+	btVector3 r = _rigid_body->getWorldTransform().getBasis() * _angular;
+	_rigid_body->setAngularVelocity( r );
 	btVector3 v = _rigid_body->getWorldTransform().getBasis() * _force;
 	this->get_rigidbody()->applyCentralForce( v );
 	/* _rigid_body->applyTorqueImpulse( _angular ); */
 	/* _rigid_body->setLinearVelocity( _force ); */
-	/* _rigid_body->setAngularVelocity( _angular ); */
+}
+
+void _object_base::move_and_turn ( const std::vector<int>& msg ) {
+
+	int state;
+	for( auto iter = msg.begin(); iter != msg.end(); ++iter ) {
+		state = *iter;
+		if( state == MOTION_STATE::FORWORD ) {
+			_force.setZ( -10.5F );
+		} else if( state == BACKWARD ) {
+			_force.setZ( 10.0F );
+		} else if( state == MOTION_STATE::Z_MOVE_STOP ) {
+			_force.setZ( 0.0F );
+		}
+
+		else if( state == MOTION_STATE::RIGHT_WARD ) {
+			_force.setX( -10.0F );
+		} else if( state == MOTION_STATE::LEFT_WARD ) {
+			_force.setX( 10.0F );
+		} else if( state == MOTION_STATE::X_MOVE_STOP ) {
+			_force.setX( 0.0F );
+		}
+
+		else if( state == MOTION_STATE::UP_WARD ) {
+			_force.setY( 10.0F );
+		} else if( state == MOTION_STATE::DOWN_WARD ) {
+			_force.setY( -10.0F );
+		} else if( state == MOTION_STATE::Y_MOVE_STOP ) {
+			_force.setY( 0.0F );
+		}
+
+		//
+		else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
+			_angular.setZ( 1.0F );
+		} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
+			_angular.setZ( -1.0F );
+		} else if( state == MOTION_STATE::Z_TURN_STOP ) {
+			_angular.setZ( 0.0F );
+		}
+
+		else if( state == MOTION_STATE::RIGHT_ROTATION ) {
+			_angular.setY( -1.0F );
+		} else if( state == MOTION_STATE::LEFT_ROTATION ) {
+			_angular.setY( 1.0F );
+		} else if( state == MOTION_STATE::Y_TURN_STOP ) {
+			_angular.setY( 0.0F );
+		}
+
+		else if( state == MOTION_STATE::UP_ROTATION ) {
+			_angular.setX( -1.0F );
+		} else if( state == MOTION_STATE::DOWN_ROTATION ) {
+			_angular.setX( 1.0F );
+		} else if( state == MOTION_STATE::X_TURN_STOP ) {
+			_angular.setX( 0.0F );
+		}
+	}
 }
 
 void _object_base::move_and_turn ( const int state ) {
 	_state = state;
+
 	if( state == MOTION_STATE::FORWORD ) {
 		_force = btVector3( 0.0F, 0.0F, -10.5F );
 	} else if( state == BACKWARD ) {
 		_force  = btVector3( 0.0F, 0.0F, 10.0F );
-	} else if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
-		_angular = btVector3( 0.0F, 1.0F, 0.0F );
+	} else if( state == MOTION_STATE::Z_MOVE_STOP ) {
+		_force.setZ( 0.0F );
+	}
+	
+	if( state == MOTION_STATE::FORWORD ) {
+		_force = btVector3( 0.0F, 0.0F, -10.5F );
+	} else if( state == BACKWARD ) {
+		_force  = btVector3( 0.0F, 0.0F, 10.0F );
+	} else if( state == MOTION_STATE::Z_MOVE_STOP ) {
+		_force.setZ( 0.0F );
+	}
+
+	if( state == MOTION_STATE::FORWORD ) {
+		_force = btVector3( 0.0F, 0.0F, -10.5F );
+	} else if( state == BACKWARD ) {
+		_force  = btVector3( 0.0F, 0.0F, 10.0F );
+	} else if( state == MOTION_STATE::Z_MOVE_STOP ) {
+		_force.setZ( 0.0F );
+	}
+
+	//
+	if( state == MOTION_STATE::CLOCK_WISE_ROTATION ) {
+		_angular.setZ( 1.0F );
 		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
 	} else if( state == MOTION_STATE::ANTI_CLOCK_WISE_ROTATION ) {
-		_angular = btVector3( 0.0F, -1.0F, 0.0F );
+		_angular.setZ( -1.0F );
 		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
-	} else if( state == MOTION_STATE::MOVE_STOP ) {
-		_force = btVector3( 0.0F, 0.0F, 0.0F );
-	} else if( state == MOTION_STATE::TURN_STOP ) {
-		_angular = btVector3( 0.0F, 0.0F, 0.0F );
-	} else {}
+	} else if( state == MOTION_STATE::Z_TURN_STOP ) {
+		_angular.setZ( 0.0F );
+	}
+
+	if( state == MOTION_STATE::RIGHT_ROTATION ) {
+		_angular.setY( -1.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
+	} else if( state == MOTION_STATE::LEFT_ROTATION ) {
+		_angular.setY( 1.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
+	} else if( state == MOTION_STATE::Y_TURN_STOP ) {
+		_angular.setY( 0.0F );
+	}
+
+	if( state == MOTION_STATE::UP_ROTATION ) {
+		_angular.setX( -1.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
+	} else if( state == MOTION_STATE::DOWN_ROTATION ) {
+		_angular.setX( 1.0F );
+		_angular = _rigid_body->getWorldTransform().getBasis() * _angular;
+	} else if( state == MOTION_STATE::X_TURN_STOP ) {
+		_angular.setX( 0.0F );
+	}
 }
 
 void _object_base::apply_physics_transform_update (void) {

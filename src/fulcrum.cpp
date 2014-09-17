@@ -24,6 +24,8 @@
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
 
+#include <SDL2/SDL.h>
+/* #include <SDL2/SDL_opengl.h> */
 
 #include "_scene_base.hpp"
 #include "_object_base.hpp"
@@ -146,162 +148,233 @@ void init_scene ( void ) {
 			scene test class
 ************************************************************************/
 
+//Screen dimension constants
+const int SCREEN_WIDTH = 1366;
+const int SCREEN_HEIGHT = 768;
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
 
-Display                 *dpy;
-Window                  root;
-GLint                   att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-XVisualInfo             *vi;
-Colormap                cmap;
-XSetWindowAttributes    swa;
-Window                  win;
-GLXContext              glc;
-XWindowAttributes       gwa;
-XEvent                  xev;
-KeySym key;             /* a dealie-bob to handle KeyPress Events */
-char text[255];         /* a char buffer for KeyPress Events */
+//OpenGL context
+SDL_GLContext gContext;
 
-int main ( int argc, char *argv[] ) {
-	dpy = XOpenDisplay (NULL);
+//Render flag
+bool gRenderQuad = true;
 
-	if(dpy == NULL) {
-		printf("\n\tcannot connect to X server\n\n");
-		exit (0);
-	}
-	
-	root = DefaultRootWindow (dpy);
-	vi = glXChooseVisual (dpy, 0, att);
-	if(vi == NULL) {
-		printf ("\n\tno appropriate visual found\n\n");
-		exit (0);
-	}
-	else {
-		printf ("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
-	}
-	
-	cmap = XCreateColormap (dpy, root, vi->visual, AllocNone);
-	
-	swa.colormap = cmap;
-	swa.event_mask = ExposureMask | KeyPressMask;
+//Graphics program
+GLuint gProgramID = 0;
+GLint gVertexPos2DLocation = -1;
+GLuint gVBO = 0;
+GLuint gIBO = 0;
 
-	win = XCreateWindow (dpy, root, 0, 0, 1366, 768, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-	
-	XMapWindow (dpy, win);
-	XStoreName (dpy, win, "FULCRUM");
-	
-	glc = glXCreateContext (dpy, vi, NULL, GL_TRUE);
-	glXMakeCurrent (dpy, win, glc);
+//Starts up SDL, creates window, and initializes OpenGL
+bool init();
 
-	GLenum err = glewInit ();
-        if(err != GLEW_OK) {
-		std::cout<<glewGetErrorString (err)<<std::endl;
-		exit (1);
-        }
 
-	//Init OpenGL Program
-	XGetWindowAttributes (dpy, win, &gwa);
+//Initializes rendering program and clear color
+bool initGL();
 
-	init_scene();
-	glViewport (0, 0, gwa.width, gwa.height);
+//Input handler
+void handleKeys( unsigned char key, int x, int y );
 
-	while(1) {
-		if( XPending( dpy ) ) {
-			//
-			XNextEvent (dpy, &xev);
-			XSelectInput(dpy, win, KeyPressMask | KeyReleaseMask);
-			//
-			switch(xev.type) {
-				case Expose:
-				{
-					glViewport (0, 0, gwa.width, gwa.height);
-					scene_out_test->update_scene();
-					scene_out_test->render_scene();
-					glXSwapBuffers (dpy, win);
-					break;
+//Per frame update
+void update();
+
+//Renders quad to the screen
+void render();
+
+//Frees media and shuts down SDL
+void close();
+
+//Shader loading utility programs
+void printProgramLog( GLuint program );
+void printShaderLog( GLuint shader );
+
+bool init () {
+	//Initialization flag
+	bool success = true;
+
+	//Initialize SDL
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+		success = false;
+	} else {
+		//Use OpenGL 3.1 core
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
+
+		//Create window
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+		if( gWindow == NULL ) {
+			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+			success = false;
+		} else {
+			//Create context
+			gContext = SDL_GL_CreateContext( gWindow );
+			if( gContext == NULL ) {
+				printf( "OpenGL context could not be created! SDL Error: %s\n", SDL_GetError() );
+				success = false;
+			} else {
+				//Initialize GLEW
+				glewExperimental = GL_TRUE; 
+				GLenum glewError = glewInit();
+				if( glewError != GLEW_OK ) {
+					printf( "Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
 				}
-				case KeyPress:
-				{
-					/* std::cout<<"key press\n"; */
-					XKeyEvent *ke;
-					int ks(0);
 
-					ke=&xev.xkey;
-					ks=XLookupKeysym( ke,(ke->state&ShiftMask)?1:0 );
-
-					switch( ks ) {
-						case XK_Escape:
-							glXMakeCurrent( dpy, None, NULL );
-							glXDestroyContext( dpy, glc );
-							XDestroyWindow( dpy, win );
-							XCloseDisplay( dpy );
-							exit(0);
-						case XK_w:
-							scene_out_test->get_controller()->move_object( MOTION_STATE::FORWORD );
-							break;
-						case XK_s:
-							scene_out_test->get_controller()->move_object( BACKWARD );
-							break;
-						default:
-							break;
-					}
-					switch( ks ) {
-						case XK_Escape:
-							glXMakeCurrent(dpy, None, NULL);
-							glXDestroyContext(dpy, glc);
-							XDestroyWindow(dpy, win);
-							XCloseDisplay(dpy);
-							exit(0);
-						case XK_a:
-							scene_out_test->get_controller()->move_object( CLOCK_WISE_ROTATION );
-							break;
-						case XK_d:
-							scene_out_test->get_controller()->move_object( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
-							break;
-						default:
-							break;
-					}
-					break;	//KeyPress break
+				//Use Vsync
+				if( SDL_GL_SetSwapInterval( 1 ) < 0 ) {
+					printf( "Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError() );
 				}
-				case KeyRelease:
-				{
-					/* std::cout<<"key release\n"; */
-					XKeyEvent *ke;
-
-					ke=&xev.xkey;
-					int ks=XLookupKeysym(ke,(ke->state&ShiftMask)?1:0);
-
-					switch(ks) {
-						case XK_Escape:
-							glXMakeCurrent(dpy, None, NULL);
-							glXDestroyContext(dpy, glc);
-							XDestroyWindow(dpy, win);
-							XCloseDisplay(dpy);
-							exit(0);
-						case XK_a:
-							scene_out_test->get_controller() ->move_object( MOTION_STATE::TURN_STOP );
-							break;
-						case XK_d:
-							scene_out_test->get_controller()->move_object( MOTION_STATE::TURN_STOP  );
-							break;
-						case XK_w:
-							scene_out_test->get_controller()->move_object( MOTION_STATE::MOVE_STOP );
-							break;
-						case XK_s:
-							scene_out_test->get_controller()->move_object( MOTION_STATE::MOVE_STOP );
-							break;
-						default:
-							break;
-
-					}
-					break;
-				}
-			}	//switch end key state end
-			scene_out_test->update_scene();
-			scene_out_test->render_scene();
-			glXSwapBuffers(dpy, win);
-		} else {	//if end
-			scene_out_test->update_scene();
-			scene_out_test->render_scene();
-			glXSwapBuffers(dpy, win);
+			}
 		}
-	} /* this closes while(1) { */
-} /* this is the } which closes int main(int argc, char *argv[]) { */
+	}
+
+	return success;
+}
+
+int main( int argc, char* args[] ) {
+	//Start up SDL and create window
+	if( !init() ) {
+		printf( "Failed to initialize!\n" );
+	} else {
+		//Main loop flag
+		bool quit = false;
+
+		//Event handler
+		SDL_Event e;
+		
+		//Enable text input
+		SDL_StartTextInput();
+		GLenum err = glewInit ();
+		if(err != GLEW_OK) {
+			std::cout<<glewGetErrorString (err)<<std::endl;
+			exit (1);
+		}
+		init_scene();
+		glViewport ( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT );
+		//While application is running
+		int* x = new int( 0 );
+		int* y = new int( 0 );
+		while( !quit ) {
+			//Handle events on queue
+			while( SDL_PollEvent( &e ) != 0 ) {
+				//User requests quit
+				SDL_GetMouseState( x, y );
+				/* std::cout<<"\nx = "<<*x<<" y = "<<*y; */
+				SDL_ShowCursor( 1 );
+				if( *x > 1366/2 ) {
+					/* std::cout<<">\n"; */
+					scene_out_test->get_controller()->message( MOTION_STATE::RIGHT_ROTATION );
+					SDL_WarpMouseInWindow( gWindow, *x-1, 768/2 );
+				} else if( *x == 1366/2 ) {
+					/* std::cout<<"==\n"; */
+					SDL_WarpMouseInWindow( gWindow, 1366/2, 768/2 );
+					scene_out_test->get_controller()->message( MOTION_STATE::Y_TURN_STOP );
+				}
+				if( e.type == SDL_QUIT ) {
+					quit = true;
+				} else if( e.type == SDL_KEYDOWN ) {
+					switch( e.key.keysym.sym ) {
+						case SDLK_ESCAPE:
+							quit = true;
+							break;
+						case SDLK_w:
+							scene_out_test->get_controller()->message( MOTION_STATE::FORWORD );
+							break;
+						case SDLK_s:
+							scene_out_test->get_controller()->message( MOTION_STATE::BACKWARD );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_a:
+							scene_out_test->get_controller()->message( MOTION_STATE::RIGHT_WARD );
+							break;
+						case SDLK_d:
+							scene_out_test->get_controller()->message( MOTION_STATE::LEFT_WARD );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_q:
+							scene_out_test->get_controller()->message( MOTION_STATE::CLOCK_WISE_ROTATION );
+							break;
+						case SDLK_e:
+							scene_out_test->get_controller()->message( MOTION_STATE::ANTI_CLOCK_WISE_ROTATION );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_r:
+							scene_out_test->get_controller()->message( MOTION_STATE::UP_WARD );
+							break;
+						case SDLK_f:
+							scene_out_test->get_controller()->message( MOTION_STATE::DOWN_WARD );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_SPACE:
+							break;
+					}
+				} else if( e.type == SDL_KEYUP ) {
+					switch( e.key.keysym.sym ) {
+						case SDLK_w:
+							scene_out_test->get_controller()->message( MOTION_STATE::Z_MOVE_STOP );
+							break;
+						case SDLK_s:
+							scene_out_test->get_controller()->message( MOTION_STATE::Z_MOVE_STOP );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_a:
+							scene_out_test->get_controller()->message( MOTION_STATE::X_MOVE_STOP );
+							break;
+						case SDLK_d:
+							scene_out_test->get_controller()->message( MOTION_STATE::X_MOVE_STOP );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_q:
+							scene_out_test->get_controller()->message( MOTION_STATE::Z_TURN_STOP );
+							break;
+						case SDLK_e:
+							scene_out_test->get_controller()->message( MOTION_STATE::Z_TURN_STOP );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_r:
+							scene_out_test->get_controller()->message( MOTION_STATE::Y_MOVE_STOP );
+							break;
+						case SDLK_f:
+							scene_out_test->get_controller()->message( MOTION_STATE::Y_MOVE_STOP );
+							break;
+					}
+					switch( e.key.keysym.sym ) {
+						case SDLK_SPACE:
+							break;
+					}
+				}
+			}
+
+			//Render quad
+			scene_out_test->update_scene();
+			scene_out_test->render_scene();
+			
+			//Update screen
+			SDL_GL_SwapWindow( gWindow );
+		}
+	delete x;
+	x = nullptr;
+	delete y;
+	y = nullptr;
+	}
+
+	//Free resources and close SDL
+	//Destroy window	
+	SDL_DestroyWindow( gWindow );
+	gWindow = nullptr;
+
+	//Quit SDL subsystems
+	SDL_Quit();
+
+	return 0;
+}
+

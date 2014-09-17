@@ -20,17 +20,12 @@
 #include "_model_manager.hpp"
 
 enum MOTION_STATE {	NO_MOSTION = 0,
-			FORWORD = 1,
-			BACKWARD,
-			LEFT_ROTATION,
-			RIGHT_ROTATION,
-			CLOCK_WISE_ROTATION,
-			ANTI_CLOCK_WISE_ROTATION,
-			UP_WARD,
-			DOWN_WARD,
-			MOVE_STOP,
-			TURN_STOP
-};
+			RIGHT_WARD, LEFT_WARD, X_MOVE_STOP,
+			UP_WARD, DOWN_WARD, Y_MOVE_STOP,
+			FORWORD, BACKWARD, Z_MOVE_STOP,
+			UP_ROTATION, DOWN_ROTATION, X_TURN_STOP,
+			LEFT_ROTATION, RIGHT_ROTATION, Y_TURN_STOP,
+			CLOCK_WISE_ROTATION, ANTI_CLOCK_WISE_ROTATION, Z_TURN_STOP };
 
 class _object_base {
 protected:
@@ -78,6 +73,7 @@ public:
 	virtual void update (void);
 	//
 	void apply_physics (void);
+	void move_and_turn ( const std::vector<int>& msg );
 	void move_and_turn ( const int state );
 	void apply_physics_transform_update (void);
 	//

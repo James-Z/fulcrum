@@ -120,7 +120,8 @@ void _scene_base::update_scene (void) {
 
 					(*_objects_in_scene_iter)->update();
 
-					(*_objects_in_scene_iter)->move_and_turn( _controller_in_scene->get_object_motion_state() );
+					(*_objects_in_scene_iter)->move_and_turn( _controller_in_scene->get_message() );
+					_controller_in_scene->message_clear();
 					(*_objects_in_scene_iter)->apply_physics();
 
 					(*_objects_in_scene_iter)->apply_physics_transform_update();

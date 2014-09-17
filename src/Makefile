@@ -1,7 +1,7 @@
 OBJS = bullet/*.o fulcrum.o math3d.o  ShaderManage.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
 HDRS = 
 SCRS =
-LS = -lGL -lX11 -lGLEW -lGLU -std=c++11
+LS = -lGL -lX11 -lGLEW -lGLU -std=c++11 -lSDL2
 fulcrum : $(OBJS)
 	g++ -g -o fulcrum $(OBJS) $(LS)
 

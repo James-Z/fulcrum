@@ -11,6 +11,7 @@ private:
 	glm::mat4 _object_controller_matrix;
 	glm::mat4 _camera_controller_matrix;
 	int _object_motion_state;
+	std::vector<int> _message;
 public:
 	_controller_base (void);
 	virtual ~_controller_base (void);
@@ -18,6 +19,9 @@ public:
 	void turn_camera ( const float angle, const glm::vec3& aix );
 	void move_camera ( const glm::vec3& move_to );
 	void move_object ( const int move );
+	void message ( const int msg ){ _message.push_back( msg ); }
+	void message_clear ( void ){ _message.clear(); }
+	const std::vector<int>& get_message ( void ) const { return _message; }
 	/* void left_rotation (void); */
 	/* void right_rotation (void); */
 
