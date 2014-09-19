@@ -106,7 +106,7 @@ void game_scene::edit_scene (void) {
 			object_one->generate_model();
 			object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
 			object_one->translate( glm::vec3( -j * 5.0F, 0.0F, 5.0F * i ) );
-			btCollisionShape* shape = new btSphereShape( 0.1F );
+			btCollisionShape* shape = new btSphereShape( 1.1F );
 			object_one->init_rigid_body( (btScalar(i)+1.0F), btVector3( 0.6F, 0.6F, 0.6F ), shape );
 			object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
 			object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
@@ -127,7 +127,7 @@ void game_scene::edit_scene (void) {
 		object_two->catch_camera( camera_one->get_ID() );
 		/* object_two->translate( vec3( 0.0F, 1.0F, -0.0F ) ); */
 		/* object_two->realse_camera(); */
-		btCollisionShape* shape = new btSphereShape( 0.43F );
+		btCollisionShape* shape = new btSphereShape( 2.43F );
 		object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), shape );
 		object_two->get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
 		object_two->get_rigidbody()->setDamping( 0.192F, 0.392F );
@@ -152,7 +152,8 @@ void init_scene ( void ) {
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window* gWindow = nullptr;
+/* SDL_Surface* screen = NULL; */
 
 //OpenGL context
 SDL_GLContext gContext;
@@ -256,22 +257,51 @@ int main( int argc, char* args[] ) {
 		//While application is running
 		int* x = new int( 0 );
 		int* y = new int( 0 );
+		int tempx = 0;
+		float factor = 10.0F;
 		while( !quit ) {
 			//Handle events on queue
 			while( SDL_PollEvent( &e ) != 0 ) {
 				//User requests quit
 				SDL_GetMouseState( x, y );
 				/* std::cout<<"\nx = "<<*x<<" y = "<<*y; */
-				SDL_ShowCursor( 1 );
-				if( *x > 1366/2 ) {
-					/* std::cout<<">\n"; */
-					scene_out_test->get_controller()->message( MOTION_STATE::RIGHT_ROTATION );
-					SDL_WarpMouseInWindow( gWindow, *x-1, 768/2 );
-				} else if( *x == 1366/2 ) {
-					/* std::cout<<"==\n"; */
-					SDL_WarpMouseInWindow( gWindow, 1366/2, 768/2 );
-					scene_out_test->get_controller()->message( MOTION_STATE::Y_TURN_STOP );
+
+				SDL_ShowCursor( 0 );
+				if( *x != (1366/2)) {
+					if(e.type == SDL_MOUSEMOTION) {
+						/* SDL_PixelFormat* fmt = screen->format; */
+						/* If the mouse is moving to the left */
+						if(e.motion.xrel < 0) {
+							/* std::cout<<"go to left\n"<<e.motion.xrel; */
+							int tx = 1366/2 - *x;
+							/* std::cout<<"go to left\n"<<tx; */
+							scene_out_test->get_controller()->message( MOTION_STATE::LEFT_ROTATION , (float)tx/factor );
+							/* If the mouse is moving to the right */
+						} else if(e.motion.xrel > 0) {
+							/* std::cout<<"go to right\n"; */
+							int tx = *x - 1366/2;
+							scene_out_test->get_controller()->message( MOTION_STATE::RIGHT_ROTATION, (float)tx/factor );
+							/* If the mouse is moving up */
+						}
+						if(e.motion.yrel < 0) {
+							int tx = 768/2 - *y;
+							scene_out_test->get_controller()->message( MOTION_STATE::DOWN_ROTATION, (float)tx/factor );
+							/* If the mouse is moving down */
+						} else if(e.motion.yrel > 0) {
+							int tx = *y - 768/2;
+							scene_out_test->get_controller()->message( MOTION_STATE::UP_ROTATION, (float)tx/factor );
+							/* std::cout<<"go to down\n"; */
+						}
+					}
+				} else {
+					/* scene_out_test->get_controller()->message( MOTION_STATE::Y_TURN_STOP ); */
+					/* scene_out_test->get_controller()->message( MOTION_STATE::X_TURN_STOP ); */
+					/* std::cout<<"STOP ooo SToooOP!\n"; */
 				}
+				/* SDL_SetRelativeMouseMode(SDL_FALSE); */
+				SDL_WarpMouseInWindow( gWindow, 1366/2, 768/2 );
+				/* SDL_SetRelativeMouseMode(SDL_TRUE); */
+
 				if( e.type == SDL_QUIT ) {
 					quit = true;
 				} else if( e.type == SDL_KEYDOWN ) {
@@ -353,10 +383,10 @@ int main( int argc, char* args[] ) {
 					}
 				}
 			}
+				scene_out_test->update_scene();
+				scene_out_test->render_scene();
 
 			//Render quad
-			scene_out_test->update_scene();
-			scene_out_test->render_scene();
 			
 			//Update screen
 			SDL_GL_SwapWindow( gWindow );

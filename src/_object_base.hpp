@@ -18,7 +18,12 @@
 
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"
+struct control_message {
+	int msg;
+	int msg_info;
 
+	control_message( int m, int m_i ) : msg(m), msg_info(m_i) {}
+};
 enum MOTION_STATE {	NO_MOSTION = 0,
 			RIGHT_WARD, LEFT_WARD, X_MOVE_STOP,
 			UP_WARD, DOWN_WARD, Y_MOVE_STOP,
@@ -40,6 +45,9 @@ protected:
 	int _state;
 	btVector3 _force;
 	btVector3 _angular;
+	btVector3 _angular_x;
+	btVector3 _angular_y;
+	btVector3 _angular_z;
 	btScalar _mass;
 	btVector3 _inertia;
 	std::shared_ptr<btDefaultMotionState> _motion_state;
@@ -73,7 +81,7 @@ public:
 	virtual void update (void);
 	//
 	void apply_physics (void);
-	void move_and_turn ( const std::vector<int>& msg );
+	void move_and_turn ( const std::vector<control_message>& msg );
 	void move_and_turn ( const int state );
 	void apply_physics_transform_update (void);
 	//
