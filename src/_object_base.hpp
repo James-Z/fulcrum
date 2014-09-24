@@ -82,7 +82,6 @@ public:
 	//
 	void apply_physics (void);
 	void move_and_turn ( const std::vector<control_message>& msg );
-	void move_and_turn ( const int state );
 	void apply_physics_transform_update (void);
 	//
 	inline void set_ID ( const unsigned int ID ) { _ID = ID; }
@@ -103,6 +102,7 @@ public:
 	inline bool is_catch_camera (void) const { return _is_catch_camera; }
 	inline bool is_be_controlled (void) const { return _is_be_controlled; }
 	inline void generate_model (void) { _model.generate_vertex_data(); _model.generate_normal_data(); _model.initialize_vbo(); _model.initialize_vao(); }
+	inline const std::vector<triangles>& get_model_data(void) const { _model.get_data(); }
 
 };	// _object_base
 

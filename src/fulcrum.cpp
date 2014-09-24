@@ -30,7 +30,10 @@
 #include "_scene_base.hpp"
 #include "_object_base.hpp"
 #include "_shader_manager.hpp"
-
+#include "bullet/BulletCollision/CollisionShapes/btConvexHullShape.h"
+#include "bullet/BulletCollision/CollisionShapes/btTriangleMesh.h"
+#include "bullet/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h"
+#include "bullet/BulletCollision/CollisionShapes/btShapeHull.h"
 /***********************************************************************
 			scene test class
 ************************************************************************/
@@ -78,7 +81,7 @@ void game_scene::edit_scene (void) {
 	light_one->set_specular_color( glm::vec3(0.9F, 0.9F, 0.9F) );
 	light_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F) );
 	/* light_one->rotate( 8.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
-	light_one->translate( glm::vec3(400.0F, -100.0F, -400.0F) );
+	light_one->translate( glm::vec3(400.0F, -100.0F, 400.0F) );
 	add_light( light_one );
 
 	/* _light_base* light_two = new _light_base(); */
@@ -105,12 +108,46 @@ void game_scene::edit_scene (void) {
 			game_object* object_one = new game_object();
 			object_one->generate_model();
 			object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
-			object_one->translate( glm::vec3( -j * 5.0F, 0.0F, 5.0F * i ) );
-			btCollisionShape* shape = new btSphereShape( 1.1F );
-			object_one->init_rigid_body( (btScalar(i)+1.0F), btVector3( 0.6F, 0.6F, 0.6F ), shape );
+			object_one->translate( glm::vec3( -j * 5.0F, i+j, 5.0F * i ) );
+			btConvexHullShape *tmpshape = new btConvexHullShape();
+			for( auto i = object_one->get_model_data().begin(); i != object_one->get_model_data().end(); ++i ) {
+				tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) );
+				tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) );
+				tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) );
+
+			}
+			////////////////////
+			/* btCollisionShape* shape = new btSphereShape( 2.43F ); */
+			object_one->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
 			object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
 			object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
 			object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
+			/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
+			/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
+			add_object( object_one, game_shader );
+		}
+	}
+	for( int j = 0; j < 20; ++j ) {
+		for(int i = 0; i < 20; ++i) {
+			game_object* object_one = new game_object();
+			object_one->generate_model();
+			object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
+			object_one->translate( glm::vec3( -j * 10.0F, i-j, 10.0F * i ) );
+			btConvexHullShape *tmpshape = new btConvexHullShape();
+			for( auto i = object_one->get_model_data().begin(); i != object_one->get_model_data().end(); ++i ) {
+				tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) );
+				tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) );
+				tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) );
+
+			}
+			////////////////////
+			/* btCollisionShape* shape = new btSphereShape( 2.43F ); */
+			object_one->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
+			object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F );
+			/* object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) ); */
+			/* object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) ); */
+			object_one->get_rigidbody()->setAngularFactor( btVector3(0.0F, 0.0F, 0.0F) );
+			object_one->get_rigidbody()->setLinearFactor( btVector3(0.0F, 0.0 ,0.0) );
 			/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
 			/* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); */
 			add_object( object_one, game_shader );
@@ -127,11 +164,36 @@ void game_scene::edit_scene (void) {
 		object_two->catch_camera( camera_one->get_ID() );
 		/* object_two->translate( vec3( 0.0F, 1.0F, -0.0F ) ); */
 		/* object_two->realse_camera(); */
-		btCollisionShape* shape = new btSphereShape( 2.43F );
-		object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), shape );
+		////////////////////
+		/* btTriangleMesh* trimesh = new btTriangleMesh(); */
+		/* for ( auto i = object_two->get_model_data().begin(); i != object_two->get_model_data().end(); ++i ) */
+		/* { */
+
+		/* 	btVector3 vertex0( i->x.x*0.9F, i->x.y*0.9F, i->x.z*0.9F ); */
+		/* 	btVector3 vertex1( i->y.x*0.9F, i->y.y*0.9F, i->y.z*0.9F ); */
+		/* 	btVector3 vertex2( i->z.x*0.9F, i->z.y*0.9F, i->z.z*0.9F ); */
+
+		/* 	trimesh->addTriangle(vertex0, vertex1, vertex2); */
+		/* } */
+		btConvexHullShape *tmpshape = new btConvexHullShape();
+		/* for( auto i = object_two->get_model_data().begin(); i != object_two->get_model_data().end(); ++i ) { */
+		int j = 0;
+		for( auto i = object_two->get_model_data().begin(); j<12; ++i,++j ) {
+			tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) );
+			tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) );
+			tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) );
+
+		}
+		/* btShapeHull *hull = new btShapeHull(tmpshape); */
+		/* btScalar margin = tmpshape->getMargin(); */
+		/* hull->buildHull(margin); */
+		/* tmpshape->setUserPointer(hull); */
+		////////////////////
+		/* btCollisionShape* shape = new btSphereShape( 2.43F ); */
+		object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
 		object_two->get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
-		object_two->get_rigidbody()->setDamping( 0.192F, 0.392F );
-		object_two->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) );
+		object_two->get_rigidbody()->setDamping( 0.992F, 0.992F );
+		object_two->get_rigidbody()->setAngularFactor( btVector3(1.0F, 1.0F, 1.0F) );
 		object_two->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
 		add_object( object_two, game_shader );
 	}
@@ -167,28 +229,9 @@ GLint gVertexPos2DLocation = -1;
 GLuint gVBO = 0;
 GLuint gIBO = 0;
 
-//Starts up SDL, creates window, and initializes OpenGL
-bool init();
-
-
-//Initializes rendering program and clear color
-bool initGL();
-
-//Input handler
-void handleKeys( unsigned char key, int x, int y );
-
-//Per frame update
-void update();
-
 //Renders quad to the screen
-void render();
-
-//Frees media and shuts down SDL
 void close();
 
-//Shader loading utility programs
-void printProgramLog( GLuint program );
-void printShaderLog( GLuint shader );
 
 bool init () {
 	//Initialization flag
@@ -205,7 +248,7 @@ bool init () {
 		SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Space : Fulcrum", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
 		if( gWindow == NULL ) {
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
@@ -294,8 +337,8 @@ int main( int argc, char* args[] ) {
 						}
 					}
 				} else {
-					/* scene_out_test->get_controller()->message( MOTION_STATE::Y_TURN_STOP ); */
-					/* scene_out_test->get_controller()->message( MOTION_STATE::X_TURN_STOP ); */
+					scene_out_test->get_controller()->message( MOTION_STATE::Y_TURN_STOP );
+					scene_out_test->get_controller()->message( MOTION_STATE::X_TURN_STOP );
 					/* std::cout<<"STOP ooo SToooOP!\n"; */
 				}
 				/* SDL_SetRelativeMouseMode(SDL_FALSE); */

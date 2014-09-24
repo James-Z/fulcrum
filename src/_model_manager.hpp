@@ -165,6 +165,7 @@ public:
 	virtual void edit_modedl (void);
 	void generate_vertex_data (void);
 	void generate_normal_data (void);
+	inline const std::vector<triangles>& get_data (void) const { return _data; }
 };
 
 #endif
