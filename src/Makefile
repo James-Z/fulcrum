@@ -1,7 +1,7 @@
-OBJS = bullet/*.o fulcrum.o math3d.o  ShaderManage.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o
+OBJS = bullet/*.o fulcrum.o math3d.o ShaderManage.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o _asset_manager.o
 HDRS = 
 SCRS =
-LS = -lGL -lX11 -lGLEW -lGLU -std=c++11 -lSDL2
+LS = -lGL -lX11 -lGLEW -lGLU -std=c++11 -lSDL2 -lassimp
 fulcrum : $(OBJS)
 	g++ -g -o fulcrum $(OBJS) $(LS)
 
@@ -28,6 +28,9 @@ _shader_manager.o : _shader_manager.cpp _shader_manager.hpp
 
 _controller_base.o : _controller_base.cpp _controller_base.hpp
 	g++ -g -c _controller_base.cpp $(LS)
+
+_asset_manager.o : _asset_manager.cpp _asset_manager.hpp
+	g++ -g -c _asset_manager.cpp $(LS)
 
 _model_manager.o : _model_manager.cpp _model_manager.hpp
 	g++ -g -c _model_manager.cpp $(LS)

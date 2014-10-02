@@ -41,6 +41,8 @@ protected:
 	glm::mat4 _matrix_in_camera_world;
 	glm::mat4 _matrix_follow_in_world;
 	glm::vec4 _position_in_world;
+	glm::vec4 _material_diffuse_color;
+	glm::vec4 _material_specular_color;
 
 	int _state;
 	btVector3 _force;
@@ -102,7 +104,10 @@ public:
 	inline bool is_catch_camera (void) const { return _is_catch_camera; }
 	inline bool is_be_controlled (void) const { return _is_be_controlled; }
 	inline void generate_model (void) { _model.generate_vertex_data(); _model.generate_normal_data(); _model.initialize_vbo(); _model.initialize_vao(); }
+	/* inline void generate_model (void) { _model.generate_vertex_data(); _model.initialize_vbo(); _model.initialize_vao(); } */
 	inline const std::vector<triangles>& get_model_data(void) const { _model.get_data(); }
+	inline void set_material_diffuse_color ( const glm::vec4& color ) { _material_diffuse_color = color; }
+	inline void set_material_specular_color ( const glm::vec4& color ) { _material_specular_color = color; }
 
 };	// _object_base
 

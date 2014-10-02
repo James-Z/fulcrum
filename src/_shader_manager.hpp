@@ -35,7 +35,8 @@ public:
 	       specular_color,
 	       lights_count,
 	       light_color,
-	       material;
+	       material_diffuse_color,
+	       material_specular_color;
 public:
 	_shader_manager (void);
 	~_shader_manager (void);

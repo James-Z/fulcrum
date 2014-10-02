@@ -10,6 +10,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include "_shader_manager.hpp"
 
 struct triangles {
@@ -19,7 +22,6 @@ struct triangles {
 enum CUBE_SIDE{ FRONT = 1, BACK, LEFT, RIGHT, UP, BOTTOM };
 
 class cube {
-
 	glm::vec3	a,
 			b,
 			c,
@@ -149,6 +151,8 @@ public:
 class _model_manager {
 private:
 	std::vector<triangles> _data;
+	std::vector<triangles> _vertex_data;
+	std::vector<triangles> _normal_data;
 	/* GLfloat* _data; */
 	GLuint _float_number;
 	GLuint _vertex_number;
@@ -163,6 +167,7 @@ public:
 	void initialize_vao (void);
 	void draw (void);
 	virtual void edit_modedl (void);
+	void recursiveProcess(aiNode* node,const aiScene* scene);
 	void generate_vertex_data (void);
 	void generate_normal_data (void);
 	inline const std::vector<triangles>& get_data (void) const { return _data; }

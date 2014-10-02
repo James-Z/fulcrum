@@ -33,7 +33,8 @@ void _shader_manager::_bind_uniform_variable_to_shader (void) {
 	ambient_color = glGetUniformLocation (_shader, CHANGE (ambient_color));
 	specular_color = glGetUniformLocation (_shader, CHANGE (specular_color));
 	lights_count = glGetUniformLocation (_shader, CHANGE (lights_count));
-	material = glGetUniformLocation (_shader, CHANGE (material));
+	material_diffuse_color = glGetUniformLocation (_shader, CHANGE (material_diffuse_color));
+	material_specular_color = glGetUniformLocation (_shader, CHANGE (material_specular_color));
 #undef CHANGE
 }
 

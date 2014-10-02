@@ -35,6 +35,8 @@ void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) 
 		glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr( _matrix_in_camera_world ) );
 		glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr( glm::mat3( _matrix_in_camera_world ) ) );
 	}
+	glUniform4fv( be_using_shader.material_diffuse_color, 1, glm::value_ptr( glm::vec4( _material_diffuse_color ) ) );
+	glUniform4fv( be_using_shader.material_specular_color, 1, glm::value_ptr( glm::vec4( _material_specular_color ) ) );
 }
 
 void _object_base::draw (void) {
