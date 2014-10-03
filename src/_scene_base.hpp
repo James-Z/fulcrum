@@ -1,7 +1,6 @@
 #ifndef _SCENE_BASE_HPP_
 #define _SCENE_BASE_HPP_
 
-#include <iostream>
 
 #include "_object_base.hpp"
 #include "_camera_base.hpp"
@@ -9,11 +8,14 @@
 #include "_light_base.hpp"
 #include "_light_base_set.hpp"
 #include "_controller_base.hpp"
+
+#include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <list>
 #include <string>
 #include <memory>
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <glm/glm.hpp>
