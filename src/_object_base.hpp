@@ -10,11 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "bullet/BulletDynamics/Dynamics/btRigidBody.h"
-#include "bullet/BulletCollision/CollisionShapes/btSphereShape.h"
-#include "bullet/BulletCollision/CollisionShapes/btBoxShape.h"
-#include "bullet/LinearMath/btDefaultMotionState.h"
-#include "bullet/LinearMath/btTransform.h"
+#include <bullet/BulletDynamics/Dynamics/btRigidBody.h>
+#include <bullet/BulletCollision/CollisionShapes/btSphereShape.h>
+#include <bullet/BulletCollision/CollisionShapes/btBoxShape.h>
+#include <bullet/LinearMath/btDefaultMotionState.h>
+#include <bullet/LinearMath/btTransform.h>
 
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"

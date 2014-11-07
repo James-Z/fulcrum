@@ -30,10 +30,10 @@
 #include "_scene_base.hpp"
 #include "_object_base.hpp"
 #include "_shader_manager.hpp"
-#include "bullet/BulletCollision/CollisionShapes/btConvexHullShape.h"
-#include "bullet/BulletCollision/CollisionShapes/btTriangleMesh.h"
-#include "bullet/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h"
-#include "bullet/BulletCollision/CollisionShapes/btShapeHull.h"
+#include <bullet/BulletCollision/CollisionShapes/btConvexHullShape.h>
+#include <bullet/BulletCollision/CollisionShapes/btTriangleMesh.h>
+#include <bullet/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h>
+#include <bullet/BulletCollision/CollisionShapes/btShapeHull.h>
 /***********************************************************************
 			scene test class
 ************************************************************************/
