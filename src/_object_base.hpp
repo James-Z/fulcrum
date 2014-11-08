@@ -18,6 +18,7 @@
 
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"
+
 struct control_message {
 	int msg;
 	int msg_info;
@@ -103,7 +104,12 @@ public:
 	inline bool is_destory (void) const { return _is_destoried; }
 	inline bool is_catch_camera (void) const { return _is_catch_camera; }
 	inline bool is_be_controlled (void) const { return _is_be_controlled; }
-	inline void generate_model (void) { _model.generate_vertex_data(); _model.generate_normal_data(); _model.initialize_vbo(); _model.initialize_vao(); }
+	inline void generate_model (void) {
+		_model.generate_vertex_data();
+		_model.generate_normal_data();
+		_model.initialize_vbo();
+		_model.initialize_vao();
+	}
 	/* inline void generate_model (void) { _model.generate_vertex_data(); _model.initialize_vbo(); _model.initialize_vao(); } */
 	inline const std::vector<triangles>& get_model_data(void) const { _model.get_data(); }
 	inline void set_material_diffuse_color ( const glm::vec4& color ) { _material_diffuse_color = color; }

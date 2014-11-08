@@ -39,7 +39,7 @@ public:
 	_asset_manager (void);
 	virtual ~_asset_manager (void);
 
-	void read_file ( const std::string&, unsigned int );
+	void read_file ( const std::string&, unsigned int& );
 	const std::vector<triangles>& read_dae ( const std::string& );
 	void recursiveProcess( aiNode* , const aiScene* );
 	const std::vector<triangles>& get_model_data ( const std::string& ) const { return _model_data; }

@@ -1,7 +1,10 @@
-OBJS = fulcrum.o math3d.o ShaderManage.o _scene_base.o _object_base.o _light_base.o _shader_manager.o _camera_base.o _controller_base.o _model_manager.o _light_base_set.o _asset_manager.o
+OBJS = fulcrum.o math3d.o ShaderManage.o _scene_base.o _object_base.o _light_base.o \
+_shader_manager.o _camera_base.o _controller_base.o _model_manager.o \
+_light_base_set.o _asset_manager.o
 HDRS =
 SCRS =
-LS = -I/usr/local/include/bullet/ -lSDL2 -lassimp -Wl,-rpath=/usr/local/lib -lGL -lX11 -lGLEW -lGLU -std=c++11 -lBulletDynamics -lBulletSoftBody -lBulletCollision -lLinearMath
+LS = -I/usr/local/include/bullet/ -lSDL2 -lassimp -Wl,-rpath=/usr/local/lib  -lGLEW \
+-std=c++11 -lBulletDynamics -lBulletSoftBody -lBulletCollision -lLinearMath
 fulcrum : $(OBJS)
 	g++ -g -o fulcrum $(OBJS) $(LS)
 

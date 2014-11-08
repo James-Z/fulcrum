@@ -72,7 +72,7 @@ void _model_manager::recursiveProcess( aiNode* node, const aiScene* scene ) {
 	}
 }
 
-void _model_manager::generate_vertex_data (void) {
+void _model_manager::generate_vertex_data(void) {
 	Assimp::Importer importer;
 	/* const aiScene* scene = importer.ReadFile( "wolf.dae", aiProcess_GenSmoothNormals ); */
 	const aiScene* scene = importer.ReadFile( "circle.dae", aiProcess_Triangulate );

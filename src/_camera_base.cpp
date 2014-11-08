@@ -33,8 +33,8 @@ void _camera_base::translate ( const glm::vec3& direction) {
 }
 
 void _camera_base::rotate ( const float& angle, const glm::vec3& rotate_axis ) {
-	_matrix_follow_in_world = glm::rotate( _matrix_follow_in_world, angle, rotate_axis );
-	_matrix_in_world = glm::rotate( _matrix_in_world, angle, rotate_axis  );
+	_matrix_follow_in_world = glm::rotate( _matrix_follow_in_world, angle*3.141592F/180.0F, rotate_axis );
+	_matrix_in_world = glm::rotate( _matrix_in_world, angle*3.141592F/180.0F, rotate_axis  );
 }
 
 void _camera_base::follow ( const _object_base* be_followed_object, bool is_rotate ) {}

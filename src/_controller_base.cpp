@@ -4,7 +4,7 @@ _controller_base::_controller_base (void) : _object_base() {}
 _controller_base::~_controller_base (void) {}
 
 void _controller_base::turn_camera ( const float angle, const glm::vec3& aix ) {
-	_object_controller_matrix = glm::rotate( glm::mat4(1), angle, aix );
+	_object_controller_matrix = glm::rotate( glm::mat4(1), angle*3.141592F/180.0F, aix );
 }
 
 void _controller_base::move_camera ( const glm::vec3& move_to ) {

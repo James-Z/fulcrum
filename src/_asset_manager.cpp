@@ -4,7 +4,7 @@ _asset_manager::_asset_manager(void) {}
 
 _asset_manager::~_asset_manager(void) {}
 
-void _asset_manager::read_file ( const std::string& file_name, unsigned int format ) {
+void _asset_manager::read_file ( const std::string& file_name, unsigned int& format ) {
 	switch ( format ) {
 	case DAE:
 		if( !read_dae( file_name ).empty() ) {
