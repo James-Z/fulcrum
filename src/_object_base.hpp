@@ -18,6 +18,7 @@
 
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"
+#include "_asset_manager.hpp"
 
 struct control_message {
 	int msg;
@@ -110,8 +111,14 @@ public:
 		_model.initialize_vbo();
 		_model.initialize_vao();
 	}
+
+	bool load_model_data_from_assets ( const std::vector<triangle>& model_data ) {
+		_model.load_model_data_from_assets( model_data );
+		_model.initialize_vbo(); _model.initialize_vao();
+		 return true;
+	}
 	/* inline void generate_model (void) { _model.generate_vertex_data(); _model.initialize_vbo(); _model.initialize_vao(); } */
-	inline const std::vector<triangles>& get_model_data(void) const { _model.get_data(); }
+	inline const std::vector<triangle>& get_model_data(void) const { _model.get_data(); }
 	inline void set_material_diffuse_color ( const glm::vec4& color ) { _material_diffuse_color = color; }
 	inline void set_material_specular_color ( const glm::vec4& color ) { _material_specular_color = color; }
 

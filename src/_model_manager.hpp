@@ -6,18 +6,16 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "_shader_manager.hpp"
 
-struct triangles {
-	glm::vec3 x, y, z;
-};
+#include "_shader_manager.hpp"
+#include "_asset_manager.hpp"
 
 enum CUBE_SIDE{ FRONT = 1, BACK, LEFT, RIGHT, UP, BOTTOM };
 
@@ -35,8 +33,8 @@ class cube {
 	glm::vec3 _start_vertex;
 	float _side_length;
 
-	triangles _triangle;
-	std::vector<triangles> _cube_data;
+	triangle _triangle;
+	std::vector<triangle> _cube_data;
 public:
 	struct cube_info {
 		glm::vec3 start_vertex;
@@ -58,11 +56,11 @@ public:
 		a1 = glm::vec3(x, y, z - side_length);
 
 	}
-	inline std::vector<triangles> get_data ( void ) { return _cube_data; }
+	inline std::vector<triangle> get_data ( void ) { return _cube_data; }
 
 	void generate_cude_side ( const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d ) {
 		/* _data.clear(); */
-		triangles temp_triangle;
+		triangle temp_triangle;
 		temp_triangle.x = a;
 		temp_triangle.y = b;
 		temp_triangle.z = c;
@@ -150,9 +148,9 @@ public:
 
 class _model_manager {
 private:
-	std::vector<triangles> _data;
-	std::vector<triangles> _vertex_data;
-	std::vector<triangles> _normal_data;
+	std::vector<triangle> _data;
+	std::vector<triangle> _vertex_data;
+	std::vector<triangle> _normal_data;
 	/* GLfloat* _data; */
 	GLuint _float_number;
 	GLuint _vertex_number;
@@ -161,16 +159,17 @@ private:
 	GLuint _vao;
 public:
 	_model_manager (void);
-	~_model_manager (void);
+	virtual ~_model_manager (void);
 
 	void initialize_vbo (void);
 	void initialize_vao (void);
 	void draw (void);
 	virtual void edit_modedl (void);
 	void recursiveProcess(aiNode* node,const aiScene* scene);
+	bool load_model_data_from_assets ( const std::vector<triangle>& );
 	void generate_vertex_data (void);
 	void generate_normal_data (void);
-	inline const std::vector<triangles>& get_data (void) const { return _data; }
+	inline const std::vector<triangle>& get_data (void) const { return _data; }
 };
 
 #endif

@@ -4,26 +4,37 @@ _asset_manager::_asset_manager(void) {}
 
 _asset_manager::~_asset_manager(void) {}
 
-void _asset_manager::read_file ( const std::string& file_name, unsigned int& format ) {
+void _asset_manager::read_file ( const std::string& file_name, const unsigned int& format ) {
 	switch ( format ) {
 	case DAE:
-		if( !read_dae( file_name ).empty() ) {
-			if( store_model_data( file_name ) ) {
-				std::cerr<<"can't store "<<file_name<<" to model data\n";
-			}
+		read_dae( file_name );
+		if( !store_model_data( file_name ) ) {
+			std::cerr<<"can't store "<<file_name<<" to model data\n";
 		}
+		break;
 	default:
-		std::cerr<<"can't read this format\n";
+		std::cerr<<"can't read file "<<file_name<<"\n";
 	}
 }
 
-const std::vector<triangles>& _asset_manager::read_dae ( const std::string& file_name ) {
+void _asset_manager::read_dae ( const std::string& file_name ) {
+	/* const aiScene* scene = importer.ReadFile( file_name, aiProcess_GenSmoothNormals | */
+	/* 									aiProcess_Triangulate | */
+	/* 									aiProcess_CalcTangentSpace | */
+	/* 									aiProcess_FlipUVs ); */
+	/* Assimp::Importer importer; */
+	/* const aiScene* scene2 = importer.ReadFile( file_name, aiProcess_Triangulate ); */
+	// Create an instance of the Importer class
 	Assimp::Importer importer;
-	/* const aiScene* scene = importer.ReadFile( "wolf.dae", aiProcess_GenSmoothNormals ); */
-	const aiScene* scene  = importer.ReadFile( file_name, aiProcess_Triangulate );
-										/* aiProcess_Triangulate | */
-										/* aiProcess_CalcTangentSpace | */
-										/* aiProcess_FlipUVs ); */
+	// And have it read the given file with some example postprocessing
+	// Usually - if speed is not the most important aspect for you - you'll 
+	// propably to request more postprocessing than we do in this example.
+	const aiScene* scene = aiImportFile( file_name.c_str(), aiProcess_Triangulate );
+			/* aiProcess_CalcTangentSpace       | */ 
+			/* aiProcess_Triangulate            | */
+			/* aiProcess_JoinIdenticalVertices  | */
+			/* aiProcess_SortByPType); */
+
 	if( scene ) {
 		_vertex_data.clear();
 		_normal_data.clear();
@@ -32,17 +43,17 @@ const std::vector<triangles>& _asset_manager::read_dae ( const std::string& file
 	} else {
 		std::cout<<"can't open "<<file_name<<"\n";
 	}
-	if( scene != nullptr ){
+	if( scene != nullptr ) {
 		delete scene;
 		scene = nullptr;
 	}
 }
 
-void _asset_manager::recursiveProcess( aiNode* node, const aiScene* scene ) {
+void _asset_manager::recursiveProcess( const aiNode* node, const aiScene* scene ) {
 	std::cout<<node->mNumMeshes;
-	for(int i=0;i<node->mNumMeshes;i++) {
-		aiMesh* mesh=scene->mMeshes[node->mMeshes[i]];
-		triangles temp_triangle_one, temp_triangle_two;
+	for( int i = 0; i < node->mNumMeshes; ++i ) {
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		triangle temp_triangle_one, temp_triangle_two;
 		for( int n = 0; n < (mesh->mNumVertices); ++n ) {
 			temp_triangle_one.x = glm::vec3(mesh->mVertices[n].x, mesh->mVertices[n].y, mesh->mVertices[n].z);
 			temp_triangle_two.x = glm::vec3(mesh->mNormals[n].x, mesh->mNormals[n].y, mesh->mNormals[n].z); ++n;
@@ -59,7 +70,7 @@ void _asset_manager::recursiveProcess( aiNode* node, const aiScene* scene ) {
 	}
 	
 	//recursion
-	for( int i=0; i < node->mNumChildren; i++ ) {
+	for( int i=0; i < node->mNumChildren; ++i ) {
 		recursiveProcess( node->mChildren[i], scene );
 	}
 }
@@ -72,16 +83,18 @@ bool _asset_manager::store_model_data ( const std::string& file_name ) {
 	std::string file = file_name;
 	if( _models_data.find( file ) == _models_data.end() ) {
 		_models_data.insert( std::make_pair( file_name, _model_data ) );
-		is_input = true;
+
+		_model_data.clear();
+		_vertex_data.clear();
+		_normal_data.clear();
+		return true;
 	} else {
 		std::cerr<<"can't store "<<file_name<<"\n";
-		is_input = false;
+
+		_model_data.clear();
+		_vertex_data.clear();
+		_normal_data.clear();
+		return false;
 	}
-
-	_model_data.clear();
-	_vertex_data.clear();
-	_normal_data.clear();
-
-	return is_input;
 }
 

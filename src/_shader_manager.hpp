@@ -39,7 +39,7 @@ public:
 	       material_specular_color;
 public:
 	_shader_manager (void);
-	~_shader_manager (void);
+	virtual ~_shader_manager (void);
 	void set_uniform_location ( const std::string names );
 	GLuint create_shader ( const std::string shaderSourceName ) ;
 

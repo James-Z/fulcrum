@@ -44,13 +44,37 @@ void _model_manager::draw (void) {
 void _model_manager::edit_modedl (void) {
 }
 
+bool _model_manager::load_model_data_from_assets ( const std::vector<triangle>& model_data ) {
+	//check the scurce
+	if(_data.capacity()<model_data.size()) {
+		std::cerr<<"OMG!\n";
+		_data.resize(model_data.size());
+	}
+
+	if( !model_data.empty() ) {
+		_data.clear();
+		_data = model_data;
+		if( !_data.empty() ) {
+		_triangle_number = _data.size()/2;
+		_vertex_number = _triangle_number * 3;
+		_float_number = _vertex_number * 3;
+		} else {
+			std::cerr<<"no model data generate!\n";
+		}
+		return true;
+	} else {
+		std::cerr<<"data not gen by model data"<<std::endl;
+		return false;
+	}
+}
+
 void _model_manager::recursiveProcess( aiNode* node, const aiScene* scene ) {
 	//process
 	/* _data.clear(); */
 	std::cout<<node->mNumMeshes;
 	for(int i=0;i<node->mNumMeshes;i++) {
 		aiMesh* mesh=scene->mMeshes[node->mMeshes[i]];
-		triangles temp_triangle_one, temp_triangle_two;
+		triangle temp_triangle_one, temp_triangle_two;
 		for( int n = 0; n < (mesh->mNumVertices); ++n ) {
 			temp_triangle_one.x = glm::vec3(mesh->mVertices[n].x, mesh->mVertices[n].y, mesh->mVertices[n].z);
 			temp_triangle_two.x = glm::vec3(mesh->mNormals[n].x, mesh->mNormals[n].y, mesh->mNormals[n].z); ++n;
@@ -75,7 +99,7 @@ void _model_manager::recursiveProcess( aiNode* node, const aiScene* scene ) {
 void _model_manager::generate_vertex_data(void) {
 	Assimp::Importer importer;
 	/* const aiScene* scene = importer.ReadFile( "wolf.dae", aiProcess_GenSmoothNormals ); */
-	const aiScene* scene = importer.ReadFile( "circle.dae", aiProcess_Triangulate );
+	const aiScene* scene = aiImportFile( "circle.dae", aiProcess_Triangulate );
 										/* aiProcess_Triangulate | */
 										/* aiProcess_CalcTangentSpace | */
 										/* aiProcess_FlipUVs ); */
@@ -117,7 +141,7 @@ void _model_manager::generate_vertex_data(void) {
 
 void _model_manager::generate_normal_data (void) {
 	/* if( !_data.empty() ) { */
-	/* 	triangles temp_triangle; */
+	/* 	triangle temp_triangle; */
 	/* 	auto iter = _data.begin(); */
 	/* 	for( int i = 0; i < _triangle_number; ++i, ++iter) { */
 	/* 		glm::vec3 const & a = iter->x; */

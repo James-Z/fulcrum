@@ -30,6 +30,8 @@
 #include "_scene_base.hpp"
 #include "_object_base.hpp"
 #include "_shader_manager.hpp"
+#include "_asset_manager.hpp"
+
 #include <bullet/BulletCollision/CollisionShapes/btConvexHullShape.h>
 #include <bullet/BulletCollision/CollisionShapes/btTriangleMesh.h>
 #include <bullet/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h>
@@ -102,10 +104,16 @@ void game_scene::edit_scene (void) {
 	camera_one->_camera_base::rotate( -10.0F, glm::vec3( 1.0F, 0.F, 0.0F ) );
 	add_camera( camera_one );
 
+	//asset
+	_asset_manager* asset = new _asset_manager();
+	asset->read_file( "lowpolyspaceship.dae", FILE_FORMAT::DAE );
+	asset->read_file( "circle.dae", FILE_FORMAT::DAE );
+
 	//
 	{
 		game_object* object_one = new game_object();
-		object_one->generate_model();
+		/* object_one->generate_model(); */
+		object_one->load_model_data_from_assets(asset->get_model_data("lowpolyspaceship.dae"));
 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
 		object_one->translate( glm::vec3( 5.0F, 0.0F, 5.0F ) );
 		object_one->set_material_diffuse_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
@@ -183,7 +191,8 @@ void game_scene::edit_scene (void) {
 	//create a controllable object
 	{
 		game_object* object_two = new game_object();
-		object_two->generate_model();
+		/* object_two->generate_model(); */
+		object_two->load_model_data_from_assets(asset->get_model_data("circle.dae"));
 		object_two->catch_contrtoller();
 		object_two->set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) );
 		/* object_two->rotate( 180.0F, glm::vec3( 0.0F, 0.0F, 0.0F ) ); */
