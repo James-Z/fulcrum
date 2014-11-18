@@ -8,6 +8,7 @@
 #include "_light_base.hpp"
 #include "_light_base_set.hpp"
 #include "_controller_base.hpp"
+#include "_asset_manager.hpp"
 
 #include <iostream>
 #include <vector>

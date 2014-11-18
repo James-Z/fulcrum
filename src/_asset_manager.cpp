@@ -18,22 +18,13 @@ void _asset_manager::read_file ( const std::string& file_name, const unsigned in
 }
 
 void _asset_manager::read_dae ( const std::string& file_name ) {
-	/* const aiScene* scene = importer.ReadFile( file_name, aiProcess_GenSmoothNormals | */
-	/* 									aiProcess_Triangulate | */
-	/* 									aiProcess_CalcTangentSpace | */
-	/* 									aiProcess_FlipUVs ); */
-	/* Assimp::Importer importer; */
-	/* const aiScene* scene2 = importer.ReadFile( file_name, aiProcess_Triangulate ); */
 	// Create an instance of the Importer class
-	Assimp::Importer importer;
 	// And have it read the given file with some example postprocessing
 	// Usually - if speed is not the most important aspect for you - you'll 
 	// propably to request more postprocessing than we do in this example.
-	const aiScene* scene = aiImportFile( file_name.c_str(), aiProcess_Triangulate );
-			/* aiProcess_CalcTangentSpace       | */ 
-			/* aiProcess_Triangulate            | */
-			/* aiProcess_JoinIdenticalVertices  | */
-			/* aiProcess_SortByPType); */
+	const aiScene* scene = aiImportFile( file_name.c_str(),
+								aiProcess_CalcTangentSpace |
+								aiProcess_Triangulate);
 
 	if( scene ) {
 		_vertex_data.clear();
@@ -50,7 +41,7 @@ void _asset_manager::read_dae ( const std::string& file_name ) {
 }
 
 void _asset_manager::recursiveProcess( const aiNode* node, const aiScene* scene ) {
-	std::cout<<node->mNumMeshes;
+	/* std::cout<<"aiNode number : "<<node->mNumMeshes<<"\n"; */
 	for( int i = 0; i < node->mNumMeshes; ++i ) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		triangle temp_triangle_one, temp_triangle_two;
@@ -70,7 +61,7 @@ void _asset_manager::recursiveProcess( const aiNode* node, const aiScene* scene 
 	}
 	
 	//recursion
-	for( int i=0; i < node->mNumChildren; ++i ) {
+	for( int i = 0; i < node->mNumChildren; ++i ) {
 		recursiveProcess( node->mChildren[i], scene );
 	}
 }

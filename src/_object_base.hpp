@@ -77,7 +77,7 @@ public:
 	virtual void translate ( const glm::vec3& direction );
 	virtual void rotate ( const float& angle, const glm::vec3& rotate_axis );
 	void set_position_in_world ( const glm::vec3& position );
-	void init_rigid_body ( const btScalar mass, const btVector3 inertia, btCollisionShape* shape );
+	void init_rigid_body ( const btScalar mass, const btVector3 inertia, std::shared_ptr<btCollisionShape> shape );
 	//
 	void draw (void);
 	void update_gl_uniform ( const _shader_manager& be_using_shader );

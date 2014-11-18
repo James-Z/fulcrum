@@ -1,6 +1,6 @@
 OBJS = fulcrum.o math3d.o ShaderManage.o _scene_base.o _object_base.o _light_base.o \
 _shader_manager.o _camera_base.o _controller_base.o _model_manager.o \
-_light_base_set.o _asset_manager.o
+_light_base_set.o _asset_manager.o masset_manage.o circle.o
 HDRS =
 SCRS =
 LS = -I/usr/local/include/bullet/ -lSDL2 -lassimp -Wl,-rpath=/usr/local/lib  -lGLEW \
@@ -43,6 +43,12 @@ _light_base.o : _light_base.cpp _light_base.hpp
 	
 _light_base_set.o : _light_base_set.cpp _light_base_set.hpp
 	g++ -g -c _light_base_set.cpp $(LS)
+
+masset_manage.o : masset_manage.cpp masset_manage.hpp
+	g++ -g -c masset_manage.cpp $(LS)
+
+circle.o : circle.cpp circle.hpp
+	g++ -g -c circle.cpp $(LS)
 
 .PHONY : clean
 

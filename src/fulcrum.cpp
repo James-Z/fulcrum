@@ -33,18 +33,65 @@
 #include "_asset_manager.hpp"
 
 #include <bullet/BulletCollision/CollisionShapes/btConvexHullShape.h>
+#include <bullet/BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
 #include <bullet/BulletCollision/CollisionShapes/btTriangleMesh.h>
 #include <bullet/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h>
 #include <bullet/BulletCollision/CollisionShapes/btShapeHull.h>
+#include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
+#include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+//
+#include "circle.hpp"
 /***********************************************************************
 			scene test class
 ************************************************************************/
 class game_object : public _object_base {
+	std::shared_ptr<btTriangleMesh> triangle_mesh;
+	std::shared_ptr<btGImpactMeshShape> tmpshape;
 public:
 	game_object (void);
 	~game_object (void);
 };
-game_object::game_object (void) : _object_base() {}
+game_object::game_object (void) : _object_base() {
+	load_model_data_from_assets( masset_manager->get_model_data( "lowpolyspaceship.dae" ) );
+	set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) );
+	/* catch_camera( camera_one->get_ID() ); */
+	set_material_diffuse_color( glm::vec4( 0.6, 0.6, 0.6, 1.0 ) );
+	set_material_specular_color( glm::vec4( 0.6, 0.6, 0.6, 1.0 ) );
+	/* realse_camera(); */
+	////////////////////
+	/* tmpshape1 = std::make_shared<btConvexHullShape>(); */
+	/* int it = 0; */
+	/* for ( auto i = get_model_data().begin(); it < get_model_data().size()/2; ++it,++i ) { */
+	/* 	tmpshape1 ->addPoint( btVector3(i->x.x, i->x.y, i->x.z) ); */
+	/* 	tmpshape1->addPoint( btVector3(i->y.x, i->y.y, i->y.z) ); */
+	/* 	tmpshape1->addPoint( btVector3(i->z.x, i->z.y, i->z.z) ); */
+
+	/* } */
+	/* // */
+	/* tmpshape->setLocalScaling( btVector3(0.95, 0.95, 0.95) ); */
+
+	/* triangle_mesh = std::make_shared<btTriangleMesh>(); */
+	triangle_mesh = std::make_shared<btTriangleMesh>();
+	auto i = get_model_data().begin();
+	for ( int it = 0; it < get_model_data().size()/2; ++i, ++it ) {
+		triangle_mesh->addTriangle(	btVector3(i->x.x, i->x.y, i->x.z),
+				btVector3(i->y.x, i->y.y, i->y.z),
+				btVector3(i->z.x, i->z.y, i->z.z) );
+	}
+	btVector3 aabbMin(-1000,-1000,-1000),aabbMax(1000,1000,1000);
+	tmpshape = std::make_shared<btGImpactMeshShape>( triangle_mesh.get() );//, true, aabbMin, aabbMax );
+	/* tmpshape = new btGImpactMeshShape( triangle_mesh );//, true, aabbMin, aabbMax ); */
+	tmpshape->updateBound();
+
+	//
+	/* init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape.get() ); */
+	init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
+	get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
+	get_rigidbody()->setDamping( 0.618F, 0.618F );
+	get_rigidbody()->setAngularFactor( btVector3(1.0F, 1.0F, 1.0F) );
+	get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
+	std::cout<<"game is gen\n";
+}
 game_object::~game_object (void) {}
 //
 class game_camera : public _camera_base {
@@ -54,7 +101,7 @@ public:
 	void update (void) override;
 };
 game_camera::game_camera (void) : _camera_base() {}
-game_camera::~game_camera (void) {}
+game_camera::~game_camera (void) {std::cout<<"camera des\n";}
 void game_camera::update (void) {
 	/* _camera_base::translate( vec3( 0.0F, 0.0F, 3.0F ) ); */
 }
@@ -104,141 +151,37 @@ void game_scene::edit_scene (void) {
 	camera_one->_camera_base::rotate( -10.0F, glm::vec3( 1.0F, 0.F, 0.0F ) );
 	add_camera( camera_one );
 
-	//asset
-	_asset_manager* asset = new _asset_manager();
-	asset->read_file( "lowpolyspaceship.dae", FILE_FORMAT::DAE );
-	asset->read_file( "circle.dae", FILE_FORMAT::DAE );
-
+	//
+	btCollisionDispatcher* dispatcher = static_cast<btCollisionDispatcher*>( this->get_physics_world()->getDispatcher() );
+	btGImpactCollisionAlgorithm::registerAlgorithm( dispatcher );
 	//
 	{
 		game_object* object_one = new game_object();
 		/* object_one->generate_model(); */
-		object_one->load_model_data_from_assets(asset->get_model_data("lowpolyspaceship.dae"));
+		/* object_one->load_model_data_from_assets( asset->get_model_data( "lowpolyspaceship.dae" ) ); */
 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
-		object_one->translate( glm::vec3( 5.0F, 0.0F, 5.0F ) );
+		object_one->translate( glm::vec3( .0F, 0.0F, -0.5F ) );
 		object_one->set_material_diffuse_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
 		object_one->set_material_specular_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
 
-		btConvexHullShape *tmpshape = new btConvexHullShape();
-
-		int it = 0;
-		for ( auto i = object_one->get_model_data().begin(); it < object_one->get_model_data().size()/2; ++it, ++i ) {
-			tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) );
-			tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) );
-			tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) );
-
-		}
-		tmpshape->setLocalScaling( btVector3(0.95, 0.95, 0.95) );
-		////////////////////
-		/* btCollisionShape* shape = new btSphereShape( 2.43F ); */
-		object_one->init_rigid_body( 100.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
+		
+		/* //////////////////// */
+		/* object_one->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape ); */
 		object_one->get_rigidbody()->setDamping( 0.05F, 0.01F );
 		object_one->get_rigidbody()->setAngularFactor( btVector3(0.0F, 0.0F, 0.0F) );
 		object_one->get_rigidbody()->setLinearFactor( btVector3(0.0F, 0.0 ,0.0) );
 		add_object( object_one, game_shader );
 	}
 
-	/* for( int j = 0; j < 20; ++j ) { */
-	/* 	for(int i = 0; i < 20; ++i) { */
-	/* 		game_object* object_one = new game_object(); */
-	/* 		object_one->generate_model(); */
-	/* 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) ); */
-	/* 		object_one->translate( glm::vec3( -j * 5.0F, i+j, 5.0F * i ) ); */
-	/* 		btConvexHullShape *tmpshape = new btConvexHullShape(); */
-	/* 		for( auto i = object_one->get_model_data().begin(); i != object_one->get_model_data().end(); ++i ) { */
-	/* 			tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) ); */
-	/* 			tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) ); */
-	/* 			tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) ); */
-
-	/* 		} */
-	/* 		//////////////////// */
-	/* 		/1* btCollisionShape* shape = new btSphereShape( 2.43F ); *1/ */
-	/* 		object_one->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape ); */
-	/* 		object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F ); */
-	/* 		object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) ); */
-	/* 		object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) ); */
-	/* 		/1* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); *1/ */
-	/* 		/1* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); *1/ */
-	/* 		add_object( object_one, game_shader ); */
-	/* 	} */
-	/* } */
-	/* for( int j = 0; j < 20; ++j ) { */
-	/* 	for(int i = 0; i < 20; ++i) { */
-	/* 		game_object* object_one = new game_object(); */
-	/* 		object_one->generate_model(); */
-	/* 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) ); */
-	/* 		object_one->translate( glm::vec3( -j * 10.0F, i-j, 10.0F * i ) ); */
-	/* 		btConvexHullShape *tmpshape = new btConvexHullShape(); */
-	/* 		for( auto i = object_one->get_model_data().begin(); i != object_one->get_model_data().end(); ++i ) { */
-	/* 			tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) ); */
-	/* 			tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) ); */
-	/* 			tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) ); */
-
-	/* 		} */
-	/* 		//////////////////// */
-	/* 		/1* btCollisionShape* shape = new btSphereShape( 2.43F ); *1/ */
-	/* 		object_one->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape ); */
-	/* 		object_one->get_rigidbody()->setDamping( i * 0.05F, i * 0.01F ); */
-	/* 		/1* object_one->get_rigidbody()->setAngularFactor( btVector3(2.0F, 2.0F, 2.0F) ); *1/ */
-	/* 		/1* object_one->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) ); *1/ */
-	/* 		object_one->get_rigidbody()->setAngularFactor( btVector3(0.0F, 0.0F, 0.0F) ); */
-	/* 		object_one->get_rigidbody()->setLinearFactor( btVector3(0.0F, 0.0 ,0.0) ); */
-	/* 		/1* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); *1/ */
-	/* 		/1* object_one->rotate( 180.0F, vec3( 0.0F, 1.0F, 0.0F ) ); *1/ */
-	/* 		add_object( object_one, game_shader ); */
-	/* 	} */
-	/* } */
-	//create a controllable object
 	{
-		game_object* object_two = new game_object();
-		/* object_two->generate_model(); */
-		object_two->load_model_data_from_assets(asset->get_model_data("circle.dae"));
-		object_two->catch_contrtoller();
-		object_two->set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) );
-		/* object_two->rotate( 180.0F, glm::vec3( 0.0F, 0.0F, 0.0F ) ); */
-		/* object_two->rotate( 180.0F, glm::vec3( 0.0F, 0.0F, 1.0F ) ); */
-		object_two->catch_camera( camera_one->get_ID() );
-		object_two->set_material_diffuse_color( glm::vec4( 0.6, 0.6, 0.6, 1.0 ) );
-		object_two->set_material_specular_color( glm::vec4( 0.6, 0.6, 0.6, 1.0 ) );
-		/* object_two->translate( vec3( 0.0F, 1.0F, -0.0F ) ); */
-		/* object_two->realse_camera(); */
-		////////////////////
-		/* btTriangleMesh* trimesh = new btTriangleMesh(); */
-		/* int it = 0; */
-		/* for ( auto i = object_two->get_model_data().begin(); it < object_two->get_model_data().size()/2; ++it ) */
-		/* { */
-
-		/* 	btVector3 vertex0( i->x.x*0.9F, i->x.y*0.9F, i->x.z*0.9F ); */
-		/* 	btVector3 vertex1( i->y.x*0.9F, i->y.y*0.9F, i->y.z*0.9F ); */
-		/* 	btVector3 vertex2( i->z.x*0.9F, i->z.y*0.9F, i->z.z*0.9F ); */
-
-		/* 	trimesh->addTriangle(vertex0, vertex1, vertex2); */
-		/* } */
-		btConvexHullShape *tmpshape = new btConvexHullShape();
-		/* for( auto i = object_two->get_model_data().begin(); i != object_two->get_model_data().end(); ++i ) { */
-		int it = 0;
-		for ( auto i = object_two->get_model_data().begin(); it < object_two->get_model_data().size()/2; ++it,++i ) {
-			tmpshape->addPoint( btVector3(i->x.x, i->x.y, i->x.z) );
-			tmpshape->addPoint( btVector3(i->y.x, i->y.y, i->y.z) );
-			tmpshape->addPoint( btVector3(i->z.x, i->z.y, i->z.z) );
-
-		}
-		tmpshape->setLocalScaling( btVector3(0.95, 0.95, 0.95) );
-		/* btShapeHull *hull = new btShapeHull(tmpshape); */
-		/* btScalar margin = tmpshape->getMargin(); */
-		/* hull->buildHull(margin); */
-		/* tmpshape->setUserPointer(hull); */
-		////////////////////
-		/* btCollisionShape* shape = new btSphereShape( 2.43F ); */
-		object_two->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
-		object_two->get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
-		object_two->get_rigidbody()->setDamping( 0.618F, 0.618F );
-		object_two->get_rigidbody()->setAngularFactor( btVector3(1.0F, 1.0F, 1.0F) );
-		object_two->get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
-		add_object( object_two, game_shader );
+		circle* circle_o = new circle();
+		circle_o->catch_contrtoller();
+		circle_o->catch_camera( camera_one->get_ID() );
+		add_object( circle_o, game_shader );
 	}
 
 }
+
 std::shared_ptr<game_scene> scene_out_test;
 void init_scene ( void ) {
 	scene_out_test = std::make_shared<game_scene>();
@@ -484,6 +427,7 @@ int main( int argc, char* args[] ) {
 	//Destroy window	
 	SDL_DestroyWindow( gWindow );
 	gWindow = nullptr;
+	delete masset_manager;
 
 	//Quit SDL subsystems
 	SDL_Quit();

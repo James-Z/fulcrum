@@ -41,7 +41,10 @@ void _scene_base::initilize_scene (void) {
 	_dispatcher = std::make_shared<btCollisionDispatcher>( _collision_configuration.get() );
 	_broadphase = std::make_shared<btDbvtBroadphase>();
 	_solver = std::make_shared<btSequentialImpulseConstraintSolver>();
-	_physics_world = std::make_shared<btDiscreteDynamicsWorld>( _dispatcher.get(), _broadphase.get(), _solver.get(), _collision_configuration.get() );
+	_physics_world = std::make_shared<btDiscreteDynamicsWorld>(	_dispatcher.get(),
+									_broadphase.get(),
+									_solver.get(),
+									_collision_configuration.get() );
 }	//initilize_scene
 
 void _scene_base::shader_load ( const std::string shader_file_names, const unsigned int shader_name ) {

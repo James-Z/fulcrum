@@ -2,7 +2,7 @@
 
 _light_base::_light_base (void) : _object_base(), _diffuse_color(), _light_position() {}
 
-_light_base::~_light_base (void) {}
+_light_base::~_light_base (void) { std::cout<<"light des\n"; }
 
 void _light_base::set_diffuse_color ( glm::vec3 color ) {
 	_diffuse_color = glm::vec4( color, 1.0F);

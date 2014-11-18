@@ -46,8 +46,7 @@ void _model_manager::edit_modedl (void) {
 
 bool _model_manager::load_model_data_from_assets ( const std::vector<triangle>& model_data ) {
 	//check the scurce
-	if(_data.capacity()<model_data.size()) {
-		std::cerr<<"OMG!\n";
+	if(_data.capacity() < model_data.size()) {
 		_data.resize(model_data.size());
 	}
 
@@ -55,7 +54,7 @@ bool _model_manager::load_model_data_from_assets ( const std::vector<triangle>& 
 		_data.clear();
 		_data = model_data;
 		if( !_data.empty() ) {
-		_triangle_number = _data.size()/2;
+		_triangle_number = _data.size() / 2;
 		_vertex_number = _triangle_number * 3;
 		_float_number = _vertex_number * 3;
 		} else {

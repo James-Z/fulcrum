@@ -19,10 +19,11 @@ _object_base::_object_base (void) :	_matrix_catch_camera_in_world( 1 ),
 					_state( 0 ),
 					_motion_state( nullptr ),
 					_rigid_body( nullptr ),
-					_shape( nullptr ) {}
+					_shape( nullptr ) { std::cout<<"object was generated\n"; }
 
 _object_base::~_object_base (void) {
-	this->destory();
+	destory();
+	std::cout<<"this object is go away!\n";
 }
 
 void _object_base::destory (void) {}
@@ -185,12 +186,13 @@ void _object_base::set_position_in_world ( const glm::vec3& position ) {
 	_matrix_in_world = glm::translate( glm::mat4(1.0F), position );
 }
 
-void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inertia, btCollisionShape* shape ) {
+void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inertia, std::shared_ptr<btCollisionShape> shape ) {
 
 	btTransform bt_matrix_in_world;
 	bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
 	_motion_state = std::make_shared<btDefaultMotionState>( bt_matrix_in_world );
-	_shape = std::shared_ptr<btCollisionShape>( shape );
+	/* _shape = std::shared_ptr<btCollisionShape>( shape ); */
+	_shape = shape;
 
 	btRigidBody::btRigidBodyConstructionInfo rigidbody_info = btRigidBody::btRigidBodyConstructionInfo(	btScalar(2.F),
 														_motion_state.get(),
