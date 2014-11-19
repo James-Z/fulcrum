@@ -1,6 +1,7 @@
 #include "_object_base.hpp"
 
-_object_base::_object_base (void) :	_matrix_catch_camera_in_world( 1 ),
+_object_base::_object_base (void) :	_base(),
+					_matrix_catch_camera_in_world( 1 ),
 					_matrix_in_world( 1 ),
 					_matrix_in_camera_world( 1 ),
 					_matrix_follow_in_world( 1 ),
@@ -22,11 +23,9 @@ _object_base::_object_base (void) :	_matrix_catch_camera_in_world( 1 ),
 					_shape( nullptr ) { std::cout<<"object was generated\n"; }
 
 _object_base::~_object_base (void) {
-	destory();
+	destroy();
 	std::cout<<"this object is go away!\n";
 }
-
-void _object_base::destory (void) {}
 
 void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
 	if( is_be_controlled() ) {
@@ -66,10 +65,6 @@ void _object_base::follow ( const _object_base* be_followed_object, bool is_rota
 	} else {
 		_matrix_in_world = be_followed_object->get_matrix_in_world();
 	}
-}
-
-void _object_base::update (void) {
-	//update object
 }
 
 void _object_base::apply_physics (void) {

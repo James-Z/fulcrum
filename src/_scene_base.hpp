@@ -1,7 +1,7 @@
 #ifndef _SCENE_BASE_HPP_
 #define _SCENE_BASE_HPP_
 
-
+#include "_base.hpp"
 #include "_object_base.hpp"
 #include "_camera_base.hpp"
 #include "_shader_manager.hpp"
@@ -33,7 +33,7 @@
 
 enum {NORMAL_SHADER, LIGHT_SOURCE_SHADER};
 
-class _scene_base {
+class _scene_base : public _base {
 private:
 	std::unordered_map<unsigned int, std::shared_ptr<_shader_manager>> _shaders;
 	std::list<std::shared_ptr<_camera_base>> _cameras_in_scene;
@@ -58,6 +58,12 @@ private:
 public:
 	_scene_base (void);
 	virtual ~_scene_base (void);
+	virtual void destroy (void) override {}
+	virtual void start (void) override {}
+	virtual void resume (void) override {}
+	virtual void update (void) override {}
+	virtual void pause (void) override {}
+	virtual void exit (void) override {}
 	virtual void initilize_scene (void);
 	void shader_load ( const std::string shader_file_names, const unsigned int shader_name );
 	void add_camera ( _camera_base* camera );

@@ -15,8 +15,8 @@ void _light_base_set::update_lights (void) {
 	for( ; _lights_iter != _lights.end(); ++_lights_iter ) {
 		(*_lights_iter)->update();
 
-		if( (*_lights_iter)->is_destory() ) {
-			/* (*_lights_iter)->destory(); */
+		if( (*_lights_iter)->is_destroy() ) {
+			/* (*_lights_iter)->destroy(); */
 			_lights.erase( _lights_iter );
 		}
 	}

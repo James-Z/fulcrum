@@ -16,6 +16,7 @@
 #include <bullet/LinearMath/btDefaultMotionState.h>
 #include <bullet/LinearMath/btTransform.h>
 
+#include "_base.hpp"
 #include "_shader_manager.hpp"
 #include "_model_manager.hpp"
 #include "_asset_manager.hpp"
@@ -34,7 +35,7 @@ enum MOTION_STATE {	NO_MOSTION = 0,
 			LEFT_ROTATION, RIGHT_ROTATION, Y_TURN_STOP,
 			CLOCK_WISE_ROTATION, ANTI_CLOCK_WISE_ROTATION, Z_TURN_STOP };
 
-class _object_base {
+class _object_base : public _base {
 protected:
 	_model_manager _model;
 
@@ -68,7 +69,12 @@ protected:
 public:
 	_object_base (void);
 	virtual ~_object_base (void);
-	virtual void destory (void);
+	virtual void destroy (void) override {}
+	virtual void start (void) override {}
+	virtual void resume (void) override {}
+	virtual void update (void) override {}
+	virtual void pause (void) override {}
+	virtual void exit (void) override {}
 	//
 	void update_matrix_in_camera_world ( const glm::mat4& update_matrix );
 	void update_matrix_catch_camera_in_world ( const glm::mat4& update_matrix );
@@ -82,7 +88,6 @@ public:
 	void draw (void);
 	void update_gl_uniform ( const _shader_manager& be_using_shader );
 	virtual void follow ( const _object_base* be_followed_object, bool is_rotate = false );
-	virtual void update (void);
 	//
 	void apply_physics (void);
 	void move_and_turn ( const std::vector<control_message>& msg );
@@ -102,7 +107,7 @@ public:
 	inline btRigidBody* get_rigidbody (void) const { return _rigid_body.get(); }
 	inline int get_ID (void) const { return _ID; }
 	inline int be_catched_camera_ID (void) const { return _be_catched_camera_ID; }
-	inline bool is_destory (void) const { return _is_destoried; }
+	inline bool is_destroy (void) const { return _is_destoried; }
 	inline bool is_catch_camera (void) const { return _is_catch_camera; }
 	inline bool is_be_controlled (void) const { return _is_be_controlled; }
 	inline void generate_model (void) {

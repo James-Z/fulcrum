@@ -1,6 +1,7 @@
 #include "_scene_base.hpp"
 
-_scene_base::_scene_base (void) :	_current_shader( nullptr ),
+_scene_base::_scene_base (void) :	_base(),
+					_current_shader( nullptr ),
 					_light_base_set_in_scene( nullptr ),
 					_controller_in_scene( nullptr ),
 					_collision_configuration( nullptr ),
@@ -154,9 +155,9 @@ void _scene_base::update_scene (void) {
 					}	//_cameras_in_scene_iter loop
 				}
 				//
-				/* we need something spawn (maybe some blooms?) and not destory directly */
-				if( (*_objects_in_scene_iter)->is_destory() ) {
-					(*_objects_in_scene_iter)->destory();
+				/* we need something spawn (maybe some blooms?) and not destroy directly */
+				if( (*_objects_in_scene_iter)->is_destroy() ) {
+					(*_objects_in_scene_iter)->destroy();
 					_shaders_and_objects_in_scene_iter->second.erase( _objects_in_scene_iter );
 				}
 			}	//_shaders_and(*_objects_in_scene_iter)->second loop

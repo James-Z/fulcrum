@@ -1,0 +1,60 @@
+#version 330
+
+in vec4 vertex;
+in vec3 normal;
+in vec2 texturecoord0;
+
+uniform mat4 camera_transforms;
+uniform mat3 normal_transforms;
+/* uniform mat4 light_transforms; */
+
+uniform vec3 light_position[10];
+uniform vec3 camera_position;
+uniform int lights_count;
+
+/* layout(location = 7) uniform vec4 li_po[10]; */
+
+
+smooth out vec3 vVaryingNormal;
+smooth out vec3 vVaryingLightDir[10];
+out int lighting[10];
+
+/* smooth out vec3 vVaryingNormal; */
+/* smooth out vec3 vVaryingLightDir; */
+/* smooth out vec3 vVaryingCameraDir; */
+
+uniform mat4 object_transforms;
+uniform mat4 perspective_transforms;
+
+void main()
+{
+	vec3 vVaryingCameraDir;
+	vec4 temVertex;
+	temVertex.xyz = vertex.xyz;
+	temVertex.w = 1.0;
+	temVertex.xyz = temVertex.xyz * temVertex.w;
+	temVertex.xyz = object_transforms * temVertex;
+
+	vec3 modelVertex = temVertex.xyz / temVertex.w;
+	/* vec3 temLightPos = vec3(light_transforms[3].xyz); */
+	vec3 temCameraPos = vec3(camera_transforms[3].xyz);
+	/* vVaryingLightDir = normalize( temLightPos - modelVertex ); */
+	/* vVaryingCameraDir = normalize( camera_position - modelVertex ); */
+	vVaryingCameraDir = normalize( temCameraPos - modelVertex );
+	vVaryingNormal = mat3(object_transforms) * normal;
+	for(int i = 0; i < lights_count; ++i){
+		vVaryingLightDir[i] = normalize( light_position[i] - modelVertex );
+
+		/* if( (dot(vVaryingNormal, vVaryingCameraDir) < 0.0 && dot(vVaryingNormal, vVaryingLightDir[i]) < 0.0) */
+		/* 		|| (dot(vVaryingNormal, vVaryingCameraDir) > 0.0 && dot(vVaryingNormal, vVaryingLightDir[i]) > 0.0)) { */
+		/* 	lighting[i] = 1; */
+		/* } else { */
+		/* 	lighting[i] = -1; */
+		/* } */
+	}
+
+	temVertex = perspective_transforms * temVertex;
+
+	gl_Position= temVertex;
+}
+

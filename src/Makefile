@@ -1,4 +1,4 @@
-OBJS = fulcrum.o math3d.o ShaderManage.o _scene_base.o _object_base.o _light_base.o \
+OBJS = fulcrum.o math3d.o _base.o ShaderManage.o _scene_base.o _object_base.o _light_base.o \
 _shader_manager.o _camera_base.o _controller_base.o _model_manager.o \
 _light_base_set.o _asset_manager.o masset_manage.o circle.o
 HDRS =
@@ -10,6 +10,9 @@ fulcrum : $(OBJS)
 
 fulcrum.o : fulcrum.cpp
 	g++ -g -c fulcrum.cpp $(LS)
+
+_base.o : _base.cpp _base.hpp
+	g++ -g -c _base.cpp $(LS)
 
 math3d.o : math3d.cpp math3d.h
 	g++ -g -c math3d.cpp $(LS)
