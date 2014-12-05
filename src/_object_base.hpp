@@ -44,6 +44,7 @@ protected:
 	glm::mat4 _matrix_in_camera_world;
 	glm::mat4 _matrix_follow_in_world;
 	glm::vec4 _position_in_world;
+
 	glm::vec4 _material_diffuse_color;
 	glm::vec4 _material_specular_color;
 
@@ -76,6 +77,7 @@ public:
 	virtual void pause (void) override {}
 	virtual void exit (void) override {}
 	//
+	void update_object (void);
 	void update_matrix_in_camera_world ( const glm::mat4& update_matrix );
 	void update_matrix_catch_camera_in_world ( const glm::mat4& update_matrix );
 	void multiply_matrix_in_world ( const glm::mat4& matrix );
@@ -89,9 +91,9 @@ public:
 	void update_gl_uniform ( const _shader_manager& be_using_shader );
 	virtual void follow ( const _object_base* be_followed_object, bool is_rotate = false );
 	//
+	void apply_massage (void);
+	void receive_message ( const std::vector<control_message>& msg );
 	void apply_physics (void);
-	void move_and_turn ( const std::vector<control_message>& msg );
-	void apply_physics_transform_update (void);
 	//
 	inline void set_ID ( const unsigned int ID ) { _ID = ID; }
 	inline void catch_camera ( const unsigned int camera_ID ) { _is_catch_camera = true; _be_catched_camera_ID = camera_ID; }

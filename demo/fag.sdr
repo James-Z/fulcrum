@@ -27,17 +27,13 @@ layout(location = 0) out vec4 outputColor;
 void main () {
 	vec4 theColor;
 	for(int i = 0; i < lights_count; ++i) {
-		/* if( lighting[i] == 1 ) { */
-			float tempDot= dot( normalize(vVaryingNormal), normalize(vVaryingLightDir[i]) );
-			if( tempDot < 0.0 ) {
-				/* tempDot = -tempDot; */
-			}
-				float diff= max( 0.0, tempDot );
-				theColor.rgb = theColor.rgb + ( diff * diffuse_color[i].rgb * material_diffuse_color.rgb );
-				theColor.a= theColor.a + diffuse_color[i].a;
-		/* } */
+		float tempDot= dot( normalize(vVaryingNormal), normalize(vVaryingLightDir[i]) );
+		float diff = tempDot < 0.000001 ? (((-tempDot)*-.382)+0.382 ) : (tempDot*0.68+0.382);
+
+		theColor.rgb = theColor.rgb + ( diff * diffuse_color[i].rgb * material_diffuse_color.rgb );
+		theColor.a= theColor.a + diffuse_color[i].a;
 	}
-	theColor+= ambient_color;
+	theColor += ambient_color;
 	//vec3 vRecflection= normalize(reflect(-normalize(vVaryingLightDir), normalize(vVaryingNormal)));
 	vec4 sp_co = specular_color[0];
 	

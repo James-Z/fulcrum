@@ -7,8 +7,11 @@
 class masset_manage : public _asset_manager {
 public:
 	masset_manage ( void ) : _asset_manager() {
-		read_file( "lowpolyspaceship.dae", FILE_FORMAT::DAE );
+		read_file( "lowpolyspaceship1.dae", FILE_FORMAT::DAE );
 		read_file( "circle.dae", FILE_FORMAT::DAE );
+		read_file( "one.dae", FILE_FORMAT::DAE );
+		read_file( "stone_a.dae", FILE_FORMAT::DAE );
+		read_file( "stone_a_l.dae", FILE_FORMAT::DAE );
 	}
 	~masset_manage ( void ) { }
 };

@@ -10,7 +10,7 @@ circle::~circle (void) {
 
 void circle::initial_circle (void) {
 	load_model_data_from_assets( masset_manager->get_model_data( "circle.dae" ) );
-	set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) );
+	/* set_position_in_world( glm::vec3( 0.0F, .0F, 0.0F ) ); */
 	/* catch_camera( camera_one->get_ID() ); */
 	/* realse_camera(); */
 	////////////////////

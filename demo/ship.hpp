@@ -23,7 +23,19 @@ public:
 
 };
 
+class stone_a_l : public _object_base {
+	std::shared_ptr<btTriangleMesh> triangle_mesh;
+	std::shared_ptr<btGImpactMeshShape> tmpshape;
+	std::string aaa;
+	/* std::shared_ptr<btConvexHullShape> tmpshape1; */
 
+	void initial_stone_a_l (void);
+public:
+	stone_a_l (void);
+	~stone_a_l (void);
+	void update (void) override;
+
+};
 
 #endif
 

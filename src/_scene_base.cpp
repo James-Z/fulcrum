@@ -105,6 +105,23 @@ void _scene_base::update_scene (void) {
 	//physics world update
 	btScalar co = (btScalar)_clock.getTimeMicroseconds();
 	_physics_world->stepSimulation( btScalar(co / 1000000.0F));
+	/* std::cout<<"number: "<<_physics_world->getDispatcher()->getNumManifolds()<<"\n"; */
+	int num_manifolds = _physics_world->getDispatcher()->getNumManifolds();
+	for( int i = 0; i < num_manifolds; ++i ) {
+		btPersistentManifold* contact_manifold =  _physics_world->getDispatcher()->getManifoldByIndexInternal(i);
+		btCollisionObject* obA = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody0()));
+		btCollisionObject* obB = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody1()));
+		if( obA->getUserPointer() != nullptr ) {
+			if( static_cast<_object_base*>(obA->getUserPointer())->get_name() == "stone_a_l" ) {
+				std::cout<<"find stone!\n";
+			}
+		}
+		if( obB->getUserPointer() != nullptr ) {
+			if( static_cast<_object_base*>(obB->getUserPointer())->get_name() == "stone_a_l" ) {
+				std::cout<<"find stone!\n";
+			}
+		}
+	}
 	/* _physics_world->stepSimulation( 1.0/420.0 ); */
 
 	//update lights in scene
@@ -118,42 +135,40 @@ void _scene_base::update_scene (void) {
 			/* std::cerr<<"_objects_in_scene_iter : "<<_shaders_and_objects_in_scene_iter->second.size()<<std::endl; */
 			for( ; _objects_in_scene_iter != _shaders_and_objects_in_scene_iter->second.end(); ++_objects_in_scene_iter ) {
 				//
-				if( (*_objects_in_scene_iter)->is_be_controlled() ) {
-					//control by transform
-					/* (*_objects_in_scene_iter)->multiply_matrix_in_world( _controller_in_scene->get_object_controller_matrix() ); */
+				if( (*_objects_in_scene_iter)->is_active() ) {
+					if( (*_objects_in_scene_iter)->is_be_controlled() ) {
+						//control by transform
+						/* (*_objects_in_scene_iter)->multiply_matrix_in_world( _controller_in_scene->get_object_controller_matrix() ); */
 
-					(*_objects_in_scene_iter)->update();
+						(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
 
-					(*_objects_in_scene_iter)->move_and_turn( _controller_in_scene->get_message() );
-					_controller_in_scene->message_clear();
-					(*_objects_in_scene_iter)->apply_physics();
+						(*_objects_in_scene_iter)->update();
 
-					(*_objects_in_scene_iter)->apply_physics_transform_update();
-					/* std::cout<<"x: "<<tem[3].x<<"y:"<<tem[3].y<<"z: "<<tem[3].z<<std::endl; */
+						(*_objects_in_scene_iter)->receive_message( _controller_in_scene->get_message() );
+						(*_objects_in_scene_iter)->apply_massage();
+						_controller_in_scene->message_clear();
 
-					/* if( !(*_objects_in_scene_iter)->get_rigidbody()->isActive() ) { */
-					/* 	std::cout<<"unactive\n"; */
-					(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
-					/* } */
-				} else {
-					(*_objects_in_scene_iter)->update();
+						(*_objects_in_scene_iter)->update_object();
 
-					(*_objects_in_scene_iter)->apply_physics_transform_update();
-				}
-				//if this object catch the camera,check which camera has been catched and update camera's matrix
-				if( (*_objects_in_scene_iter)->is_catch_camera() ) {
-					_cameras_in_scene_iter = _cameras_in_scene.begin();
-					for( ; _cameras_in_scene_iter != _cameras_in_scene.end(); ++_cameras_in_scene_iter) {
-						if( (*_cameras_in_scene_iter)->get_ID() == (*_objects_in_scene_iter)->be_catched_camera_ID() &&
-							//this need a new enum for 0
-							(*_cameras_in_scene_iter)->get_ID() > 0 ) {
-							(*_cameras_in_scene_iter)->update_camera_matrix_from_object( (*_objects_in_scene_iter)->get_matrix_in_world() );
-							//store and mutiply follow matrix
-							(*_cameras_in_scene_iter)->multiply_matrix_follow_in_world( _controller_in_scene->get_camera_controller_matrix() );
-							/* (*_cameras_in_scene_iter)->update(); */
-						}
-					}	//_cameras_in_scene_iter loop
-				}
+					} else {
+						(*_objects_in_scene_iter)->update();
+						(*_objects_in_scene_iter)->update_object();
+					}
+					//if this object catch the camera,check which camera has been catched and update camera's matrix
+					if( (*_objects_in_scene_iter)->is_catch_camera() ) {
+						_cameras_in_scene_iter = _cameras_in_scene.begin();
+						for( ; _cameras_in_scene_iter != _cameras_in_scene.end(); ++_cameras_in_scene_iter) {
+							if( (*_cameras_in_scene_iter)->get_ID() == (*_objects_in_scene_iter)->be_catched_camera_ID() &&
+									//this need a new enum for 0
+									(*_cameras_in_scene_iter)->get_ID() > 0 ) {
+								(*_cameras_in_scene_iter)->update_camera_matrix_from_object( (*_objects_in_scene_iter)->get_matrix_in_world() );
+								//store and mutiply follow matrix
+								(*_cameras_in_scene_iter)->multiply_matrix_follow_in_world( _controller_in_scene->get_camera_controller_matrix() );
+								/* (*_cameras_in_scene_iter)->update(); */
+							}
+						}	//_cameras_in_scene_iter loop
+					}
+				}	// if object is active 
 				//
 				/* we need something spawn (maybe some blooms?) and not destroy directly */
 				if( (*_objects_in_scene_iter)->is_destroy() ) {
@@ -177,7 +192,7 @@ void _scene_base::render_scene (void) {
 		std::cerr<<"_cameras_in_scene_iter, there is empty"<<std::endl;
 	}
 	for( ; _cameras_in_scene_iter != _cameras_in_scene.end() ; ++_cameras_in_scene_iter ) {
-		if((*_cameras_in_scene_iter)->get_ID() > 0) {	//camera ID mast bigger than 0
+		if((*_cameras_in_scene_iter)->get_ID() > 0 && (*_cameras_in_scene_iter)->is_active() ) {	//camera ID mast greater than 0
 			_shaders_and_objects_in_scene_iter = _shaders_and_objects_in_scene.begin();
 			for( ; _shaders_and_objects_in_scene_iter != _shaders_and_objects_in_scene.end(); ++_shaders_and_objects_in_scene_iter ) {
 				if( !_shaders_and_objects_in_scene_iter->second.empty() ) {
@@ -195,12 +210,12 @@ void _scene_base::render_scene (void) {
 
 					_objects_in_scene_iter = _shaders_and_objects_in_scene_iter->second.begin();
 					for( ; _objects_in_scene_iter != _shaders_and_objects_in_scene_iter->second.end(); ++_objects_in_scene_iter ) {
-						if( (*_objects_in_scene_iter)->is_catch_camera() ) {
-							(*_objects_in_scene_iter)->update_matrix_catch_camera_in_world( (*_cameras_in_scene_iter)->get_matrix_follow_in_world() );
-							(*_objects_in_scene_iter)->update_gl_uniform( *_current_shader );
-							(*_objects_in_scene_iter)->draw();
-						} else {
-							(*_objects_in_scene_iter)->update_matrix_in_camera_world( (*_cameras_in_scene_iter)->get_matrix_in_world() );
+						if( (*_objects_in_scene_iter)->is_active() ) {
+							if( (*_objects_in_scene_iter)->is_catch_camera() ) {
+								(*_objects_in_scene_iter)->update_matrix_catch_camera_in_world( (*_cameras_in_scene_iter)->get_matrix_follow_in_world() );
+							} else {
+								(*_objects_in_scene_iter)->update_matrix_in_camera_world( (*_cameras_in_scene_iter)->get_matrix_in_world() );
+							}
 							(*_objects_in_scene_iter)->update_gl_uniform( *_current_shader );
 							(*_objects_in_scene_iter)->draw();
 						}

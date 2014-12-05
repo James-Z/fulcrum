@@ -27,16 +27,24 @@ _object_base::~_object_base (void) {
 	std::cout<<"this object is go away!\n";
 }
 
-void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
-	if( is_be_controlled() ) {
-		glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr( _matrix_catch_camera_in_world ) );
-		glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr( glm::mat3( _matrix_catch_camera_in_world ) ) );
-	} else {
-		glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr( _matrix_in_camera_world ) );
-		glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr( glm::mat3( _matrix_in_camera_world ) ) );
+void _object_base::update_object (void) {
+	if( _rigid_body != nullptr ) {
+		this->apply_physics();
 	}
-	glUniform4fv( be_using_shader.material_diffuse_color, 1, glm::value_ptr( glm::vec4( _material_diffuse_color ) ) );
-	glUniform4fv( be_using_shader.material_specular_color, 1, glm::value_ptr( glm::vec4( _material_specular_color ) ) );
+}
+
+void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
+	/* if( is_be_controlled() ) { */
+	/* 	glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr(_matrix_catch_camera_in_world) ); */
+	/* 	glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr(glm::mat3( _matrix_catch_camera_in_world )) ); */
+	/* } else { */
+	/* 	glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr(_matrix_in_camera_world) ); */
+	/* 	glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr(glm::mat3( _matrix_in_camera_world )) ); */
+	/* } */
+	glUniformMatrix4fv( be_using_shader.object_transforms, 1, GL_FALSE, glm::value_ptr(_matrix_in_camera_world) );
+	glUniformMatrix3fv( be_using_shader.normal_transforms, 1, GL_FALSE, glm::value_ptr(glm::mat3( _matrix_in_camera_world )) );
+	glUniform4fv( be_using_shader.material_diffuse_color, 1, glm::value_ptr(glm::vec4( _material_diffuse_color )) );
+	glUniform4fv( be_using_shader.material_specular_color, 1, glm::value_ptr(glm::vec4( _material_specular_color )) );
 }
 
 void _object_base::draw (void) {
@@ -48,15 +56,29 @@ void _object_base::update_matrix_in_camera_world ( const glm::mat4& update_matri
 }
 
 void _object_base::update_matrix_catch_camera_in_world ( const glm::mat4& update_matrix ) {
-	_matrix_catch_camera_in_world = glm::inverse( update_matrix );
+	_matrix_in_camera_world = glm::inverse( update_matrix );
 }
 
 void _object_base::translate ( const glm::vec3& direction ) {
-	_matrix_in_world = glm::translate( _matrix_in_world, direction );
+	if( _rigid_body == nullptr ) {
+		_matrix_in_world = glm::translate( _matrix_in_world, direction );
+	} else {
+		_matrix_in_world = glm::translate( _matrix_in_world, direction );
+		btTransform bt_matrix_in_world;
+		bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
+		this->get_rigidbody()->setWorldTransform( bt_matrix_in_world );
+	}
 }
 
 void _object_base::rotate ( const float& angle, const glm::vec3& rotate_axis ) {
-	_matrix_in_world = glm::rotate( _matrix_in_world, angle*3.141592F/180.0F, rotate_axis );
+	if( _rigid_body == nullptr ) {
+		_matrix_in_world = glm::rotate( _matrix_in_world, angle*3.141592F/180.0F, rotate_axis );
+	} else {
+		_matrix_in_world = glm::rotate( _matrix_in_world, angle*3.141592F/180.0F, rotate_axis );
+		btTransform bt_matrix_in_world;
+		bt_matrix_in_world.setFromOpenGLMatrix( glm::value_ptr(this->get_matrix_in_world()) );
+		this->get_rigidbody()->setWorldTransform( bt_matrix_in_world );
+	}
 }
 
 void _object_base::follow ( const _object_base* be_followed_object, bool is_rotate) {
@@ -67,7 +89,7 @@ void _object_base::follow ( const _object_base* be_followed_object, bool is_rota
 	}
 }
 
-void _object_base::apply_physics (void) {
+void _object_base::apply_massage (void) {
 	/* _rigid_body->applyTorque( _angular ); */
 	/* btVector3 _xr = btVector3( _angular.getX(), 0.0F, 0.0F ); */
 	/* btVector3 xr = _rigid_body->getWorldTransform().getBasis() * _xr; */
@@ -88,7 +110,7 @@ void _object_base::apply_physics (void) {
 	/* _rigid_body->setLinearVelocity( _force ); */
 }
 
-void _object_base::move_and_turn ( const std::vector<control_message>& msg ) {
+void _object_base::receive_message ( const std::vector<control_message>& msg ) {
 
 	int state;
 	int info;
@@ -162,10 +184,9 @@ void _object_base::move_and_turn ( const std::vector<control_message>& msg ) {
 	}
 }
 
-void _object_base::apply_physics_transform_update (void) {
-	glm::mat4 tem( 1 );
-	this->get_rigidbody()->getWorldTransform().getOpenGLMatrix( glm::value_ptr(tem) );
-	this->set_matrix_in_world( tem );
+void _object_base::apply_physics (void) {
+	//apply physics world transform to world transform
+	_rigid_body->getWorldTransform().getOpenGLMatrix( glm::value_ptr(_matrix_in_world) );
 }
 
 void _object_base::multiply_matrix_in_world ( const glm::mat4& matrix ) {
@@ -177,7 +198,7 @@ void _object_base::multiply_matrix_follow_in_world ( const glm::mat4& matrix ) {
 }
 
 void _object_base::set_position_in_world ( const glm::vec3& position ) {
-	_position_in_world = glm::vec4( position, 1.0F);
+	_position_in_world = glm::vec4( position, 1.0F );
 	_matrix_in_world = glm::translate( glm::mat4(1.0F), position );
 }
 
@@ -194,5 +215,6 @@ void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inerti
 														_shape.get(),
 														inertia );
 	_rigid_body = std::make_shared<btRigidBody>( rigidbody_info );
+	std::cout<<"initial rigidbody\n";
 }
 

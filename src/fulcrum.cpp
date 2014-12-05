@@ -160,7 +160,7 @@ void game_scene::edit_scene (void) {
 		/* object_one->generate_model(); */
 		/* object_one->load_model_data_from_assets( asset->get_model_data( "lowpolyspaceship.dae" ) ); */
 		object_one->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
-		object_one->translate( glm::vec3( .0F, 0.0F, -0.5F ) );
+		object_one->translate( glm::vec3( .0F, 0.0F, -50.5F ) );
 		object_one->set_material_diffuse_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
 		object_one->set_material_specular_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
 
