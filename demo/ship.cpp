@@ -24,6 +24,7 @@ void ship::initial_ship ( void ) {
 	/* // */
 	/* tmpshape->setLocalScaling( btVector3(0.95, 0.95, 0.95) ); */
 
+	this->set_name( "ship" );
 	triangle_mesh = std::make_shared<btTriangleMesh>();
 	auto i = get_model_data().begin();
 	for ( int it = 0; it < get_model_data().size()/2; ++i, ++it ) {
@@ -40,6 +41,7 @@ void ship::initial_ship ( void ) {
 	init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
 	get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
 	get_rigidbody()->setDamping( 0.618F, 0.618F );
+	get_rigidbody()->setUserPointer( this );
 	std::cout<<"ship was generated!\n";
 }
 
@@ -92,8 +94,16 @@ void stone_a_l::initial_stone_a_l ( void ) {
 }
 
 void stone_a_l::update (void) {
-	stone_a_l* temp = static_cast<stone_a_l*>( get_rigidbody()->getUserPointer() );
-	/* std::cout<<temp->aaa; */
+	if( is_interact_with( "ship" ) ) {
+		this->set_material_diffuse_color( glm::vec4( 0.2, 0.2, 0.8, 1.0 ) );
+		this->set_material_specular_color( glm::vec4( 0.1, 0.6, 0.6, 1.0 ) );
+		/* std::cout<<"alerm!\n"; */
+	}
+	if( is_interact_with( "circle" ) ) {
+		this->set_material_diffuse_color( glm::vec4( 0.8, 0.2, 0.2, 1.0 ) );
+		this->set_material_specular_color( glm::vec4( 0.1, 0.6, 0.6, 1.0 ) );
+		/* std::cout<<"alerm!\n"; */
+	}
 }
 
 

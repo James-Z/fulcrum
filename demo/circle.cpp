@@ -25,6 +25,7 @@ void circle::initial_circle (void) {
 	/* // */
 	/* tmpshape->setLocalScaling( btVector3(0.95, 0.95, 0.95) ); */
 
+	this->set_name( "circle" );
 	triangle_mesh = std::make_shared<btTriangleMesh>();
 	auto i = get_model_data().begin();
 	for ( int it = 0; it < get_model_data().size()/2; ++i, ++it ) {
@@ -43,6 +44,7 @@ void circle::initial_circle (void) {
 	get_rigidbody()->setDamping( 0.618F, 0.618F );
 	get_rigidbody()->setAngularFactor( btVector3(1.0F, 1.0F, 1.0F) );
 	get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
+	get_rigidbody()->setUserPointer( this );
 	std::cout<<"circle was generated!\n";
 }
 

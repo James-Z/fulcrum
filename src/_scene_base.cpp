@@ -111,15 +111,13 @@ void _scene_base::update_scene (void) {
 		btPersistentManifold* contact_manifold =  _physics_world->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* obA = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody0()));
 		btCollisionObject* obB = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody1()));
-		if( obA->getUserPointer() != nullptr ) {
-			if( static_cast<_object_base*>(obA->getUserPointer())->get_name() == "stone_a_l" ) {
-				std::cout<<"find stone!\n";
-			}
-		}
-		if( obB->getUserPointer() != nullptr ) {
-			if( static_cast<_object_base*>(obB->getUserPointer())->get_name() == "stone_a_l" ) {
-				std::cout<<"find stone!\n";
-			}
+
+		if( obA->getUserPointer() != nullptr && obB->getUserPointer() != nullptr ) {
+			static_cast<_object_base*>(obA->getUserPointer())->receive_message(
+					static_cast<_object_base*>(obB->getUserPointer())->get_name() );
+
+			static_cast<_object_base*>(obB->getUserPointer())->receive_message(
+					static_cast<_object_base*>(obA->getUserPointer())->get_name() );
 		}
 	}
 	/* _physics_world->stepSimulation( 1.0/420.0 ); */

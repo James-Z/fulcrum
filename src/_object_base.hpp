@@ -48,6 +48,8 @@ protected:
 	glm::vec4 _material_diffuse_color;
 	glm::vec4 _material_specular_color;
 
+	std::vector<std::string> _message;
+
 	int _state;
 	btVector3 _force;
 	btVector3 _angular;
@@ -86,6 +88,7 @@ public:
 	virtual void rotate ( const float& angle, const glm::vec3& rotate_axis );
 	void set_position_in_world ( const glm::vec3& position );
 	void init_rigid_body ( const btScalar mass, const btVector3 inertia, std::shared_ptr<btCollisionShape> shape );
+	bool is_interact_with ( const std::string& );
 	//
 	void draw (void);
 	void update_gl_uniform ( const _shader_manager& be_using_shader );
@@ -95,6 +98,8 @@ public:
 	void receive_message ( const std::vector<control_message>& msg );
 	void apply_physics (void);
 	//
+	inline void receive_message ( const std::string& msg ) { _message.push_back( msg ); }
+	inline void clear_message (void) { _message.clear(); }
 	inline void set_ID ( const unsigned int ID ) { _ID = ID; }
 	inline void catch_camera ( const unsigned int camera_ID ) { _is_catch_camera = true; _be_catched_camera_ID = camera_ID; }
 	inline void catch_contrtoller ( void ) { _is_be_controlled = true; }

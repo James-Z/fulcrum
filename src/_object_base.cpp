@@ -31,6 +31,7 @@ void _object_base::update_object (void) {
 	if( _rigid_body != nullptr ) {
 		this->apply_physics();
 	}
+	this->clear_message();
 }
 
 void _object_base::update_gl_uniform ( const _shader_manager& be_using_shader ) {
@@ -216,5 +217,15 @@ void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inerti
 														inertia );
 	_rigid_body = std::make_shared<btRigidBody>( rigidbody_info );
 	std::cout<<"initial rigidbody\n";
+}
+
+bool _object_base::is_interact_with ( const std::string& object_name ) {
+	for( auto& message : _message ) {
+		if( message == object_name ) {
+
+			return true;
+		}
+	}
+	return false;
 }
 
