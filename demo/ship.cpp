@@ -41,7 +41,7 @@ void ship::initial_ship ( void ) {
 	init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape );
 	get_rigidbody()->setMassProps( 1, btVector3(0.918, 0.918, 0.918) );
 	get_rigidbody()->setDamping( 0.618F, 0.618F );
-	get_rigidbody()->setUserPointer( this );
+	/* get_rigidbody()->setUserPointer( this ); */
 	std::cout<<"ship was generated!\n";
 }
 
@@ -89,7 +89,7 @@ void stone_a_l::initial_stone_a_l ( void ) {
 	get_rigidbody()->setDamping( 0.618F, 0.618F );
 	get_rigidbody()->setAngularFactor( btVector3(0.0F, 0.0F, 0.0F) );
 	get_rigidbody()->setLinearFactor( btVector3(0.0F, 0.0 ,0.0) );
-	get_rigidbody()->setUserPointer( this );
+	/* get_rigidbody()->setUserPointer( this ); */
 	std::cout<<"stone_a_l was generated!\n";
 }
 

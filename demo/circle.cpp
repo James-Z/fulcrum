@@ -44,7 +44,7 @@ void circle::initial_circle (void) {
 	get_rigidbody()->setDamping( 0.618F, 0.618F );
 	get_rigidbody()->setAngularFactor( btVector3(1.0F, 1.0F, 1.0F) );
 	get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
-	get_rigidbody()->setUserPointer( this );
+	/* get_rigidbody()->setUserPointer( this ); */
 	std::cout<<"circle was generated!\n";
 }
 

@@ -216,6 +216,7 @@ void _object_base::init_rigid_body ( const btScalar mass, const btVector3 inerti
 														_shape.get(),
 														inertia );
 	_rigid_body = std::make_shared<btRigidBody>( rigidbody_info );
+	get_rigidbody()->setUserPointer( this );
 	std::cout<<"initial rigidbody\n";
 }
 
