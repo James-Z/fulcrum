@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <list>
 
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -39,7 +40,6 @@ class _object_base : public _base {
 protected:
 	_model_manager _model;
 
-	glm::mat4 _matrix_catch_camera_in_world;
 	glm::mat4 _matrix_in_world;
 	glm::mat4 _matrix_in_camera_world;
 	glm::mat4 _matrix_follow_in_world;
@@ -49,6 +49,7 @@ protected:
 	glm::vec4 _material_specular_color;
 
 	std::vector<std::string> _message;
+	std::list<std::shared_ptr<_object_base>> _objects;
 
 	int _state;
 	btVector3 _force;
@@ -98,6 +99,9 @@ public:
 	void receive_message ( const std::vector<control_message>& msg );
 	void apply_physics (void);
 	//
+	inline void add_object( _object_base* object ) { _objects.push_back( std::shared_ptr<_object_base>(object) ); }
+	inline void add_object( std::shared_ptr<_object_base> object ) { _objects.push_back( object ); }
+	inline std::list<std::shared_ptr<_object_base>>& get_objects (void) { return _objects; }
 	inline void receive_message ( const std::string& msg ) { _message.push_back( msg ); }
 	inline void clear_message (void) { _message.clear(); }
 	inline void set_ID ( const unsigned int ID ) { _ID = ID; }

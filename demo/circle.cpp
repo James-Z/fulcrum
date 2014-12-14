@@ -1,4 +1,5 @@
 #include "circle.hpp"
+#include "ship.hpp"
 
 circle::circle (void) : _object_base() {
 	initial_circle();
@@ -46,5 +47,29 @@ void circle::initial_circle (void) {
 	get_rigidbody()->setLinearFactor( btVector3(1.0F, 1.0 ,1.0) );
 	/* get_rigidbody()->setUserPointer( this ); */
 	std::cout<<"circle was generated!\n";
+	/* add_object( this ); */
 }
+
+static int stone_numer = 0;
+void circle::update (void) {
+	if( (this->get_local_position_in_world().z < 0.0F) && (stone_numer < 2) ){
+		std::shared_ptr<stone_a_l> stone_a_l_a = std::make_shared<stone_a_l>();
+		/* stone_a_l_a->generate_model(); */
+		/* stone_a_l_a->load_model_data_from_assets( asset->get_model_data( "lowpolyspacestone_a_l.dae" ) ); */
+		stone_a_l_a->set_name( "s1" );
+		stone_a_l_a->set_position_in_world( glm::vec3( 0.0F, 0.0F, 0.0F ) );
+		stone_a_l_a->translate( glm::vec3( 0.0F, float(stone_numer)*3.0F, float(stone_numer)*(-5.0F) ) );
+		stone_a_l_a->set_material_diffuse_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
+		stone_a_l_a->set_material_specular_color( glm::vec4( 0.0, 0.6, 0.6, 1.0 ) );
+
+		/* //////////////////// */
+		/* stone_a_l_a->init_rigid_body( 1.0F, btVector3( 0.6F, 0.6F, 0.6F ), tmpshape ); */
+		stone_a_l_a->get_rigidbody()->setDamping( 0.05F, 0.01F );
+		stone_a_l_a->get_rigidbody()->setAngularFactor( btVector3(0.4F, 0.4F, 0.4F) );
+		stone_a_l_a->get_rigidbody()->setLinearFactor( btVector3(0.4F, 0.4F, 0.4F) );
+		add_object( stone_a_l_a );
+		++stone_numer;
+	}
+}
+
 

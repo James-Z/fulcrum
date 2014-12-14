@@ -66,6 +66,30 @@ void _scene_base::add_light ( _light_base* light ) {
 	_light_base_set_in_scene->add_light( light );
 }
 
+void _scene_base::add_object ( std::list<std::shared_ptr<_object_base>>& object, const unsigned int shader_name ) {
+	_shaders_and_objects_in_scene_iter = _shaders_and_objects_in_scene.find( shader_name );//->second.push_back( object );
+	if( _shaders_and_objects_in_scene_iter != _shaders_and_objects_in_scene.end() ) {
+		if( !object.empty() ) {
+			for( std::list<std::shared_ptr<_object_base>>::iterator obj = object.begin(); obj != object.end(); ++obj ){
+				_shaders_and_objects_in_scene_iter->second.push_back( (*obj) );
+				if( (*obj)->get_rigidbody() ) {
+					_physics_world->addRigidBody( (*obj)->get_rigidbody() );
+					/* (*obj) = nullptr; */
+					/* _physics_world->addCollisionObject( object->get_rigidbody() ); */
+				} else {
+					std::cerr<<"add_object object do not initilize the collision"<<std::endl;
+				}
+			}
+			object.clear();
+		} else {
+			std::cerr<<"add_object object's point is empty"<<std::endl;
+		}
+	} else {
+		std::cerr<<"add_object can't find shader_name"<<std::endl;
+	}
+	std::cout<<"number objects: "<<_shaders_and_objects_in_scene_iter->second.size()<<"\n";
+}
+
 void _scene_base::add_object ( _object_base* object, const unsigned int shader_name ) {
 	_shaders_and_objects_in_scene_iter = _shaders_and_objects_in_scene.find( shader_name );//->second.push_back( object );
 	if( _shaders_and_objects_in_scene_iter != _shaders_and_objects_in_scene.end() ) {
@@ -73,6 +97,7 @@ void _scene_base::add_object ( _object_base* object, const unsigned int shader_n
 			_shaders_and_objects_in_scene_iter->second.push_back( std::shared_ptr<_object_base>(object) );
 			if( object->get_rigidbody() ) {
 				_physics_world->addRigidBody( object->get_rigidbody() );
+				/* (*obj) = nullptr; */
 				/* _physics_world->addCollisionObject( object->get_rigidbody() ); */
 			} else {
 				std::cerr<<"add_object object do not initilize the collision"<<std::endl;
@@ -83,6 +108,27 @@ void _scene_base::add_object ( _object_base* object, const unsigned int shader_n
 	} else {
 		std::cerr<<"add_object can't find shader_name"<<std::endl;
 	}
+	std::cout<<"number objects: "<<_shaders_and_objects_in_scene_iter->second.size()<<"\n";
+}
+
+const _object_base* _scene_base::get_object ( const std::string& object_name ) {
+	_shaders_and_objects_in_scene_iter = _shaders_and_objects_in_scene.begin();
+	for( ; _shaders_and_objects_in_scene_iter != _shaders_and_objects_in_scene.end(); ++_shaders_and_objects_in_scene_iter ) {
+		if( !_shaders_and_objects_in_scene_iter->second.empty() ) {
+			_objects_in_scene_iter = _shaders_and_objects_in_scene_iter->second.begin();
+			/* std::cerr<<"_objects_in_scene_iter : "<<_shaders_and_objects_in_scene_iter->second.size()<<std::endl; */
+			for( ; _objects_in_scene_iter != _shaders_and_objects_in_scene_iter->second.end(); ++_objects_in_scene_iter ) {
+				if( (*_objects_in_scene_iter)->get_name() == object_name ) {
+					return (*_objects_in_scene_iter).get();
+				}
+			}	//_shaders_and(*_objects_in_scene_iter)->second loop
+		} else {
+			std::cerr<<"_shaders_and_objects_in_scene_iter, there is empty"<<std::endl;
+			return ( nullptr );
+		}
+	}
+	std::cerr<<"there's no objcet like "<<object_name<<" in scene"<<std::endl;
+	return ( nullptr );
 }
 
 void _scene_base::set_ambient_color ( const glm::vec4 color ) {
@@ -102,13 +148,15 @@ void _scene_base::load_scene (void) {
 
 void _scene_base::update_scene (void) {
 
+	update();
+
 	//physics world update
 	btScalar co = (btScalar)_clock.getTimeMicroseconds();
 	_physics_world->stepSimulation( btScalar(co / 1000000.0F));
 	/* std::cout<<"number: "<<_physics_world->getDispatcher()->getNumManifolds()<<"\n"; */
 	int num_manifolds = _physics_world->getDispatcher()->getNumManifolds();
 	for( int i = 0; i < num_manifolds; ++i ) {
-		btPersistentManifold* contact_manifold =  _physics_world->getDispatcher()->getManifoldByIndexInternal(i);
+		btPersistentManifold* contact_manifold =  _physics_world->getDispatcher()->getManifoldByIndexInternal( i );
 		btCollisionObject* obA = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody0()));
 		btCollisionObject* obB = const_cast<btCollisionObject*>(static_cast<const btCollisionObject*>(contact_manifold->getBody1()));
 
@@ -140,25 +188,28 @@ void _scene_base::update_scene (void) {
 
 						(*_objects_in_scene_iter)->get_rigidbody()->activate( true );
 
-						(*_objects_in_scene_iter)->update();
 
 						(*_objects_in_scene_iter)->receive_message( _controller_in_scene->get_message() );
 						(*_objects_in_scene_iter)->apply_massage();
 						_controller_in_scene->message_clear();
 
-						(*_objects_in_scene_iter)->update_object();
 
-					} else {
-						(*_objects_in_scene_iter)->update();
-						(*_objects_in_scene_iter)->update_object();
 					}
+					(*_objects_in_scene_iter)->update();
+					if( !((*_objects_in_scene_iter)->get_objects().empty()) ){
+						add_object( (*_objects_in_scene_iter)->get_objects(), 1 );
+						if( !((*_objects_in_scene_iter)->get_objects().empty()) ){
+							(*_objects_in_scene_iter)->get_objects().clear();
+						}
+					}
+					(*_objects_in_scene_iter)->update_object();
 					//if this object catch the camera,check which camera has been catched and update camera's matrix
 					if( (*_objects_in_scene_iter)->is_catch_camera() ) {
 						_cameras_in_scene_iter = _cameras_in_scene.begin();
 						for( ; _cameras_in_scene_iter != _cameras_in_scene.end(); ++_cameras_in_scene_iter) {
 							if( (*_cameras_in_scene_iter)->get_ID() == (*_objects_in_scene_iter)->be_catched_camera_ID() &&
-									//this need a new enum for 0
-									(*_cameras_in_scene_iter)->get_ID() > 0 ) {
+										//this need a new enum for 0
+										(*_cameras_in_scene_iter)->get_ID() > 0 ) {
 								(*_cameras_in_scene_iter)->update_camera_matrix_from_object( (*_objects_in_scene_iter)->get_matrix_in_world() );
 								//store and mutiply follow matrix
 								(*_cameras_in_scene_iter)->multiply_matrix_follow_in_world( _controller_in_scene->get_camera_controller_matrix() );

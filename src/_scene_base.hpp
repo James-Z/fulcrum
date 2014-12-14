@@ -68,12 +68,14 @@ public:
 	void shader_load ( const std::string shader_file_names, const unsigned int shader_name );
 	void add_camera ( _camera_base* camera );
 	void add_light ( _light_base* light );
+	void add_object ( std::list<std::shared_ptr<_object_base>>&, const unsigned int );
 	void add_object ( _object_base* object, const unsigned int shader_name );
 	void set_ambient_color ( const glm::vec4 color );
 	void load_scene (void);
 	void update_scene (void);
 	void render_scene (void);
 	virtual void edit_scene (void);
+	const _object_base* get_object ( const std::string& );
 
 	inline glm::vec4 get_ambient_color (void) const { return _ambient_color_in_scene; }
 	inline _shader_manager* get_test_shader (void) { return _current_shader.get(); }

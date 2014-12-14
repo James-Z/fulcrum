@@ -99,5 +99,9 @@ void game_scene::start (void) {
 
 }
 
-void game_scene::update (void) {}
+void game_scene::update (void) {
+	/* if( get_object( "s1" ) != nullptr ) { */
+	/* 	std::cout<<"find s1\n"; */
+	/* } */
+}
 

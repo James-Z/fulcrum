@@ -1,7 +1,6 @@
 #include "_object_base.hpp"
 
 _object_base::_object_base (void) :	_base(),
-					_matrix_catch_camera_in_world( 1 ),
 					_matrix_in_world( 1 ),
 					_matrix_in_camera_world( 1 ),
 					_matrix_follow_in_world( 1 ),

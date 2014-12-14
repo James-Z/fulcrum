@@ -19,9 +19,8 @@ class circle : public _object_base {
 	void initial_circle (void);
 public:
 	circle (void);
-
 	~circle (void);
-
+	void update (void)override;
 };
 
 #endif

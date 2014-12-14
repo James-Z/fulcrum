@@ -170,14 +170,14 @@ void game_scene::edit_scene (void) {
 		object_one->get_rigidbody()->setDamping( 0.05F, 0.01F );
 		object_one->get_rigidbody()->setAngularFactor( btVector3(0.0F, 0.0F, 0.0F) );
 		object_one->get_rigidbody()->setLinearFactor( btVector3(0.0F, 0.0 ,0.0) );
-		add_object( object_one, game_shader );
+		/* add_object( object_one, game_shader ); */
 	}
 
 	{
 		circle* circle_o = new circle();
 		circle_o->catch_contrtoller();
 		circle_o->catch_camera( camera_one->get_ID() );
-		add_object( circle_o, game_shader );
+		/* add_object( circle_o, game_shader ); */
 	}
 
 }
